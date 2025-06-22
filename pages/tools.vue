@@ -1,0 +1,3 @@
+<template>
+    Snip Tools
+</template>

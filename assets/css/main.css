@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+    --color-background-300: #171636;
+    --color-background-400: #0d0d20;
+    --color-background-500: #020118;
+    --color-background-600: #01011B;
+    --color-primary-500: #e00b0b;
+    --color-primary-600: #a70d0d;
+    --color-primary-700: #8a1212;
+    --font-inter: Inter, sans-serif;
+    --font-roboto: Roboto, sans-serif;
+}
+
+@layer base {
+    body {
+        @apply relative;
+    }
+    
+    button {
+        @apply cursor-pointer;
+    }
+}
+
+@utility flex-center {
+    @apply flex items-center justify-center;
+}
+
+@utility inline-flex-center {
+    @apply inline-flex items-center justify-center;
+}
+
+.form-input-wrapper {
+    @apply flex flex-col gap-y-3;
+}
+
+.form-input {
+    @apply block h-full w-full bg-transparent outline-none;
+}
+
+.hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    @apply w-0 h-0 hidden;
+}
+
+.btn {
+    @apply inline-flex-center font-medium focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center transition-all duration-500;
+}
+
+.btn-xs {
+    @apply py-2 px-3 text-xs;
+}
+
+.btn-sm {
+    @apply py-2 px-3 text-sm;
+}
+
+.btn-md {
+    @apply px-5 py-2.5 text-sm;
+}
+
+.btn-lg {
+    @apply px-5 py-3 text-base;
+}
+
+.btn-xlg {
+    @apply px-6 py-3.5 text-base;
+}
+
+.btn-icon {
+    @apply inline-flex-center;
+}
+
+.btn-primary {
+    @apply bg-primary-500/75 text-white hover:bg-primary-500/100;
+}
+
+.btn-primary-gradient {
+    @apply bg-linear-[to_right,#e00b0b_0%,#8a1212_51%,#e00b0b_100%] text-white border border-transparent bg-size-[200%_auto] hover:shadow-[0_0_10px_#ff3030] hover:border-white/50 hover:bg-position-[right_center];
+}
+
+/* .btn-primary-gradient:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 0 10px ;
+    border: 1px solid rgba(225,225,225,0.5);
+} */
+
+.btn-outline-white {
+    @apply border border-white bg-transparent text-white hover:border-transparent hover:text-background-500 hover:bg-white;
+}
