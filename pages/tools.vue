@@ -1,3 +1,0 @@
-<template>
-    Snip Tools
-</template>

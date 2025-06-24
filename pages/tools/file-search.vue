@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { landingMovies } from '~/assets/mock-database/movies';
 const { top_rated_movies } = landingMovies;
+
+const handleUpload = () => {
+    console.log("File uploaded")
+};
 </script>
 
 <template>
@@ -8,10 +12,17 @@ const { top_rated_movies } = landingMovies;
     <main>
         <section class="py-20 relative bg-background-500 text-white/85">
             <div class="container mx-auto px-4 flex flex-col gap-y-16">
-                <form action="#" class="flex items-center w-4/5 mx-auto">
-                    <input type="search" name="query" id="searchMovieField" class="rounded-2xl p-4 border border-white/10 w-full" placeholder="search for a movie"/>
+                <h1 class="text-center text-4xl">Upload a image or short clip to start searching</h1>
+                <form @submit.prevent="handleUpload" class="flex-center flex-col gap-y-5 h-64 w-4/5 mx-auto rounded-2xl bg-background-600">
+                    <label class="w-1/2 h-3/5 flex flex-col items-center px-4 py-6 bg-background-400 rounded-lg shadow-lg tracking-wide cursor-pointer hover:bg-background-300 hover:text-white">
+                        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                        </svg>
+                        <span class="mt-2 text-base leading-normal">Drag and drop to upload video file or picture instantly</span>
+                        <input type='file' class="hidden" />
+                    </label>
+                    <small class="text-xs">Supported Formats: MP4, MP3, JPEG, PNG</small>
                 </form>
-                <h1 class="text-center text-4xl">Found 4 results for your search: <span class="text-primary-600">Spiderman</span></h1>
                 <div class="flex flex-col gap-y-5">
                     <div class="flex items-center justify-between">
                         <h2 class="text-3xl font-semibold">Recent Searches</h2>

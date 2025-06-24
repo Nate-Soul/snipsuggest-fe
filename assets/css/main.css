@@ -83,14 +83,6 @@
     @apply bg-linear-[to_right,#e00b0b_0%,#8a1212_51%,#e00b0b_100%] text-white border border-transparent bg-size-[200%_auto] hover:shadow-[0_0_10px_#ff3030] hover:border-white/50 hover:bg-position-[right_center];
 }
 
-/* .btn-primary-gradient:hover {
-    background-position: right center;
-    color: #fff;
-    text-decoration: none;
-    box-shadow: 0 0 10px ;
-    border: 1px solid rgba(225,225,225,0.5);
-} */
-
 .btn-outline-white {
     @apply border border-white bg-transparent text-white hover:border-transparent hover:text-background-500 hover:bg-white;
 }

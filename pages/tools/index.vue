@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { landingMovies } from '~/assets/mock-database/movies';
 const { top_rated_movies } = landingMovies;
+
 </script>
 
 <template>
@@ -8,10 +9,12 @@ const { top_rated_movies } = landingMovies;
     <main>
         <section class="py-20 relative bg-background-500 text-white/85">
             <div class="container mx-auto px-4 flex flex-col gap-y-16">
+                <h1 class="text-center text-4xl">
+                    Type a line from a movie to start searching 
+                </h1>
                 <form action="#" class="flex items-center w-4/5 mx-auto">
                     <input type="search" name="query" id="searchMovieField" class="rounded-2xl p-4 border border-white/10 w-full" placeholder="search for a movie"/>
                 </form>
-                <h1 class="text-center text-4xl">Found 4 results for your search: <span class="text-primary-600">Spiderman</span></h1>
                 <div class="flex flex-col gap-y-5">
                     <div class="flex items-center justify-between">
                         <h2 class="text-3xl font-semibold">Recent Searches</h2>
