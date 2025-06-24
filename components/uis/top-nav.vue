@@ -3,8 +3,8 @@
         <nav class="px-6">
             <div class="flex items-center gap-x-4 justify-between">
                 <div class="flex items-center gap-x-2.5">
-                    <button class="sidebar-toggler btn btn-md gap-x-2 border border-white rounded-3xl bg-background-400">
-                        &lt;
+                    <button class="sidebar-toggler btn-icon w-10 h-10 btn-outline-white rounded-full bg-background-400">
+                        <Icon name="tabler:menu-2" />
                     </button>
                     <!-- <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">

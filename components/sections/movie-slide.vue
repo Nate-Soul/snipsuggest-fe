@@ -23,14 +23,14 @@ const { canScrollRight, canScrollLeft }= useCarouselScroll(`${props.sectionId}Ov
                         :data-controls="`${sectionId}OverflowCarousel`"
                         :disabled="!canScrollLeft"
                     >
-                        &lt;
+                        <Icon name="tabler:chevron-left" />
                     </button>
                     <button 
                         class="btn-icon cursor-pointer w-10 h-10 overflow-carousel-next-btn disabled:cursor-not-allowed" 
                         :data-controls="`${sectionId}OverflowCarousel`"
                         :disabled="!canScrollRight"
                     >
-                        &gt;
+                        <Icon name="tabler:chevron-right" />
                     </button>
                 </div>
             </div>

@@ -33,7 +33,7 @@ defineProps({
                 <span>{{ movie.release_date.slice(0,4) }}</span>
                 <span>Genre</span>
                 <div class="flex items-center gap-x-0.5 text-primary-500">
-                    <span class="bi bi-star"></span>
+                        <Icon name="tabler:star" />
                     {{ parseFloat(movie.vote_average).toFixed(1) }}
                 </div>
             </div>

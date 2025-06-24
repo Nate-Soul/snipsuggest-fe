@@ -18,12 +18,30 @@ const { top_rated_movies } = landingMovies;
                         <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Clear All</button>
                     </div>
                     <div class="flex items-center gap-y-2 gap-x-1 flex-wrap">
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">The bartender &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Despicable me &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Dracular &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Last of us &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Moana &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Dracular &times;</button>
+                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">
+                            The bartender
+                            <Icon name="tabler:x"/>
+                        </button>
+                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">
+                            Despicable me
+                            <Icon name="tabler:x"/>
+                        </button>
+                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">
+                            Dracular
+                            <Icon name="tabler:x"/>
+                        </button>
+                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">
+                            Last of us
+                            <Icon name="tabler:x"/>
+                        </button>
+                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">
+                            Moana
+                            <Icon name="tabler:x"/>
+                        </button>
+                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">
+                            Dracular
+                            <Icon name="tabler:x"/>
+                        </button>
                     </div>
                 </div>
                 <div class="grid grid-cols-6 gap-x-5 gap-y-10">

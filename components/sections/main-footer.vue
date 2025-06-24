@@ -10,22 +10,22 @@
                     <ul class="flex items-center gap-x-5 text-3xl">
                         <li>
                             <a href="#">
-                                <span class="bi bi-instagram"></span>
+                                <Icon name="tabler:brand-facebook" />
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <span class="bi bi-x"></span>
+                                <Icon name="tabler:brand-linkedin" />
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <span class="bi bi-youtube"></span>
+                                <Icon name="tabler:brand-x" />
                             </a>
                         </li>
                         <li>
                             <a href="#">
-                                <span class="bi bi-tiktok"></span>
+                                <Icon name="tabler:brand-tiktok" />
                             </a>
                         </li>
                     </ul>

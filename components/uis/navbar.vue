@@ -34,14 +34,16 @@ const navLinks = [
                     <NuxtLink :to="navLink.url" class="text-white/80 hover:text-primary-500">{{ navLink.label }}</NuxtLink>
                 </li>
             </ul>
-            <ul class="flex items-center gap-x-8">
+            <ul class="flex items-center gap-x-6">
                 <li>
-                    <NuxtLink to="/search">&#128269;</NuxtLink>
+                    <NuxtLink to="/search" class="btn-icon w-10 h-10 rounded-full btn-outline-white">
+                         <Icon name="tabler:search"/>
+                    </NuxtLink>
                 </li>
                 <li>
-                    <a to="#">
-                        <div class="w-8 h-8 rounded-full bg-white/60"></div>
-                    </a>
+                    <NuxtLink to="/login" class="w-10 h-10 rounded-full btn-icon btn-outline-white">
+                        <Icon name="tabler:user"/>
+                    </NuxtLink>
                 </li>
             </ul>            
         </div>

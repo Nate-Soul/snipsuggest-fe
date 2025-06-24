@@ -72,7 +72,8 @@ const resetAutoPlay = () => {
                     <div class="flex items-center justify-between">
                         <div class="flex flex-col gap-y-8 text-white w-1/2">
                             <div class="flex flex-wrap items-center gap-3 text-sm font-medium">
-                                <div class="inline-flex items-center gap-x-1 py-1 px-3 bg-white text-black rounded-md">
+                                <div class="inline-flex items-center gap-x-1 py-1 px-3 bg-white text-black rounded-md">                                    
+                                    <Icon name="tabler:star-filled" />
                                     <span class="font-extrabold">{{ movie.vote_average }}</span>
                                 </div>
                                 <div class="bg-white w-1 h-1 rounded-full"></div>
@@ -90,8 +91,12 @@ const resetAutoPlay = () => {
                 </div>
                 <div class="absolute -z-[1] top-0 left-0 w-full h-full bg-linear-[180deg,rgba(2,1,27,0)_0%,#02011B_94.39%]"></div>
                 <div class="absolute bottom-[30%] right-[10%] flex items-between gap-x-4">
-                    <button class="btn-icon w-10 h-10 btn-outline-white rounded-full" @click="slideCarouselPrev">&lt;</button>
-                    <button class="btn-icon w-10 h-10 btn-outline-white rounded-full" @click="slideCarouselNext">&gt;</button>
+                    <button class="btn-icon w-10 h-10 btn-outline-white rounded-full" @click="slideCarouselPrev">
+                        <Icon name="tabler:chevron-left" />
+                    </button>
+                    <button class="btn-icon w-10 h-10 btn-outline-white rounded-full" @click="slideCarouselNext">
+                        <Icon name="tabler:chevron-right" />
+                    </button>
                 </div>
             </section>
             <SectionsMovieSlide

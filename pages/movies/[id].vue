@@ -45,13 +45,13 @@ const toggleCommentBox = () => {
                         </div>
                         <div class="flex flex-col gap-y-6">
                             <h1 class="text-5xl">{{ movieData.title }}</h1>
-                            <div class="flex items-center gap-x-4">
-                                <button class="btn btn-lg btn-primary-gradient">
-                                    <span></span>
+                            <div class="flex items-stretch gap-x-4">
+                                <button class="btn btn-lg btn-primary-gradient gap-x-1">
+                                    <Icon name="tabler:download" />
                                     Download
                                 </button>
-                                <button class="btn btn-lg bg-white/25">
-                                    <span>♥️</span>
+                                <button class="btn btn-lg btn-outline-white text-primary-500 group">
+                                    <Icon name="tabler:heart" />
                                 </button>
                             </div>
                         </div>
@@ -60,23 +60,16 @@ const toggleCommentBox = () => {
                         <p>{{ movieData.overview }}</p>
                         <div class="flex items-center gap-x-4">
                             <dl class="flex items-center gap-x-2">
-                                <dt class="text-primary-500 font-medium">Runtime:</dt>
+                                <dt class="font-medium">Runtime:</dt>
                                 <dd class="text-sm">2h 23m</dd>
                             </dl>
                             <dl class="flex items-center gap-x-2">
-                                <dt class="text-primary-500 font-medium">Release Date:</dt>
+                                <dt class="font-medium">Release Date:</dt>
                                 <dd class="text-sm">{{ movieData.release_date }}</dd>
                             </dl>
-                            <div class="flex items-center gap-x-2">
-                                <strong class="text-primary-500 font-medium">Genres:</strong>
-                                <div class="text-xs flex flex-wrap items-center gap-2">
-                                    <span class="bg-white-100/20 text-white text-xs font-medium px-2.5 py-0.5 rounded-lg">Default</span>
-                                    <span class="bg-white-100/20 text-white text-xs font-medium px-2.5 py-0.5 rounded-lg">Dark</span>
-                                </div>
-                            </div>
                         </div>
                         <div class="flex items-start gap-x-3">
-                            <h6 class="text-primary-500 font-medium flex-none">Genres</h6>
+                            <h6 class="font-medium flex-none">Genres</h6>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="bg-background-300 text-white text-sm font-light px-2.5 py-0.5 rounded-full">Action</span>
                                 <span class="bg-background-300 text-white text-sm font-light px-2.5 py-0.5 rounded-full">Superhero</span>
@@ -84,7 +77,7 @@ const toggleCommentBox = () => {
                             </div>
                         </div>
                         <dl class="flex items-center gap-x-2">
-                            <dt class="text-[#FF9F10] font-medium">IMDB Rating:</dt>
+                            <dt class="text-[#FF9F10] font-medium">MPAA Rating:</dt>
                             <dd class="text-sm">PG</dd>
                         </dl>
                     </div>
@@ -101,13 +94,13 @@ const toggleCommentBox = () => {
                             class="btn-icon cursor-pointer w-8 h-10 border border-white/15 rounded-md overflow-carousel-prev-btn disabled:cursor-not-allowed" 
                             data-controls="movieCastOverflowCarousel"
                         >
-                            &lt;
+                           <Icon name="tabler:chevron-left" />
                         </button>
                         <button 
                             class="btn-icon cursor-pointer w-8 h-10 border border-white/15 rounded-md overflow-carousel-next-btn disabled:cursor-not-allowed" 
                             data-controls="movieCastOverflowCarousel"
                         >
-                            &gt;
+                           <Icon name="tabler:chevron-right" />
                         </button>
                     </div>
                 </div>
@@ -130,15 +123,15 @@ const toggleCommentBox = () => {
                     <button :class="`btn btn-md hover:bg-white/5 gap-x-1 ${displayCommentBox ? 'bg-white/5 hover:bg-white/20' : 'bg'}`"
                         @click="toggleCommentBox"
                     >
-                        &#128172;
+                        <Icon name="tabler:message-dots" />
                         Comment
                     </button>
-                    <button class="btn btn-md hover:bg-white/5">
-                        &#128172;
+                    <button class="btn btn-md hover:bg-white/5 gap-x-1">
+                        <Icon name="tabler:star" />
                         Rate
                     </button>
-                    <button class="btn btn-md hover:bg-white/5">
-                        &#128172;
+                    <button class="btn btn-md hover:bg-white/5 gap-x-1">
+                        <Icon name="tabler:share-3" />
                         Share
                     </button>
                 </div>
@@ -148,8 +141,12 @@ const toggleCommentBox = () => {
                         <div class="flex flex-col gap-y-1 w-full">
                             <textarea name="comment_area" id="commentArea" class="p-2 rounded-lg w-full" placeholder="Add comment"></textarea>
                             <div class="flex items-center gap-x-1">
-                                <button>😉</button>
-                                <button>@</button>
+                                <button>
+                                    <Icon name="tabler:mood-smile"/>
+                                </button>
+                                <button>
+                                    <Icon name="tabler:at"/>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -170,11 +167,11 @@ const toggleCommentBox = () => {
                                         <span class="text-xs">57 minutes ago</span>
                                     </div>
                                     <div class="flex items-center gap-x-1 text-primary-500">
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
                                     </div>
                                     <p class="text-xs">
                                         Honestly, I went in with low expectations but this movie really delivered. Major respect to the director! The plot was kinda all over the place, but the acting? Pure fire. Carried the whole thing."
@@ -182,17 +179,17 @@ const toggleCommentBox = () => {
                                     <div class="flex items-center justify-between gap-x-4 w-full">
                                         <div class="flex items-center gap-x-4">
                                             <button>
-                                                &#128077;
+                                                <Icon name="tabler:thumb-up"/>
                                             </button>
                                             <button>
-                                                &#128078;
+                                                <Icon name="tabler:thumb-down"/>
                                             </button>
                                             <button>
-                                                &#128172;
+                                                <Icon name="tabler:message-reply"/>
                                             </button>
                                         </div>
                                         <button>
-                                            &#128681;
+                                            <Icon name="tabler:flag-2" />
                                         </button>
                                     </div>
                                 </div>
@@ -205,11 +202,11 @@ const toggleCommentBox = () => {
                                         <span class="text-xs">57 minutes ago</span>
                                     </div>
                                     <div class="flex items-center gap-x-1 text-primary-500">
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star" />
+                                        <Icon name="tabler:star" />
+                                        <Icon name="tabler:star" />
+                                        <Icon name="tabler:star" />
                                     </div>
                                     <p class="text-xs">
                                         Honestly, I went in with low expectations but this movie really delivered. Major respect to the director! The plot was kinda all over the place, but the acting? Pure fire. Carried the whole thing."
@@ -217,17 +214,17 @@ const toggleCommentBox = () => {
                                     <div class="flex items-center justify-between gap-x-4 w-full">
                                         <div class="flex items-center gap-x-4">
                                             <button>
-                                                &#128077;
+                                                <Icon name="tabler:thumb-up"/>
                                             </button>
                                             <button>
-                                                &#128078;
+                                                <Icon name="tabler:thumb-down"/>
                                             </button>
                                             <button>
-                                                &#128172;
+                                                <Icon name="tabler:message-reply"/>
                                             </button>
                                         </div>
                                         <button>
-                                            &#128681;
+                                            <Icon name="tabler:flag-2" />
                                         </button>
                                     </div>
                                 </div>
@@ -242,11 +239,11 @@ const toggleCommentBox = () => {
                                         <span class="text-xs">57 minutes ago</span>
                                     </div>
                                     <div class="flex items-center gap-x-1 text-primary-500">
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
                                     </div>
                                     <p class="text-xs">
                                         Honestly, I went in with low expectations but this movie really delivered. Major respect to the director! The plot was kinda all over the place, but the acting? Pure fire. Carried the whole thing."
@@ -254,17 +251,17 @@ const toggleCommentBox = () => {
                                     <div class="flex items-center justify-between gap-x-4 w-full">
                                         <div class="flex items-center gap-x-4">
                                             <button>
-                                                &#128077;
+                                                <Icon name="tabler:thumb-up"/>
                                             </button>
                                             <button>
-                                                &#128078;
+                                                <Icon name="tabler:thumb-down"/>
                                             </button>
                                             <button>
-                                                &#128172;
+                                                <Icon name="tabler:message-reply"/>
                                             </button>
                                         </div>
                                         <button>
-                                            &#128681;
+                                            <Icon name="tabler:flag-2" />
                                         </button>
                                     </div>
                                 </div>
@@ -277,11 +274,11 @@ const toggleCommentBox = () => {
                                         <span class="text-xs">57 minutes ago</span>
                                     </div>
                                     <div class="flex items-center gap-x-1 text-primary-500">
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
                                     </div>
                                     <p class="text-xs">
                                         Honestly, I went in with low expectations but this movie really delivered. Major respect to the director! The plot was kinda all over the place, but the acting? Pure fire. Carried the whole thing."
@@ -289,17 +286,17 @@ const toggleCommentBox = () => {
                                     <div class="flex items-center justify-between gap-x-4 w-full">
                                         <div class="flex items-center gap-x-4">
                                             <button>
-                                                &#128077;
+                                                <Icon name="tabler:thumb-up"/>
                                             </button>
                                             <button>
-                                                &#128078;
+                                                <Icon name="tabler:thumb-down"/>
                                             </button>
                                             <button>
-                                                &#128172;
+                                                <Icon name="tabler:message-reply"/>
                                             </button>
                                         </div>
                                         <button>
-                                            &#128681;
+                                            <Icon name="tabler:flag-2" />
                                         </button>
                                     </div>
                                 </div>
@@ -312,11 +309,11 @@ const toggleCommentBox = () => {
                                         <span class="text-xs">57 minutes ago</span>
                                     </div>
                                     <div class="flex items-center gap-x-1 text-primary-500">
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9733;</span>
-                                        <span>&#9734;</span>
-                                        <span>&#9734;</span>
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star-filled" />
+                                        <Icon name="tabler:star"/>
+                                        <Icon name="tabler:star"/>
                                     </div>
                                     <p class="text-xs">
                                         Honestly, I went in with low expectations but this movie really delivered. Major respect to the director! The plot was kinda all over the place, but the acting? Pure fire. Carried the whole thing."
@@ -324,17 +321,17 @@ const toggleCommentBox = () => {
                                     <div class="flex items-center justify-between gap-x-4 w-full">
                                         <div class="flex items-center gap-x-4">
                                             <button>
-                                                &#128077;
+                                                <Icon name="tabler:thumb-up"/>
                                             </button>
                                             <button>
-                                                &#128078;
+                                                <Icon name="tabler:thumb-down"/>
                                             </button>
                                             <button>
-                                                &#128172;
+                                                <Icon name="tabler:message-reply"/>
                                             </button>
                                         </div>
                                         <button>
-                                            &#128681;
+                                            <Icon name="tabler:flag-2" />
                                         </button>
                                     </div>
                                 </div>
@@ -342,7 +339,10 @@ const toggleCommentBox = () => {
                         </div>
                     </div>
                     <div class="flex items-center justify-center">
-                        <button class="btn btn-sm text-primary-500 gap-x-1">Show More <span>&darr;</span></button>
+                        <button class="btn btn-sm text-primary-500 gap-x-1">
+                            Show More
+                            <Icon name="tabler:chevron-down" />
+                        </button>
                     </div>
                 </div>
             </div>
