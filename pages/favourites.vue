@@ -4,6 +4,10 @@ definePageMeta({
 });
 
 const empty = ref(true);
+
+const toggleView = () => {
+    empty.value = !empty.value;
+}
 </script>
 
 
@@ -15,6 +19,9 @@ const empty = ref(true);
             <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
                 Explore Movies
             </NuxtLink>
+            <button @click="toggleView">
+                <Icon name="tabler:eye"/>
+            </button>
         </div>
         <img src="/media/images/icons/popcorn.png" alt="" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 -z-[1]">
         <img src="/media/images/bg/movie-reel-lg.png" alt="" class="absolute left-0 bottom-0 -z-[1]">
@@ -46,9 +53,9 @@ const empty = ref(true);
                     <a href="#" class="inline-flex px-5 py-2.5 text-gray-400 cursor-not-allowed dark:text-gray-500">Category <span class="bi bl-chrevron-down"></span></a>
                 </li>
             </ul>
-            <!-- ranked cards -->
+            <!-- favourite cards -->
             <div class="grid grid-cols-3 gap-6">
-                <div class="rank-card flex items-center gap-x-4">
+                <div class="favourite-card flex items-center gap-x-4">
                     <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
                         <div class="bg-gray-500 h-full w-full"></div>
                     </a>
@@ -56,13 +63,10 @@ const empty = ref(true);
                         <a href="#">
                             <h3>Sector (2023)</h3>
                         </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
+                        <dl class="flex items-center gap-x-2">
+                            <dt>IMDB Rating:</dt>
+                            <dd class="text-primary-500"><Icon name="tabler:star-filled"/> 8.5</dd>
+                        </dl>
                         <dl class="flex items-center gap-x-2">
                             <dt>MPAA Rating:</dt>
                             <dd>PG</dd>
@@ -75,307 +79,10 @@ const empty = ref(true);
                             <dt>Added:</dt>
                             <dd>March 15, 2023</dd>
                         </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                Remove
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="rank-card flex items-center gap-x-4">
-                    <a href="#" class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none">
-                        <div class="bg-gray-500 h-full w-full"></div>
-                    </a>
-                    <div class="flex flex-col gap-y-2 text-sm">
-                        <a href="#">
-                            <h3>Sector (2023)</h3>
-                        </a>
-                        <div class="flex items-center gap-x-1">
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star-fill text-primary-500">&#9733;</span>
-                            <span class="bi bi-star text-primary-500">&#9733;</span>
-                        </div>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>MPAA Rating:</dt>
-                            <dd>PG</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Duration:</dt>
-                            <dd>2hrs 24mins</dd>
-                        </dl>
-                        <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd>March 15, 2023</dd>
-                        </dl>
-                        <div class="flex items-center gap-x-2">
-                            <button class="btn btn-sm btn-primary">
-                                D
-                            </button>
-                            <button class="btn btn-sm bg-background-300 text-white">
-                                R
-                            </button>
-                        </div>
+                        <button class="btn btn-sm btn-primary w-max gap-x-1">
+                            Remove
+                            <Icon name="tabler:trash-filled" />
+                        </button>
                     </div>
                 </div>
             </div>
