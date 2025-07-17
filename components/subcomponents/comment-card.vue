@@ -40,7 +40,7 @@ const addMovieComment = async (movieId: number, content: string, parentId?: numb
     <div :class="`comment-parent flex items-start gap-x-4` + (containerClasses ? ` ${containerClasses}` : '')">
         <div class="w-8 h-8 rounded-full overflow-hidden flex-none">
             <img
-            src="../media/images/users/default.png"
+            src="/media/images/users/default.png"
             :alt="comment.user.username"
             class="w-full h-full object-cover"
             />
