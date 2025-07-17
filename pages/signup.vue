@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { UserCreate } from '~/assets/interfaces';
-import { useAuthStore } from '#imports';
-import { useToast } from 'vue-toastification';
+import { useAuthStore } from "#imports";
+import { useToast } from "vue-toastification";
 
 const toast     = useToast();
 const authStore = useAuthStore();
@@ -13,27 +12,27 @@ const isVisiblePsw2 = ref(false);
 const isProcessingForm = ref(false);
 
 const form = reactive({
-  username: '',
-  email: '',
-  password: '',
-  password2: '',
+  username: "",
+  email: "",
+  password: "",
+  password2: "",
   favourite_genre_ids: [] as number[],
   discovery_channels: [] as string[]
 });
 
 const genreOptions = [
-  { id: 28, name: 'Action' },
-  { id: 80, name: 'Crime' },
-  { id: 53, name: 'Thriller' },
-  { id: 18, name: 'Drama' },
-  { id: 35, name: 'Comedy' }
+  { id: 28, name: "Action" },
+  { id: 80, name: "Crime" },
+  { id: 53, name: "Thriller" },
+  { id: 18, name: "Drama" },
+  { id: 35, name: "Comedy" }
 ];
 
 const discoveryOptions = [
-  { label: 'Friends/Family', value: 'family/friends' },
-  { label: 'Streaming Platforms', value: 'streaming platform' },
-  { label: 'Social Media', value: 'social media' },
-  { label: 'Other', value: 'other' }
+  { label: "Friends/Family", value: "family/friends" },
+  { label: "Streaming Platforms", value: "streaming platform" },
+  { label: "Social Media", value: "social media" },
+  { label: "Other", value: "other" }
 ];
 
 const {
@@ -103,18 +102,18 @@ const togglePswField = (n: number) => {
 
 watch(() => form.password, () => {
   if (form.password2) {
-    comparePswFields('password2', form.password, form.password2)
+    comparePswFields("password2", form.password, form.password2)
   }
 });
 
 const nextFormTab = () => {
   if (currentTab.value === 1) {
     const isValid = validateForm([
-      { name: 'username', value: form.username, validator: (name: string, value: string) => validateText(name, value) },
-      { name: 'email', value: form.email, validator: validateEmail },
-      { name: 'password', value: form.password, validator: validatePsw },
+      { name: "username", value: form.username, validator: (name: string, value: string) => validateText(name, value) },
+      { name: "email", value: form.email, validator: validateEmail },
+      { name: "password", value: form.password, validator: validatePsw },
       { 
-        name: 'password2', 
+        name: "password2", 
         value: form.password2, 
         validator: (name: string, value: string) => comparePswFields(name, form.password, value) 
       }

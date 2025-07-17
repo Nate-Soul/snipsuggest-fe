@@ -3,6 +3,7 @@ import type { MovieDetailResponse } from "~/types/movies";
 import type { CommentResponse } from "~/types/comments";
 
 import { useToast } from "vue-toastification";
+
 import { addComment } from "~/services/comments";
 import { useAuthStore } from "~/stores/auth";
 import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE, DEFAULT_CAST_SIZE } from "~/assets/const";

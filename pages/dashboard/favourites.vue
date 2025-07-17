@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useAuthStore } from '#imports';
-import type { StoredMovie } from '~/assets/interfaces';
+import { useToast } from 'vue-toastification';
+import type { StoredMovie } from "~/types/movies";
 import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from '~/assets/const';
 
 definePageMeta({
@@ -13,29 +14,45 @@ interface FavouriteResponse {
 }
 
 const authStore = useAuthStore();
-const favourites = ref<StoredMovie[]>([]);
+const toast = useToast();
+const deleteFavouriteStatus = ref<"idle" | "deleting" | "deleted">("idle");
 
-const removeFavourite = (id: number) => {
-    console.log("Deleting...");
-}
-
-const { data, pending, error } = useFetch<FavouriteResponse>(
+const {
+    data: favourites, 
+    pending: favouritesPending, 
+    error: favouritesErr,
+    refresh: refreshFavourites 
+} = useFetch<FavouriteResponse>(
   "/api/favourites",
   {
     headers: { 
         Authorization: `Bearer ${authStore.token}` 
     }
   }
-)
+);
 
-watch(data, (res) => {
-  if (res) favourites.value = res.data
-})
+
+const removeFavourite = async (id: number) => {
+    deleteFavouriteStatus.value = "deleting";
+    try {
+        await useApiFetch(`/api/favourites/${id}`, {
+            method: "DELETE",
+        });
+        toast.success("Favourite removed successfully!");
+        deleteFavouriteStatus.value = "deleted";
+        refreshFavourites();
+    } catch (error) {
+        toast.error("Failed to remove favourite. Please try again.");
+        console.error("Failed to remove favourite:", error);
+    } finally {
+        deleteFavouriteStatus.value = "idle";
+    }
+}
 </script>
 
 
 <template>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-if="pending">
+    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-if="favouritesPending">
         <div class="flex flex-col w-1/2 items-center gap-y-5">
             <div class="animate-spin">
                 <Icon name="tabler:settings" />
@@ -45,7 +62,7 @@ watch(data, (res) => {
         <img src="/media/images/icons/popcorn.png" alt="" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 -z-[1]">
         <img src="/media/images/bg/movie-reel-lg.png" alt="" class="absolute left-0 bottom-0 -z-[1]">
     </div>
-    <section v-else-if="favourites.length > 0" class="bg-background-500 text-white px-6 pb-10">
+    <section v-if="favourites && favourites.data.length > 0" class="bg-background-500 text-white px-6 pb-10">
         <div class="flex flex-col gap-y-5">
             <div class="py-3">
                 <a href="javascript:history.go(-1)" class="w-10 h-10 inline-flex items-center justify-center text-lg">
@@ -75,7 +92,8 @@ watch(data, (res) => {
             <!-- favourite cards -->
             <div class="grid grid-cols-3 gap-6">
                 <div
-                    v-for="(fav, favIndex) in favourites"
+                    v-for="(fav, favIndex) in favourites.data"
+                    :id="`favouriteCard${fav.id}`"
                     :key="favIndex"
                     class="favourite-card flex items-center gap-x-4"
                 >
@@ -109,7 +127,11 @@ watch(data, (res) => {
                             <dt>Added:</dt>
                             <dd></dd>
                         </dl> -->
-                        <button @click="removeFavourite(fav.id)" class="btn btn-sm btn-primary w-max gap-x-1">
+                        <button 
+                            @click="removeFavourite(fav.id)" 
+                            class="btn btn-sm btn-primary w-max gap-x-1"
+                            :disabled="deleteFavouriteStatus === 'deleting'"
+                        >
                             Remove
                             <Icon name="tabler:trash-filled" />
                         </button>
@@ -144,7 +166,7 @@ watch(data, (res) => {
             </div>
         </div>
     </section>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-else>
+    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-else="favourites && favourites.data.length === 0">
         <div class="flex flex-col w-1/2 items-center gap-y-5">
             <h1 class="text-4xl">No Favorites Yet!</h1>
             <p>Start adding movies to you list to help us curate suggestions just for you.</p>
