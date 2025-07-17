@@ -1,12 +1,52 @@
 <script setup lang="ts">
+import { useAuthStore } from '#imports';
+import { useToast } from 'vue-toastification';
 
-const form = ref({
-    username: "",
+const toast = useToast();
+const authStore = useAuthStore();
+
+const isProcessingForm = ref(false);
+
+const { validateForm, validatePsw, validateEmail } = useFormValidation();
+
+const form = reactive({
+    email: "",
     password: ""
 });
+const passwordFieldVisible = ref(false);
 
-const handleLogin = () => {
-    console.table(form);
+const togglePswField = () => {
+    passwordFieldVisible.value = !passwordFieldVisible.value;
+}
+
+const handleLogin = async () => {    
+    const isValid = validateForm([
+        { 
+            name: 'email', 
+            value: form.email, 
+            validator: (name: string, value: string) => validateEmail(name, value) 
+        },
+        { 
+            name: 'password', 
+            value: form.password, 
+            validator: validatePsw 
+        }
+    ]);
+
+    if (isValid) {
+        isProcessingForm.value = true;
+        try {
+            await authStore.login(form);
+            navigateTo('/dashboard/favourites');
+        } catch (err: any) {
+            console.log("An Error occured:", err.message);
+            alert("Login Failed");
+        } finally {
+            isProcessingForm.value = false;
+        }
+    } else {
+        toast.error("Check your form inputs, and try again.");
+    }
 };
 </script>
 
@@ -21,24 +61,24 @@ const handleLogin = () => {
                 <div class="p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
                     <form @submit.prevent="handleLogin" action="#" method="POST" class="flex flex-col gap-y-6">
                         <div class="form-input-wrapper">
-                            <label for="username">Your Username</label>
+                            <label for="emailAddress">Email Address</label>
                             <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                <span class="bi bi-person text-xl flex-none"></span>
-                                <input type="text" name="username" id="username" class="form-input" v-model="form.username">
+                                <Icon name="tabler:user"/>
+                                <input type="email" name="email_address" id="emailAddress" class="form-input" v-model="form.email">
                             </div>
                         </div>
                         <div class="form-input-wrapper">
                             <label for="password">Your Password</label>
                             <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                <span class="bi bi-lock text-xl flex-none"></span>
-                                <input type="password" name="password" id="password" class="form-input" v-model="form.password">
-                                <button>
-                                    <span class="bi bi-eye text-xl flex-none"></span>
+                                <Icon name="tabler:lock"/>
+                                <input :type="`${passwordFieldVisible ? 'text' : 'password'}`" name="password" id="password" class="form-input" v-model="form.password">
+                                <button @click.prevent="togglePswField" class="btn flex-none p-2">
+                                    <Icon :name="`${passwordFieldVisible ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
                                 </button>
                             </div>
-                            <p class="text-end text-primary-500">Forgot password?</p>
+                            <NuxtLink to="/forgot-password" class="text-end text-primary-500">Forgot password?</NuxtLink>
                         </div>
-                        <a class="btn btn-primary btn-lg justify-center" href="/ranked-movies.html">Login</a>
+                        <button type="submit" class="btn btn-primary btn-lg justify-center" href="/ranked-movies.html">Login</button>
                     </form>
                     <div class="flex-center gap-x-2">
                         <div class="bg-white/10 w-[30%] h-px"></div>

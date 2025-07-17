@@ -46,7 +46,7 @@
                 <img src="/media/images/bg/movie-reel.png" alt="" class="absolute -z-[1] top-0 bottom-0 left-2/5">
                 <img src="/media/images/bg/movie-reel.png" alt="" class="absolute -z-[1] top-0 bottom-0 left-[5%]">
             </section>
-            <section id="features" class="bg-background-400 text-white/85 py-14 relative z-0">
+            <section id="features" class="bg-background-400 text-white/85 py-20 relative z-0">
                 <div class="container mx-auto px-4">
                     <div class="flex items-center">
                         <div class="basis-2/5 flex-none flex flex-col gap-y-10">

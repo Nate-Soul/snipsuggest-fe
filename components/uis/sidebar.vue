@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useAuthStore } from '#imports';
+
+const authStore = useAuthStore();
+</script>
+
 <template>
     <aside class="fixed h-screen z-40 top-0 left-0 w-64 transition-transform ease-linear duration-500 -translate-x-full sm:translate-x-0">
         <div class="bg-background-400 text-white h-full overflow-y-auto flex flex-col gap-y-5 items-center justify-between py-14 px-4">
@@ -6,13 +12,13 @@
             </a>
             <ul class="flex flex-col gap-y-6 text-white/65">
                 <li>
-                    <NuxtLink to="/favourites" class="flex items-center gap-x-3">
+                    <NuxtLink to="/dashboard/favourites" class="flex items-center gap-x-3">
                         <img src="/media/images/icons/mdi-light_heart.svg" height="20" width="20" alt=""/>
                         Favourites
                     </NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink to="/activities" class="flex items-center gap-x-3">
+                    <NuxtLink to="/dashboard/activities" class="flex items-center gap-x-3">
                         <img src="/media/images/icons/material-symbols-light_tab-recent-outline.svg" height="20" width="20" alt=""/>
                         Recent Activities
                     </NuxtLink>
@@ -38,10 +44,10 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center gap-x-3">
+                    <button @click="authStore.logout" class="flex items-center gap-x-3">
                         <img src="/media/images/icons/material-symbols-light_logout.svg" height="20" width="20" alt=""/>
                         Logout
-                    </a>
+                    </button>
                 </li>
             </ul>
         </div>

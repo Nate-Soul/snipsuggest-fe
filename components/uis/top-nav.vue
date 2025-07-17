@@ -1,3 +1,14 @@
+<script lang="ts" setup>
+import { useAuthStore } from "~/stores/auth";
+const openDropdown = ref(false);
+
+const authStore = useAuthStore();
+
+const toggleDropdown = () => {
+    openDropdown.value = !openDropdown.value;
+}
+</script>
+
 <template>
     <header class="py-4 bg-background-500 text-white sticky top-0 border-b border-gray-500">
         <nav class="px-6">
@@ -29,16 +40,28 @@
                         </div>
                     </form>
                 </div>
-                <div class="flex items-center gap-x-6">
-                    <button class="relative">
-                        <img src="/media/images/icons/mingcute_notification-fill.svg" height="24" width="24" alt="">
-                        <span class="absolute -top-2 -end-2 w-5 h-5 bg-red-500 rounded-full text-xs btn-icon">10</span>
-                        <span class="sr-only">Notifications</span>
-                    </button>
-                    <button class="w-10 h-10 bg-gray-500 rounded-full btn-icon">
-                        <img src="/media/images/icons/avatar-default.svg" height="30" width="30" alt=""/>
-                    </button>
-                </div>
+                <ul class="flex items-center gap-x-6">
+                    <li>
+                        <button class="relative btn-icon btn-outline-white rounded-full w-10 h-10">
+                            <Icon name="tabler:bell" />
+                            <span class="absolute -top-2 -end-2 w-5 h-5 bg-red-500 rounded-full text-xs btn-icon">10</span>
+                            <span class="sr-only">Notifications</span>
+                        </button>
+                    </li>
+                    <li class="relative">
+                        <button @click="toggleDropdown" class="w-10 h-10 btn-outline-white rounded-full btn-icon">
+                            <Icon name="tabler:user" />
+                        </button>
+                        <ul v-if="openDropdown" class="text-center px-3 py-5 flex flex-col gap-y-2 absolute top-[120%] right-0 z-20 bg-background-300 text-white min-w-44 rounded-lg shadow shadow-white">
+                            <li>
+                                <a href="#" class="btn btn-md p-1 w-full rounded hover:bg-white/30">My Profile</a>
+                            </li>
+                            <li>
+                                <button @click="authStore.logout" class="btn btn-md p-1 w-full rounded hover:bg-white/30">Logout</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>

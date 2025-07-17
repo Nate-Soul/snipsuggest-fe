@@ -1,8 +1,27 @@
-<script setup>
-import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE } from '~/assets/const';
-import { landingMovies } from '~/assets/mock-database/movies';
+<script setup lang="ts">
+import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE } from "~/assets/const";
+import type { LandingMovie } from "~/types/movies";
 
-const { featured_movies, top_rated_movies, popular_movies, upcoming_movies } = landingMovies;
+const { 
+    data: landingMovies, 
+    error, 
+    pending 
+} = await useFetch<LandingMovie | null>("/api/movies/landing");
+
+
+if (!landingMovies.value) {
+    navigateTo("/movies");
+}
+
+if (error.value) {
+    console.log("Error:", error.value);
+}
+
+const popular_movies    = computed(() => landingMovies.value?.popular_movies);
+const top_rated_movies  = computed(() => landingMovies.value?.top_rated_movies);
+const featured_movies   = computed(() => landingMovies.value?.featured_movies);
+const upcoming_movies   = computed(() => landingMovies.value?.upcoming_movies);
+
 const sections = [
     {
         sectionId: "topRatedMovies",
@@ -20,6 +39,7 @@ const sections = [
         movieArray: upcoming_movies
     },
 ];
+
 const props = defineProps({
     interval: {
         type: Number,
@@ -28,16 +48,25 @@ const props = defineProps({
 });
 
 const carouselCurrentIndex  = ref(0);
-let autoPlayIntervalId      = null;
+let autoPlayIntervalId: any  = null;
 
 const slideCarouselNext = () => {
-  carouselCurrentIndex.value = (carouselCurrentIndex.value + 1) % featured_movies.length;
+  // Ensure featured_movies.value exists before trying to access its length
+  if (featured_movies.value && featured_movies.value.length > 0) { // Add a check here too
+    carouselCurrentIndex.value = (carouselCurrentIndex.value + 1) % featured_movies.value.length;
+  } else {
+    carouselCurrentIndex.value = 0; // Or handle empty case
+  }
   resetAutoPlay();
 };
 
 const slideCarouselPrev = () => {
-  carouselCurrentIndex.value = (carouselCurrentIndex.value - 1 + featured_movies.length) % featured_movies.length;
-  resetAutoPlay();
+    if (featured_movies.value && featured_movies.value.length > 0) {
+        carouselCurrentIndex.value = (carouselCurrentIndex.value - 1 + featured_movies.value.length) % featured_movies.value.length;
+    } else {
+        carouselCurrentIndex.value = 0;
+    }
+    resetAutoPlay();
 };
 
 // const goToSlide = (index) => {
@@ -46,7 +75,7 @@ const slideCarouselPrev = () => {
 // };
 
 const startAutoPlay = () => {
-  if (props.interval > 0 && featured_movies.length > 1) {
+  if (props.interval > 0 && featured_movies.value && featured_movies.value.length > 1) {
     autoPlayIntervalId = setInterval(slideCarouselNext, props.interval);
   }
 };
@@ -62,13 +91,31 @@ const resetAutoPlay = () => {
   stopAutoPlay();
   startAutoPlay();
 };
+
+onMounted(() => {
+  if (featured_movies.value && featured_movies.value.length > 1) {
+    startAutoPlay();
+  } else {
+    const unwatch = watch(featured_movies, (newValue) => {
+      if (newValue && newValue.length > 1) {
+        startAutoPlay();
+        unwatch();
+      }
+    }, { immediate: true });
+  }
+});
+
+// Stop autoplay when the component is unmounted to prevent memory leaks
+onUnmounted(() => {
+  stopAutoPlay();
+});
 </script>
 
 <template>
     <SectionsMainHeader classes="bg-background-600 text-white"/>
         <main class="bg-background-500 text-white">
-            <section v-for="(movie, movieIndex) in featured_movies" :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-[560px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out`" :style="`background-image: url(${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path});`">
-                <div class="container mx-auto px-4 h-full flex items-end ">
+            <section v-for="(movie, movieIndex) in featured_movies" :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-[720px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out bg-no-repeat bg-center bg-cover`" :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'});`">
+                <div class="container mx-auto px-4 h-full flex items-end">
                     <div class="flex items-center justify-between">
                         <div class="flex flex-col gap-y-8 text-white w-1/2">
                             <div class="flex flex-wrap items-center gap-3 text-sm font-medium">
@@ -81,11 +128,13 @@ const resetAutoPlay = () => {
                                 <div class="bg-white w-1 h-1 rounded-full"></div>
                                 <div class="year">Genre</div>
                             </div>
-                            <hgroup class="flex flex-col gap-y-4">
-                                <h1 v-if="movieIndex === 0" class="text-6xl">{{ movie.title }}</h1>
-                                <h2 v-else class="text-6xl">{{ movie.title }}</h2>
+                            <div class="flex flex-col gap-y-4">
+                                <NuxtLink :to="`/movies/${movie.id}`" class="hover:text-primary-500">
+                                    <h1 v-if="movieIndex === 0" class="text-6xl">{{ movie.title }}</h1>
+                                    <h2 v-else class="text-6xl">{{ movie.title }}</h2>
+                                </NuxtLink>
                                 <p>{{ movie.overview }}</p>
-                            </hgroup>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,6 +149,7 @@ const resetAutoPlay = () => {
                 </div>
             </section>
             <SectionsMovieSlide
+                v-if="sections.length > 0"
                 v-for="(sec, secIndex) in sections"
                 :key="secIndex"
                 :sectionId="sec.sectionId"

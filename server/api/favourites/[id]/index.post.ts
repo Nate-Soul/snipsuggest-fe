@@ -1,0 +1,33 @@
+export default defineEventHandler(async (event) => {
+  const { id } = event.context.params as { id: string }
+  // const token = getCookie(event, 'access_token');
+
+  const config = useRuntimeConfig();
+  const apiBaseUrl = config.apiBaseUrl;
+
+  const authorization = getHeader(event, 'authorization');
+  
+  if (!authorization) {
+    throw createError({
+      statusCode: 401,
+      statusMessage: 'Missing authorization header',
+    });
+  }
+
+  try {
+    const response = await $fetch(`${apiBaseUrl}/favourites/${id}`, {
+      method: 'POST',
+      headers: {
+        Authorization: authorization
+      }
+    });
+
+    return response;
+  } catch (error: any) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.data?.detail || 'Failed to fetch user',
+    });
+  }
+
+});

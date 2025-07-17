@@ -1,4 +1,4 @@
-import type { AppFeature } from "../interfaces";
+import type { AppFeature } from "~/types/app";
 
 export const appFeatures: AppFeature[] = [
     {

@@ -25,7 +25,7 @@ defineProps({
 <template>
     <NuxtLink :to="`/movies/${movie.id}`" :class="`group ${containerClasses ? containerClasses : ''}`">
         <figure class="h-[300px] w-full">
-            <img :src="`${IMAGE_BASE_URL}${DEFAULT_POSTER_SIZE}${movie.poster_path}`" :alt="movie.title" class="w-full h-full object-cover">
+          <img :src="`${IMAGE_BASE_URL}${DEFAULT_POSTER_SIZE}${movie.poster_path}`" :alt="movie.title" class="w-full h-full object-cover">
         </figure>
         <div class="mt-2.5 flex flex-col gap-y-2">
             <h4 class="text-sm group-hover:text-primary-500">{{ movie.title }}</h4>
