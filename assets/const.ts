@@ -1,4 +1,10 @@
-export const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
-export const DEFAULT_BACKDROP_SIZE = "w1280" // Sizes: w300, w780, w1280, original
-export const DEFAULT_POSTER_SIZE = "w342" // w92, w154, w185, w342, w500, w780, original
-export const DEFAULT_CAST_SIZE = "w154"
+export const IMAGE_BASE_URL         = "https://image.tmdb.org/t/p/"
+export const IMAGE_SIZE_ORIGINAL    = "original"
+export const DEFAULT_BACKDROP_SIZE  = "w1280" // Sizes: w300, w780, w1280, original
+export const IMAGE_SIZE_LG          = "w780"
+export const POSTER_SIZE_MD         = "w500"
+export const DEFAULT_POSTER_SIZE    = "w342"  // Sizes: w92, w154, w185, w342, w500, w780, original
+export const BACKDROP_SIZE_SMD      = "w300"  // Sizes: w92, w154, w185, w342, w500, w780, original
+export const IMAGE_SIZE_SM          = "w185"
+export const DEFAULT_CAST_SIZE      = "w154"
+export const IMAGE_SIZE_XS          = "w92"

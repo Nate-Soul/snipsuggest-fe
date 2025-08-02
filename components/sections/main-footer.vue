@@ -1,7 +1,7 @@
 <template>
     <footer class="bg-background-400 text-white/85 py-14">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8">
                 <div class="flex flex-col gap-y-6">
                     <NuxtLink to="/">
                         <img src="/media/images/logos/logo-dark.png" alt="SnipSuggest" height="44" width="140" />
@@ -30,7 +30,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col md:items-center">
                     <h6 class="font-semibold mb-4">Quick Links</h6>
                     <ul class="flex flex-col gap-y-2">
                         <li>
@@ -60,7 +60,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="flex flex-col items-center">
+                <div class="hidden lg:flex flex-col items-center">
                     <h6 class="font-semibold mb-4">Features</h6>
                     <ul class="flex flex-col gap-y-2">
                         <li>
@@ -80,7 +80,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col md:items-center">
                     <h6 class="font-semibold mb-4">Company</h6>
                     <ul class="flex flex-col gap-y-2">
                         <li>
@@ -105,7 +105,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col md:items-center">
                     <h6 class="font-semibold mb-4">Subscribe to our Newsletter</h6>
                     <form action="#" class="flex flex-col gap-y-3">
                         <input type="email" name="news_email" id="newsEmail" class="rounded-2xl bg-transparent border border-white/70 p-2 w-full" placeholder="e.g johndoe@email.com">

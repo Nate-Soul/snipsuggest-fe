@@ -19,10 +19,6 @@ const navLinks = [
         label: "How it Works",
         url: "/#howItWorks"
     },
-    {
-        label: "Favourites",
-        url: "/dashboard/favourites"
-    },
 ];
 
 const openDropdown = ref (false);
@@ -35,15 +31,20 @@ const toggleDropdown = () => {
 <template>
     <nav class="py-4 bg-transparent">
         <div class="container mx-auto px-4 flex items-center justify-between gap-x-4">
+            <div class="md:hidden">
+                <button class="btn-icon btn-outline-white rounded-full h-10 w-10 hidden">
+                    <Icon name="tabler:menu-3" />
+                </button>
+            </div>
             <NuxtLink to="/">
                 <img src="/media/images/logos/logo-dark.png" alt="SnipSuggest" height="44" width="140" />
             </NuxtLink>
-            <ul class="flex items-center gap-x-8 border border-white/10 rounded-lg p-3">
+            <ul class="hidden items-center gap-x-8 border border-white/10 rounded-lg p-3 md:flex">
                 <li v-for="navLink in navLinks">
                     <NuxtLink :to="navLink.url" class="text-white/80 hover:text-primary-500">{{ navLink.label }}</NuxtLink>
                 </li>
             </ul>
-            <ul class="flex items-center gap-x-6">
+            <ul class="items-center gap-x-4 xl:gap-x-6 flex">
                 <li>
                     <NuxtLink to="/search" class="btn-icon w-10 h-10 rounded-full btn-outline-white">
                          <Icon name="tabler:search"/>
@@ -61,11 +62,14 @@ const toggleDropdown = () => {
                             <NuxtLink to="/signup" class="btn btn-md w-full hover:bg-white/30"> Signup </NuxtLink>
                         </li>
                         <li v-else="authStore.isAuthenticated">
+                            <NuxtLink to="/dashboard/favourites" class="btn btn-md w-full hover:bg-white/30"> Dashboard </NuxtLink>
+                        </li>
+                        <li v-else="authStore.isAuthenticated">
                             <button @click="authStore.logout" class="btn btn-md w-full hover:bg-white/30"> Logout </button>
                         </li>
                     </ul>
                 </li>
-            </ul>            
+            </ul>
         </div>
     </nav>
 </template>

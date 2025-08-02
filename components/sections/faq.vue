@@ -23,14 +23,14 @@ const handleToggle = (index: number, event: Event) => {
 </script>
 
 <template>
-    <section id="faq" class="bg-background-500 text-white/85 py-20 relative z-0">
+    <section id="faq" class="bg-background-500 text-white/85 py-20 relative z-0 overflow-hidden">
         <div class="container mx-auto px-4">
-            <div class="flex-center gap-x-8">
-                <hgroup class="basis-1/5 flex-none flex flex-col gap-y-4">
+            <div class="flex-center flex-col sm:flex-row gap-y-6 sm:gap-y-0 gap-x-0 sm:gap-x-6 md:gap-x-8">
+                <hgroup class="sm:basis-1/5 flex-none flex flex-col gap-y-4">
                     <h2 class="text-3xl font-semibold font-roboto">Frequently Asked <br> Questions</h2>
                     <p>Get quick answers to common queries about snipSuggest</p>
                 </hgroup>
-                <div class="basis-3/5 bg-background-400 p-8 flex flex-col gap-y-4 rounded-2xl">
+                <div class="sm:basis-3/5 bg-background-400 p-6 md:p-8 flex flex-col gap-y-4 rounded-2xl">
                     <details 
                         v-for="(faq, index) in faqs"
                         :key="faq.id"

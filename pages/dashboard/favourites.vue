@@ -64,11 +64,15 @@ const removeFavourite = async (id: number) => {
     </div>
     <section v-if="favourites && favourites.data.length > 0" class="bg-background-500 text-white px-6 pb-10">
         <div class="flex flex-col gap-y-5">
-            <div class="py-3">
-                <a href="javascript:history.go(-1)" class="w-10 h-10 inline-flex items-center justify-center text-lg">
-                    <span class="bi bi-chevron-left"></span>
-                </a>
-                <button class="modal-open">Compare Modal</button>
+            <div class="py-4 flex items-center justify-between gap-x-3">
+                <button @click="$router.back()" class="btn gap-x-1">
+                    <Icon name="tabler:chevron-left" />
+                    Go Back
+                </button>
+                <NuxtLink to="/movies" class="btn btn-md btn-primary-gradient gap-x-1">
+                    <Icon name="tabler:plus" />
+                    Movies
+                </NuxtLink>
             </div>
             <h1 class="text-2xl font-semibold font-roboto">My Favourites Movies</h1>
             <!-- filters -->

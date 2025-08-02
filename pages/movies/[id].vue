@@ -259,7 +259,7 @@ const loadMoreComments = async () => {
     <section v-if="cast" id="movieCast" class="py-8 relative z-0 overflow-hidden">
       <div class="container mx-auto px-4">
         <div class="flex items-center gap-x-4 mb-4">
-          <h2 class="text-xl font-semibold">Movie Cast</h2>
+          <h2 class="text-xl font-semibold">Top Movie Cast <span class="text-[#FF9F10]">(10)</span></h2>
           <div class="flex items-center gap-x-2">
             <button
               class="btn-icon w-8 h-10 border border-white/15 rounded-md overflow-carousel-prev-btn disabled:cursor-not-allowed"
