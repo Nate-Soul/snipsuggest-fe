@@ -206,12 +206,12 @@ const loadMoreComments = async () => {
       :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'})`"
       class="relative z-0 rounded-lg h-[720px] py-20 bg-no-repeat bg-center bg-cover"
     >
-      <div class="container h-full mx-auto px-4 flex items-end">
-        <div class="flex justify-between gap-x-8 w-full">
-          <div class="flex-none flex flex-col justify-between gap-y-6 text-white w-2/5">
+      <div class="container h-full mx-auto px-4 flex items-center md:items-end">
+        <div class="flex flex-wrap md:flex-nowrap justify-between gap-y-6 md:gap-y-0 gap-x-0 md:gap-x-6 lg:gap-x-8 w-full">
+          <div class="flex-none flex flex-col justify-between gap-y-6 text-white w-full md:w-2/5">
             <UisMeterCircle v-if="averageRating" :rating="averageRating" />
             <div class="flex flex-col gap-y-6">
-              <h1 class="text-5xl">{{ movie.title }}</h1>
+              <h1 class="text-4xl smd:text-5xl">{{ movie.title }}</h1>
               <div class="flex items-stretch gap-x-4">
                 <button class="btn btn-lg btn-primary-gradient gap-x-1">
                   <Icon name="tabler:download" />
@@ -227,12 +227,12 @@ const loadMoreComments = async () => {
               </div>
             </div>
           </div>
-          <div class="flex-none flex flex-col gap-y-4 w-1/2">
-            <p>{{ movie.overview }}</p>
-            <div class="flex items-center gap-x-4">
+          <div class="flex-none flex flex-col gap-y-4 w-full md:w-1/2">
+            <p class="text-sm xs:text-base">{{ movie.overview }}</p>
+            <div class="flex items-center flex-wrap gap-4">
               <dl class="flex items-center gap-x-2">
                 <dt class="font-medium">Runtime:</dt>
-                <dd class="text-sm">{{ movie.runtime }}</dd>
+                <dd class="text-sm">{{ movie.runtime }}m</dd>
               </dl>
               <dl class="flex items-center gap-x-2">
                 <dt class="font-medium">Release Date:</dt>
@@ -281,7 +281,7 @@ const loadMoreComments = async () => {
           id="movieCastOverflowCarousel"
           class="flex items-stretch gap-x-2 flex-nowrap overflow-x-auto hide-scrollbar scroll-smooth"
         >
-          <figure v-for="actor in cast" :key="actor.id" class="w-[10%] flex-none">
+          <figure v-for="actor in cast" :key="actor.id" class="w-1/3 xxs:w-1/4 xs:w-1/5 sm:w-[15%] lg:w-[10%] flex-none">
             <img
               :src="actor.profile_path ? `${IMAGE_BASE_URL}${DEFAULT_CAST_SIZE}${actor.profile_path}` : '/media/images/cast/default.png'"
               :alt="actor.name"
@@ -299,13 +299,13 @@ const loadMoreComments = async () => {
     </section>
     <section v-if="movie" id="engagementPanel" class="py-8">
       <div class="container mx-auto px-4">
-        <div class="mx-auto w-4/5 flex items-center justify-evenly bg-background-400 rounded-2xl p-4">
+        <div class="mx-auto w-full xs:w-11/12 md:w-4/5 flex items-center justify-evenly bg-background-400 rounded-2xl p-4">
           <button
             :class="`btn btn-md hover:bg-white/5 gap-x-1 ${displayCommentBox ? 'bg-white/5 hover:bg-white/20' : ''}`"
             @click="toggleCommentBox"
           >
             <Icon name="tabler:message-dots" />
-            Comment
+            <span class="hidden xxs:inline">Comment</span>
           </button>
           <div class="relative">
             <button
@@ -314,7 +314,7 @@ const loadMoreComments = async () => {
               :disabled="!authStore.isAuthenticated"
             >
               <Icon name="tabler:star" />
-              Rate
+              <span class="hidden xxs:inline">Rate</span>
             </button>
             <div
               :class="`absolute left-1/2 -translate-x-1/2 w-max shadow shadow-white flex items-center gap-x-2 py-2 px-6 rounded-2xl text-primary-500 transition-all ease-linear duration-300 ${displayRatingBox ? '-top-[150%] opacity-100' : '-top-full opacity-0'}`"
@@ -337,15 +337,21 @@ const loadMoreComments = async () => {
           </div>
           <button @click="shareMoviePage" class="btn btn-md hover:bg-white/5 gap-x-1">
             <Icon name="tabler:share-3" />
-            Share
+            <span class="hidden xxs:inline">Share</span>            
           </button>
         </div>
         <div
           v-if="displayCommentBox"
-          class="mt-10 mx-auto w-4/5 flex flex-col gap-y-8 bg-background-400 rounded-2xl p-4 transition-all duration-700 ease-linear"
+          class="mt-10 mx-auto w-full xs:w-11/12 md:w-4/5 flex flex-col gap-y-8 bg-background-400 rounded-2xl p-4 transition-all duration-700 ease-linear"
         >
           <div class="border border-white/10 p-2 w-full rounded-2xl flex items-start gap-x-2">
-            <div class="w-10 h-10 bg-white rounded-full flex-none"></div>
+            <div class="w-8 h-8 rounded-full overflow-hidden flex-none">
+                <img
+                src="/media/images/users/default.png"
+                alt=""
+                class="w-full h-full object-cover"
+                />
+            </div>
             <div class="flex flex-col gap-y-2 w-full">
               <textarea
                 v-model="commentMsg"
@@ -372,10 +378,10 @@ const loadMoreComments = async () => {
               </div>
             </div>
           </div>
-          <div class="flex items-center justify-between">
+          <div class="flex flex-wrap xxs:flex-nowrap gap-3 items-center justify-between">
             <h6>
               Comments
-              <span class="bg-primary-500 px-3 py-1 rounded-3xl text-sm ms-1.5">{{ commentsData?.length || 0 }}</span>
+              <span class="bg-primary-500 px-3 py-0.5 rounded-3xl text-xs ms-1.5">{{ commentsData?.length || 0 }}</span>
             </h6>
             <select
               v-model="commentSort"

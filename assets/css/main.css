@@ -12,7 +12,8 @@
     --font-roboto: Roboto, sans-serif;
     --breakpoint-lgx: 900px;
     --breakpoint-smd: 576px;
-    --breakpoint-xs: 460px;
+    --breakpoint-xs: 440px;
+    --breakpoint-xxs: 360px;
 }
 
 @layer base {

@@ -15,18 +15,18 @@ const { canScrollRight, canScrollLeft }= useCarouselScroll(`${props.sectionId}Ov
 <template>
     <section :id="sectionId" class="py-10 md:py-16 lg:py-20 relative z-0 overflow-hidden">
         <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between mb-10">
+            <div class="flex flex-col xxs:flex-row items-center justify-between mb-10 gap-y-4 xxs:gap-y-0">
                 <h2 class="text-xl font-semibold">{{ sectionTitle }}</h2>
                 <div class="flex items-center gap-x-2.5">
                     <button 
-                        class="btn-icon cursor-pointer w-10 h-10 overflow-carousel-prev-btn disabled:cursor-not-allowed" 
+                        class="btn-icon cursor-pointer w-8 xxs:w-10 h-8 xxs:h-10 overflow-carousel-prev-btn disabled:cursor-not-allowed" 
                         :data-controls="`${sectionId}OverflowCarousel`"
                         :disabled="!canScrollLeft"
                     >
                         <Icon name="tabler:chevron-left" />
                     </button>
                     <button 
-                        class="btn-icon cursor-pointer w-10 h-10 overflow-carousel-next-btn disabled:cursor-not-allowed" 
+                        class="btn-icon cursor-pointer w-8 xxs:w-10 h-8 xxs:h-10 overflow-carousel-next-btn disabled:cursor-not-allowed" 
                         :data-controls="`${sectionId}OverflowCarousel`"
                         :disabled="!canScrollRight"
                     >

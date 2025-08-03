@@ -114,10 +114,10 @@ onUnmounted(() => {
 <template>
     <SectionsMainHeader classes="bg-background-600 text-white"/>
         <main class="bg-background-500 text-white">
-            <section v-for="(movie, movieIndex) in featured_movies" :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-[720px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out bg-no-repeat bg-center bg-cover`" :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'});`">
-                <div class="container mx-auto px-4 h-full flex items-end">
+            <section v-for="(movie, movieIndex) in featured_movies" :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-auto sm:h-[648px] lg:h-[720px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out bg-no-repeat bg-center bg-cover`" :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'});`">
+                <div class="container mx-auto px-4 h-full flex items-center sm:items-end">
                     <div class="flex items-center justify-between">
-                        <div class="flex flex-col gap-y-8 text-white w-1/2">
+                        <div class="flex flex-col gap-y-8 text-white w-full sm:w-4/5 lg:w-1/2">
                             <div class="flex flex-wrap items-center gap-3 text-sm font-medium">
                                 <div class="inline-flex items-center gap-x-1 py-1 px-3 bg-white text-black rounded-md">                                    
                                     <Icon name="tabler:star-filled" />
@@ -126,24 +126,24 @@ onUnmounted(() => {
                                 <div class="bg-white w-1 h-1 rounded-full"></div>
                                 <div class="year">{{ movie.release_date }}</div>
                                 <div class="bg-white w-1 h-1 rounded-full"></div>
-                                <div class="year">Genre</div>
+                                <!-- <div class="year">Genre</div> -->
                             </div>
-                            <div class="flex flex-col gap-y-4">
+                            <hgroup class="flex flex-col gap-y-4">
                                 <NuxtLink :to="`/movies/${movie.id}`" class="hover:text-primary-500">
-                                    <h1 v-if="movieIndex === 0" class="text-6xl">{{ movie.title }}</h1>
-                                    <h2 v-else class="text-6xl">{{ movie.title }}</h2>
+                                    <h1 v-if="movieIndex === 0" class="text-4xl smd:text-5xl md:text-6xl">{{ movie.title }}</h1>
+                                    <h2 v-else class="text-4xl smd:text-5xl md:text-6xl">{{ movie.title }}</h2>
                                 </NuxtLink>
-                                <p>{{ movie.overview }}</p>
-                            </div>
+                                <p class="text-sm xs:text-base">{{ movie.overview }}</p>
+                            </hgroup>
                         </div>
                     </div>
                 </div>
                 <div class="absolute -z-[1] top-0 left-0 w-full h-full bg-linear-[180deg,rgba(2,1,27,0)_0%,#02011B_94.39%]"></div>
-                <div class="absolute bottom-[30%] right-[10%] flex items-between gap-x-4">
-                    <button class="btn-icon w-10 h-10 btn-outline-white rounded-full" @click="slideCarouselPrev">
+                <div class="absolute bottom-[5%] md:bottom-[30%] right-[10%] flex items-between gap-x-4">
+                    <button class="btn-icon w-8 xxs:w-10 h-8 xxs:h-10 btn-outline-white rounded-full" @click="slideCarouselPrev">
                         <Icon name="tabler:chevron-left" />
                     </button>
-                    <button class="btn-icon w-10 h-10 btn-outline-white rounded-full" @click="slideCarouselNext">
+                    <button class="btn-icon w-8 xxs:w-10 h-8 xxs:h-10 btn-outline-white rounded-full" @click="slideCarouselNext">
                         <Icon name="tabler:chevron-right" />
                     </button>
                 </div>
@@ -159,7 +159,7 @@ onUnmounted(() => {
                     v-for="(movie, movieIndex) in top_rated_movies"
                     :key="movieIndex"
                     :movie="movie"
-                    containerClasses="w-1/6 flex-none"
+                    containerClasses="w-4/5 xxs:w-3/5 xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 flex-none"
                 />
             </SectionsMovieSlide>
             <!-- <SectionsMovieSlide
