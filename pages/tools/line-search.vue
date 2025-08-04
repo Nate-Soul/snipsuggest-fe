@@ -2,9 +2,11 @@
 import { landingMovies } from '~/assets/mock-database/movies';
 const { top_rated_movies } = landingMovies;
 
-const handleUpload = () => {
-    console.log("File uploaded")
-};
+const isActiveMic = ref(false);
+
+const handleMic = () => {
+    isActiveMic.value = !isActiveMic.value;
+}
 </script>
 
 <template>
@@ -12,22 +14,25 @@ const handleUpload = () => {
     <main>
         <section class="py-20 relative bg-background-500 text-white/85">
             <div class="container mx-auto px-4 flex flex-col gap-y-16">
-                <h1 class="text-center text-4xl">Visual Search Tool</h1>
+                <h1 class="text-center text-4xl">
+                    Line Search
+                </h1>
                 <div class="text-center">
                     <h6>Search Tips</h6>
                     <ul class="list-disc list-inside text-sm mt-5">
-                        <li>Upload an image or short video clip with the right format to start searching</li>
+                        <li>Search by typing an exact phrase from a movie using quotation marks. For example: “to infinity and beyond”</li>
                     </ul>
                 </div>
-                <form @submit.prevent="handleUpload" class="flex-center flex-col gap-y-5 h-64  w-full md:w-4/5 mx-auto rounded-2xl bg-background-600">
-                    <label class="w-4/5 xs:w-3/4 smd:w-1/2 h-3/5 flex flex-col items-center px-4 py-6 bg-background-400 rounded-lg shadow-lg tracking-wide cursor-pointer hover:bg-background-300 hover:text-white">
-                        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                        </svg>
-                        <span class="mt-2 text-sm smd:text-base leading-normal text-center">Drag and drop to upload video file or picture instantly</span>
-                        <input type='file' class="hidden" />
-                    </label>
-                    <small class="text-xs">Supported Formats: MP4, MP3, JPEG, PNG</small>
+                <form action="#" class="flex items-center w-full sm:w-4/5 mx-auto">
+                    <div class="flex w-full items-center gap-x-2 px-2 rounded-2xl border border-white/10 overflow-hidden divide-x-2 divide-white/10">
+                        <input type="search" name="query" id="searchMovieField" class="block p-4 w-full focus:outline-0" placeholder="search for a movie"/>
+                        <button @click="handleMic" v-if="isActiveMic === false" type="button" class="flex-none btn-icon h-12 w-12 rounded-full btn-outline-white text-2xl">
+                            <Icon name="tabler:microphone"/>
+                        </button>
+                        <button @click="handleMic" v-else="isActiveMic === true" type="button" class="flex-none btn-icon h-12 w-12 rounded-full bg-primary-500/50 text-2xl animate-pulse">
+                            <Icon name="tabler:microphone"/>
+                        </button>
+                    </div>
                 </form>
                 <div class="flex flex-col gap-y-5">
                     <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-4 xs:gap-y-0">

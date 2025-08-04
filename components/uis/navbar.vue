@@ -5,19 +5,19 @@ const authStore = useAuthStore();
 const navLinks = [
     {
         label: "Home",
-        url: "/"
+        url: "/",
     },
     {
         label: "Snip Tools",
-        url: "/tools"
+        url: "/tools",
     },
     {
         label: "Movies",
-        url: "/movies"
+        url: "/movies",
     },
     {
         label: "How it Works",
-        url: "/#howItWorks"
+        url: "/#howItWorks",
     },
 ];
 

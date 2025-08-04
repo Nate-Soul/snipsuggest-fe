@@ -1,54 +1,55 @@
 <script setup lang="ts">
-import { landingMovies } from '~/assets/mock-database/movies';
-const { top_rated_movies } = landingMovies;
-
+    const tools = [
+        {
+            id: 1,
+            title: "Image Recognizer",
+            iconUrl:"/media/images/icons/icon-park_upload-picture.png",
+            description: "Upload a screenshot or Record a short clip (5-10 seconds) from a movie— our AI scans millions of movie frames to instantly match your scene",
+            link: "/tools/file-search"
+        },
+        {
+            id: 2,
+            title: " Audio Search",
+            iconUrl:"/media/images/icons/fluent_mic-record-28-regular.png",
+            description: "record, or upload an audio clip (E.g., dialogue, soundtrack, background score)— our sound recognition detects songs, scores, and dialogue in seconds.",
+            link: "/tools/line-search"
+        },
+        {
+            id: 3,
+            title: "Line Search",
+            iconUrl:"/media/images/icons/si_search-line.png",
+            description: "Type in a famous (or fuzzy) movie line or quote— Our Ai searches through thousands of scripts for matches. we’ll pinpoint the exact movie and scene.",
+            link: "/tools/line-search"
+        },
+        {
+            id: 4,
+            title: "Video Clip Search",
+            iconUrl:"/media/images/icons/fluent_video-clip-multiple-20-regular.png",
+            description: "Upload a short clip—we’ll identify the film and even tell you the timestamp.",
+            link: "/tools/file-search"
+        },
+    ];
 </script>
 
 <template>
     <SectionsMainHeader classes="bg-background-600 text-white"/>
     <main>
-        <section class="py-20 relative bg-background-500 text-white/85">
-            <div class="container mx-auto px-4 flex flex-col gap-y-16">
-                <h1 class="text-center text-4xl">
-                    Line Search
-                </h1>
-                <div class="text-center">
-                    <h6>Search Tips</h6>
-                    <ul class="list-disc list-inside text-sm mt-5">
-                        <li>Search by typing an exact phrase from a movie using quotation marks. For example: “to infinity and beyond”</li>
-                    </ul>
-                </div>
-                <form action="#" class="flex items-center w-4/5 mx-auto">
-                    <div class="flex w-full items-center gap-x-2 px-2 rounded-2xl border border-white/10 overflow-hidden divide-x-2 divide-white/10">
-                        <input type="search" name="query" id="searchMovieField" class="block p-4 w-full focus:outline-0" placeholder="search for a movie"/>
-                        <button type="button" class="flex-none btn-icon h-12 w-12 rounded-full btn-outline-white text-2xl animate-pulse">
-                            <Icon name="tabler:microphone"/>
-                        </button>
-                        <!-- <button type="button" class="flex-none btn-icon h-12 w-12 rounded-full bg-primary-500/50 text-2xl">
-                            <Icon name="tabler:microphone"/>
-                        </button> -->
-                    </div>
-                </form>
-                <div class="flex flex-col gap-y-5">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-3xl font-semibold">Recent Searches</h2>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Clear All</button>
-                    </div>
-                    <div class="flex items-center gap-y-2 gap-x-1 flex-wrap">
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">The bartender &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Despicable me &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Dracular &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Last of us &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Moana &times;</button>
-                        <button class="btn btn-xs gap-x-1 bg-background-300 text-white">Dracular &times;</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-4 gap-10">
-                    <SubcomponentsSnipToolCard
-                        v-for="(movie, movieIndex) in top_rated_movies"
-                        :key="movieIndex"
-                        :movie="movie"
-                    />
+        <section class="py-10 md:py-16 lg:py-20 bg-background-500 text-white/85">
+            <div class="container mx-auto px-4">
+                <div class="w-full smd:w-4/5 md:w-3/4 lg:w-3/5 mx-auto grid grid-cols-1 xs:grid-cols-2 gap-2.5">
+                    <NuxtLink 
+                        v-for="tool in tools" class="rounded border border-white/10 bg-background-400 p-4" 
+                        :key="tool.id"
+                        :to="tool.link"
+                    >
+                        <div class="rounded-full border border-white/65 h-20 w-20 mx-auto flex-center mb-4">
+                            <img :src="tool.iconUrl" :alt="tool.title" width="40" height="40" />
+                        </div>
+                        <div class="flex flex-col gap-y-1.5 text-center">
+                            <h5 class="font-semibold font-roboto">{{ tool.title }}</h5>
+                            <p class="font-light text-white/70 text-sm">{{ tool.description }}</p>
+                        </div>
+                    </NuxtLink>
                 </div>
             </div>
         </section>

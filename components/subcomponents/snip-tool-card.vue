@@ -20,16 +20,16 @@ const props = defineProps<{
             </div>
         </NuxtLink>
         <div class="mt-2.5 flex flex-col gap-y-3">
-            <div class="flex items-center gap-x-2 5">
+            <div class="flex items-center gap-x-2.5 justify-between smd:justify-start">
                 <button class="btn btn-sm gap-x-1 bg-green-500 text-white hover:bg-green-800">
                     <Icon name="tabler:mood-smile" />
-                    <span class="sr-only"></span>
-                    Good Match
+                    <span class="sr-only">Good Match</span>
+                    <span class="hidden smd:inline">Good Match</span>                    
                 </button>
-                <button class="btn btn-sm gap-x-1 btn-primary">
+                <button class="btn btn-sm smd:gap-x-1 btn-primary">
                     <Icon name="tabler:mood-sad" />
-                    <span class="sr-only"></span>
-                    Bad Match
+                    <span class="sr-only">Bad Match</span>
+                    <span class="hidden smd:inline">Bad Match</span>  
                 </button>
             </div>
         </div>

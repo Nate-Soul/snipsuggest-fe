@@ -52,13 +52,16 @@ const handleLogin = async () => {
 
 <template>
     <section class="bg-background-500 text-white relative z-0 overflow-hidden py-4">
-        <div class="px-4 min-h-screen flex items-center gap-x-8">
-            <div class="flex flex-col gap-y-10 basis-2/5 flex-none p-10">
+        <div class="px-4 min-h-screen flex-center gap-x-0 sm:gap-x-5 md:gap-x-8">
+            <div class="flex flex-col gap-y-10 basis-full xs:basis-4/5 sm:basis-3/5 md:basis-1/2 lgx:basis-2/5 flex-none p-0 sm:p-5 md:p-8 lg:p-10">
+                <NuxtLink to="/">
+                    <img src="/media/images/logos/logo-dark.png" alt="SnipSuggest" height="44" width="140" />
+                </NuxtLink>
                 <hgroup class="flex flex-col gap-y-3">
                     <h1 class="text-semibold text-2xl font-roboto">Sign In</h1>
                     <p>Search Less, Discover More...</p>
                 </hgroup>
-                <div class="p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
+                <div class="p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
                     <form @submit.prevent="handleLogin" action="#" method="POST" class="flex flex-col gap-y-6">
                         <div class="form-input-wrapper">
                             <label for="emailAddress">Email Address</label>
@@ -100,7 +103,7 @@ const handleLogin = async () => {
                     </p>
                 </div>
             </div>
-            <figure class="w-full self-stretch rounded-2xl overflow-hidden">
+            <figure class="w-0 sm:w-full self-stretch rounded-2xl overflow-hidden">
                 <img src="/media/images/bg/snipsuggest-bg-collection.png" alt="" class="w-full h-full object-cover">
             </figure>
         </div>
