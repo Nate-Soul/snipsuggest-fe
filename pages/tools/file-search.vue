@@ -19,7 +19,7 @@ const handleUpload = () => {
                         <li>Upload an image or short video clip with the right format to start searching</li>
                     </ul>
                 </div>
-                <form @submit.prevent="handleUpload" class="flex-center flex-col gap-y-5 h-64  w-full md:w-4/5 mx-auto rounded-2xl bg-background-600">
+                <form @submit.prevent="handleUpload" class="flex-center flex-col gap-y-5 h-64 w-full md:w-4/5 mx-auto rounded-2xl bg-background-600">
                     <label class="w-4/5 xs:w-3/4 smd:w-1/2 h-3/5 flex flex-col items-center px-4 py-6 bg-background-400 rounded-lg shadow-lg tracking-wide cursor-pointer hover:bg-background-300 hover:text-white">
                         <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />

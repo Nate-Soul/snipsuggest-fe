@@ -36,9 +36,7 @@ const toggleDropdown = () => {
                     <Icon name="tabler:menu-3" />
                 </button>
             </div>
-            <NuxtLink to="/">
-                <img src="/media/images/logos/logo-dark.png" alt="SnipSuggest" height="44" width="140" />
-            </NuxtLink>
+            <SubcomponentsLogo/>
             <ul class="hidden items-center gap-x-8 border border-white/10 rounded-lg p-3 md:flex">
                 <li v-for="navLink in navLinks">
                     <NuxtLink :to="navLink.url" class="text-white/80 hover:text-primary-500">{{ navLink.label }}</NuxtLink>

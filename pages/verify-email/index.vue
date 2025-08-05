@@ -40,7 +40,7 @@ const handleTokenResend = async () => {
 
   isResending.value = true;
   try {
-    const response = await useApiFetch('/auth/resend-email', {
+    const response: any = await useApiFetch('/auth/resend-email', {
       method: 'POST',
       body: { email: resendEmail.value },
     });
@@ -59,13 +59,14 @@ const handleTokenResend = async () => {
 
 <template>
   <section class="bg-background-500 text-white relative z-0 overflow-hidden py-4">
-    <div class="px-4 min-h-screen flex items-center gap-x-8">
-      <div class="flex flex-col gap-y-6 basis-2/5 flex-none p-10">
+    <div class="px-4 min-h-screen flex-center gap-x-0 sm:gap-x-5 md:gap-x-8">
+      <div class="flex flex-col gap-y-10 basis-full xs:basis-4/5 sm:basis-3/5 md:basis-1/2 lgx:basis-2/5 flex-none p-0 sm:p-5 md:p-8 lg:p-10">
+        <SubcomponentsLogo/>
         <hgroup class="flex flex-col gap-y-3">
           <h1 class="text-semibold text-2xl font-roboto">Verify Your Email</h1>
           <p v-if="email">Verification link sent to: <span>{{ email }}</span></p>
         </hgroup>
-        <div class="p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
+        <div class="p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
           <div v-if="isVerifying" class="flex flex-col items-center gap-y-2">
             <div class="animate-spin"><Icon name="tabler:settings"/></div>
             <p>Verifying if you landed from a spaceship</p>
@@ -93,7 +94,7 @@ const handleTokenResend = async () => {
           </div>
         </div>
       </div>
-      <figure class="w-full self-stretch rounded-2xl overflow-hidden">
+      <figure class="w-1/2w-0 sm:w-full self-stretch rounded-2xl overflow-hidden">
         <img
           src="/media/images/bg/snipsuggest-bg-collection.png"
           alt=""

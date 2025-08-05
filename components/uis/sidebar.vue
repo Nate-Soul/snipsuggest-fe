@@ -7,9 +7,7 @@ const authStore = useAuthStore();
 <template>
     <aside class="fixed h-screen z-40 top-0 left-0 w-64 transition-transform ease-linear duration-500 -translate-x-full sm:translate-x-0">
         <div class="bg-background-400 text-white h-full overflow-y-auto flex flex-col gap-y-5 items-center justify-between py-14 px-4">
-            <a href="/" class="flex items-center gap-x-1">
-                <img src="/media/images/logos/logo-dark.png" alt="SnipSuggest Logo" width="140" />
-            </a>
+            <SubcomponentsLogo/>
             <ul class="flex flex-col gap-y-6 text-white/65">
                 <li>
                     <NuxtLink to="/dashboard" class="flex items-center gap-x-3">
