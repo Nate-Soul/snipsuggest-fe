@@ -1,9 +1,44 @@
 <script lang="ts" setup>
+import type { CommentResponse } from '~/types/comments';
+
 definePageMeta({
     layout: 'dashboard'
 });
 
-const empty = ref(true)
+const empty = ref(true);
+
+const comments: CommentResponse[] = [
+    {
+        id: 1,
+        timestamp: "90-48-09",
+        user: { 
+            username: "movie_junky" 
+        },
+        content: "Hello user",
+        parent_id: null,
+        replies: []
+    },
+    {
+        id: 2,
+        timestamp: "90-48-09",
+        user: { 
+            username: "movie_freak" 
+        },
+        content: "Hello user",
+        parent_id: null,
+        replies: []
+    },
+    {
+        id: 3,
+        timestamp: "90-48-09",
+        user: { 
+            username: "aiyeriss" 
+        },
+        content: "In my opinion the movie doesn't match the whole hype around it. Its just a regular average movie",
+        parent_id: null,
+        replies: []
+    },
+]
 
 const toggleView = () => {
     empty.value = !empty.value;
@@ -12,11 +47,11 @@ const toggleView = () => {
 
 
 <template>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-if="empty">
-        <div class="flex flex-col w-1/2 items-center gap-y-5 text-center">
+    <div class="h-screen w-full flex-center relative z-0 overflow-hidden p-4" v-if="empty">
+        <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
             <img src="/media/images/bg/activity-hub.png" alt="" width="200">
-            <h1 class="text-4xl capitalize">No activities on your feed</h1>
-            <p>Explore movies and engage with community to see your activities here</p>
+            <h1 class="text-2xl xs:text-3xl md:text-4xl">No activities on your feed</h1>
+            <p class="text-sm smd:text-base">Explore movies and engage with community to see your activities here</p>
             <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
                 Explore Movies
             </NuxtLink>
@@ -33,78 +68,11 @@ const toggleView = () => {
                 <button class="btn btn-md bg-background-300 text-white gap-x-1">This week &#9733;</button>
             </div>
             <div class="flex flex-col gap-y-6">
-                <div class="activity-card flex items-center justify-between gap-x-4 p-4 rounded-lg bg-background-400 text-sm">
-                    <div class="flex items-center gap-x-2">
-                        <div class="w-10 h-10 bg-white rounded-full"></div>
-                        <div class="flex flex-col gap-y-1">
-                            <p>You replied to  on MovieJunky’ s comment</p>
-                            <NuxtLink 
-                                to="/movies#engagementPanel"
-                                class="text-primary-500"
-                            >
-                                See comment
-                            </NuxtLink>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-2">
-                        <p>In my opinion the movie doesn't match the whole hype around it. Its just a regular average movie</p>
-                        <p class="text-end"><span>04:40pm</span> <span>May 4, 2025</span></p>
-                    </div>
-                </div>
-                <div class="activity-card flex items-center justify-between gap-x-4 p-4 rounded-lg bg-background-400 text-sm">
-                    <div class="flex items-center gap-x-2">
-                        <div class="w-10 h-10 bg-white rounded-full"></div>
-                        <div class="flex flex-col gap-y-1">
-                            <p>You replied to  on MovieJunky’ s comment</p>
-                            <NuxtLink 
-                                to="/movies#engagementPanel"
-                                class="text-primary-500"
-                            >
-                                See comment
-                            </NuxtLink>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-2">
-                        <p>In my opinion the movie doesn't match the whole hype around it. Its just a regular average movie</p>
-                        <p class="text-end"><span>04:40pm</span> <span>May 4, 2025</span></p>
-                    </div>
-                </div>
-                <div class="activity-card flex items-center justify-between gap-x-4 p-4 rounded-lg bg-background-400 text-sm">
-                    <div class="flex items-center gap-x-2">
-                        <div class="w-10 h-10 bg-white rounded-full"></div>
-                        <div class="flex flex-col gap-y-1">
-                            <p>You replied to  on MovieJunky’ s comment</p>
-                            <NuxtLink 
-                                to="/movies#engagementPanel"
-                                class="text-primary-500"
-                            >
-                                See comment
-                            </NuxtLink>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-2">
-                        <p>In my opinion the movie doesn't match the whole hype around it. Its just a regular average movie</p>
-                        <p class="text-end"><span>04:40pm</span> <span>May 4, 2025</span></p>
-                    </div>
-                </div>
-                <div class="activity-card flex items-center justify-between gap-x-4 p-4 rounded-lg bg-background-400 text-sm">
-                    <div class="flex items-center gap-x-2">
-                        <div class="w-10 h-10 bg-white rounded-full"></div>
-                        <div class="flex flex-col gap-y-1">
-                            <p>You replied to  on MovieJunky’ s comment</p>
-                            <NuxtLink 
-                                to="/movies#engagementPanel"
-                                class="text-primary-500"
-                            >
-                                See comment
-                            </NuxtLink>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-y-2">
-                        <p>In my opinion the movie doesn't match the whole hype around it. Its just a regular average movie</p>
-                        <p class="text-end"><span>04:40pm</span> <span>May 4, 2025</span></p>
-                    </div>
-                </div>
+                <SubcomponentsActivityCard
+                    v-for="comment in comments"
+                    :key="comment.id"
+                    :comment="comment" 
+                />
             </div>
             <!-- Pagination -->
             <!-- <div class="mt-10 flex items-center justify-between">

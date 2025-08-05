@@ -5,7 +5,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-    <aside class="fixed h-screen z-40 top-0 left-0 w-64 transition-transform ease-linear duration-500 -translate-x-full sm:translate-x-0">
+    <aside class="fixed h-screen z-40 top-0 left-0 w-64 transition-transform ease-linear duration-500 -translate-x-full md:translate-x-0">
         <div class="bg-background-400 text-white h-full overflow-y-auto flex flex-col gap-y-5 items-center justify-between py-14 px-4">
             <SubcomponentsLogo/>
             <ul class="flex flex-col gap-y-6 text-white/65">

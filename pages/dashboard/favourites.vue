@@ -53,7 +53,7 @@ const removeFavourite = async (id: number) => {
 
 <template>
     <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-if="favouritesPending">
-        <div class="flex flex-col w-1/2 items-center gap-y-5">
+        <div class="flex flex-col w-1/2 items-center text-center gap-y-5">
             <div class="animate-spin">
                 <Icon name="tabler:settings" />
             </div>
@@ -76,7 +76,7 @@ const removeFavourite = async (id: number) => {
             </div>
             <h1 class="text-2xl font-semibold font-roboto">My Favourites Movies</h1>
             <!-- filters -->
-            <ul class="flex items-center flex-wrap gap-x-3 text-sm font-medium text-center">
+            <ul class="flex items-center flex-wrap gap-3 text-sm font-medium text-center">
                 <li>
                     <a href="#" class="inline-flex px-5 py-2.5 text-white bg-primary-500 rounded-full active" aria-current="page">All</a>
                 </li>
@@ -94,16 +94,16 @@ const removeFavourite = async (id: number) => {
                 </li>
             </ul>
             <!-- favourite cards -->
-            <div class="grid grid-cols-3 gap-6">
+            <div class="flex flex-col xs:flex-row xs:items-stretch gap-y-8 gap-x-0 xs:gap-6 flex-nowrap xs:flex-wrap">
                 <div
                     v-for="(fav, favIndex) in favourites.data"
                     :id="`favouriteCard${fav.id}`"
                     :key="favIndex"
-                    class="favourite-card flex items-center gap-x-4"
+                    class="favourite-card flex flex-col xs:flex-row xs:items-center gap-y-4 xs:gap-y-0 gap-x-0 xs:gap-x-4"
                 >
                     <NuxtLink 
                         :to="`/movies/${fav.id}`" 
-                        class="rounded-lg overflow-hidden self-stretch w-[147px] h-[224px] flex-none"
+                        class="rounded-lg overflow-hidden self-stretch w-full xs:w-[183.75px] lg:w-[147px] h-auto xs:h-[280px] lg:h-[224px] flex-none"
                     >
                          <img 
                             :src="`${fav.poster_path ? IMAGE_BASE_URL+DEFAULT_POSTER_SIZE+fav.poster_path : '/media/images/thumbnails/default.png' }`" 
@@ -112,18 +112,18 @@ const removeFavourite = async (id: number) => {
                         >
                     </NuxtLink>
                     <div class="flex flex-col gap-y-2 text-sm">
-                        <NuxtLink :to="`/movies/${fav.id}`" href="#">
+                        <NuxtLink :to="`/movies/${fav.id}`">
                             <h3>{{ fav.title }}</h3>
                         </NuxtLink>
-                        <dl class="flex items-center gap-x-2">
+                        <dl class="flex items-center gap-x-2 flex-wrap">
                             <dt>IMDB Rating:</dt>
                             <dd class="text-primary-500"><Icon name="tabler:star-filled"/>{{ fav.imdb_rating }}</dd>
                         </dl>
-                        <dl class="flex items-center gap-x-2">
+                        <dl class="flex items-center gap-x-2 flex-wrap">
                             <dt>MPAA Rating:</dt>
                             <dd>{{ fav.mpaa_rating }}</dd>
                         </dl>
-                        <dl class="flex items-center gap-x-2">
+                        <dl class="flex items-center gap-x-2 flex-wrap">
                             <dt>Duration:</dt>
                             <dd>{{ fav.release_date }}</dd>
                         </dl>
@@ -143,7 +143,7 @@ const removeFavourite = async (id: number) => {
                 </div>
             </div>
             <!-- Pagination -->
-            <div class="mt-10 flex items-center justify-between">
+            <div class="mt-10 flex flex-wrap gap-4 items-center justify-between">
                 <!-- Help text -->
                 <span class="text-sm text-gray-700 dark:text-gray-400">
                     Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">9</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
@@ -171,8 +171,8 @@ const removeFavourite = async (id: number) => {
         </div>
     </section>
     <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-else="favourites && favourites.data.length === 0">
-        <div class="flex flex-col w-1/2 items-center gap-y-5">
-            <h1 class="text-4xl">No Favorites Yet!</h1>
+        <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
+            <h1 class="text-2xl xs:text-3xl md:text-4xl">No Favorites Yet!</h1>
             <p>Start adding movies to you list to help us curate suggestions just for you.</p>
             <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
                 Explore Movies

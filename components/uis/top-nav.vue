@@ -13,18 +13,23 @@ const toggleDropdown = () => {
     <header class="py-4 bg-background-500 text-white sticky top-0 border-b border-gray-500">
         <nav class="px-6">
             <div class="flex items-center gap-x-4 justify-between">
-                <div class="flex items-center gap-x-2.5">
+                <div class="inline-flex md:hidden">
                     <button class="sidebar-toggler btn-icon w-10 h-10 btn-outline-white rounded-full bg-background-400">
                         <Icon name="tabler:menu-2" />
                     </button>
-                    <form action="#" method="GET">
-                        <div class="relative border border-white  rounded-3xl w-100">
-                            <input type="search" name="search_query" id="searchQuery" class="h-full w-full bg-transparent rounded-[inherit] py-2.5 px-4" placeholder="Search" />
-                            <img src="/media/images/icons/iconamoon_search-thin.svg" alt="" class="absolute top-1/2 transform -translate-y-1/2 right-4" width="16" height="16" />
-                        </div>
-                    </form>
                 </div>
-                <ul class="flex items-center gap-x-6">
+                <form action="#" method="GET" class="hidden xs:block">
+                    <div class="relative border border-white rounded-3xl w-auto smd:w-80 lgx:w-100">
+                        <input type="search" name="search_query" id="searchQuery" class="h-full w-full bg-transparent rounded-[inherit] py-2.5 px-4" placeholder="Search" />
+                        <img src="/media/images/icons/iconamoon_search-thin.svg" alt="" class="absolute top-1/2 transform -translate-y-1/2 right-4" width="16" height="16" />
+                    </div>
+                </form>
+                <ul class="flex items-center gap-x-4 md:gap-x-6">
+                    <li class="inline-flex xs:hidden">
+                        <button class="btn-icon w-10 h-10 btn-outline-white rounded-full bg-background-400">
+                            <Icon name="tabler:search" />
+                        </button>
+                    </li>
                     <li>
                         <button class="relative btn-icon btn-outline-white rounded-full w-10 h-10">
                             <Icon name="tabler:bell" />

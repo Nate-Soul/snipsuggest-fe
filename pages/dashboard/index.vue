@@ -13,9 +13,8 @@ const authStore = useAuthStore();
 
 <template>
     <div class="h-screen w-full flex-center relative z-0 overflow-hidden">
-        <div class="flex flex-col w-1/2 items-center gap-y-5">
-            <SubcomponentsLogo/>
-            <h1 class="text-4xl">My Profile</h1>
+        <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
+            <h1 class="text-2xl xs:text-3xl md:text-4xl">My Profile</h1>
             <p>Start adding movies to your list to help us curate suggestions just for you.</p>
             <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
                 Explore Movies
