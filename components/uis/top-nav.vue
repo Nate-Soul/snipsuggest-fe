@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import { useAuthStore } from "~/stores/auth";
-const openDropdown = ref(false);
 
-const authStore = useAuthStore();
+defineProps<{
+    sidebarOpenFn: () => void
+}>()
+
+const authStore     = useAuthStore();
+const openDropdown  = ref(false);
 
 const toggleDropdown = () => {
     openDropdown.value = !openDropdown.value;
@@ -14,7 +18,7 @@ const toggleDropdown = () => {
         <nav class="px-6">
             <div class="flex items-center gap-x-4 justify-between">
                 <div class="inline-flex md:hidden">
-                    <button class="sidebar-toggler btn-icon w-10 h-10 btn-outline-white rounded-full bg-background-400">
+                    <button @click="sidebarOpenFn" class="sidebar-toggler btn-icon w-10 h-10 btn-outline-white rounded-full bg-background-400">
                         <Icon name="tabler:menu-2" />
                     </button>
                 </div>

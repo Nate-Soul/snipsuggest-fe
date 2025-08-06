@@ -52,18 +52,20 @@ const toggleDropdown = () => {
                     <button @click="toggleDropdown" class="w-10 h-10 rounded-full btn-icon btn-outline-white">
                         <Icon name="tabler:user"/>
                     </button>
-                    <ul v-if="openDropdown" class="text-center p-3 flex flex-col gap-y-1 absolute top-[120%] right-0 z-20 bg-background-300 text-white min-w-44 rounded-2xl shadow shadow-white">
-                        <li v-if="!authStore.isAuthenticated">
+                    <ul v-if="openDropdown && authStore.isAuthenticated" class="text-center p-3 flex flex-col gap-y-1 absolute top-[120%] right-0 z-20 bg-background-300 text-white min-w-44 rounded-2xl shadow shadow-white">
+                        <li>
+                            <NuxtLink to="/dashboard" class="btn btn-md w-full hover:bg-white/30"> Dashboard </NuxtLink>
+                        </li>
+                        <li>
+                            <button @click="authStore.logout" class="btn btn-md w-full hover:bg-white/30"> Logout </button>
+                        </li>
+                    </ul>
+                    <ul v-if="openDropdown && !authStore.isAuthenticated" class="text-center p-3 flex flex-col gap-y-1 absolute top-[120%] right-0 z-20 bg-background-300 text-white min-w-44 rounded-2xl shadow shadow-white">
+                        <li>
                             <NuxtLink to="/login" class="btn btn-md w-full hover:bg-white/30"> Login </NuxtLink>
                         </li>
-                        <li v-if="!authStore.isAuthenticated">
+                        <li>
                             <NuxtLink to="/signup" class="btn btn-md w-full hover:bg-white/30"> Signup </NuxtLink>
-                        </li>
-                        <li v-else="authStore.isAuthenticated">
-                            <NuxtLink to="/dashboard/favourites" class="btn btn-md w-full hover:bg-white/30"> Dashboard </NuxtLink>
-                        </li>
-                        <li v-else="authStore.isAuthenticated">
-                            <button @click="authStore.logout" class="btn btn-md w-full hover:bg-white/30"> Logout </button>
                         </li>
                     </ul>
                 </li>

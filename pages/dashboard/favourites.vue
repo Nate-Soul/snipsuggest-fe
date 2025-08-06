@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { useAuthStore } from '#imports';
-import { useToast } from 'vue-toastification';
 import type { StoredMovie } from "~/types/movies";
-import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from '~/assets/const';
+import { useToast } from "vue-toastification";
+import { useAuthStore } from "#imports";
+
+import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from "~/assets/const";
 
 definePageMeta({
     layout: 'dashboard'
@@ -14,7 +15,8 @@ interface FavouriteResponse {
 }
 
 const authStore = useAuthStore();
-const toast = useToast();
+const toast     = useToast();
+
 const deleteFavouriteStatus = ref<"idle" | "deleting" | "deleted">("idle");
 
 const {
