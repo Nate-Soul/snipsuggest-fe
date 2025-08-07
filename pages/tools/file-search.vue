@@ -13,13 +13,15 @@ const handleUpload = () => {
         <section class="py-20 relative bg-background-500 text-white/85">
             <div class="container mx-auto px-4 flex flex-col gap-y-16">
                 <hgroup class="text-center flex flex-col gap-y-4 w-full xs:w-3/4 md:w-1/2 mx-auto">
-                    <h1 class="text-4xl">Quote it. Say it. Find it.</h1>
-                    <p>Use a memorable movie line — or even just say it out loud — and let our tool do the work. It combines script search + speech-to-text so you can type or talk your way to the scene.</p>
+                    <h1 class="text-4xl">See it. Upload it. We’ll find it.</h1>
+                    <p>Use a screenshot, photo, or short video clip — our AI does the rest.</p>
                 </hgroup>
                 <div class="text-center">
                     <h6>Search Tips</h6>
                     <ul class="list-disc list-inside text-sm mt-5">
-                        <li>Upload an image or short video clip with the right format to start searching</li>
+                        <li>Upload an image or a short video clip in the right format to get started</li>
+                        <li>You can also drag and drop a file directly into the tool — fast and easy</li>
+                        <li>Supported formats: Video: .mp4, .mp3, .jpeg, .png</li>
                     </ul>
                 </div>
                 <form @submit.prevent="handleUpload" class="flex-center flex-col gap-y-5 h-64 w-full md:w-4/5 mx-auto rounded-2xl bg-background-600">
