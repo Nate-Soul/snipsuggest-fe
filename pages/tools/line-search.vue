@@ -14,13 +14,16 @@ const handleMic = () => {
     <main>
         <section class="py-20 relative bg-background-500 text-white/85">
             <div class="container mx-auto px-4 flex flex-col gap-y-16">
-                <h1 class="text-center text-4xl">
-                    Line Search
-                </h1>
+                <hgroup class="text-center flex flex-col gap-y-4 w-full xs:w-3/4 md:w-1/2 mx-auto">
+                    <h1 class="text-4xl">Quote it. Say it. Find it.</h1>
+                    <p>Use a memorable movie line — or even just say it out loud — and let our tool do the work. It combines script search + speech-to-text so you can type or talk your way to the scene.</p>
+                </hgroup>
                 <div class="text-center">
                     <h6>Search Tips</h6>
                     <ul class="list-disc list-inside text-sm mt-5">
-                        <li>Search by typing an exact phrase from a movie using quotation marks. For example: “to infinity and beyond”</li>
+                        <li>For best results, use quotation marks around the phrase. ➤ Example: “to infinity and beyond”</li>
+                        <li>Not sure of the exact wording? Close enough usually works — we’re pretty forgiving.</li>
+                        <li>Background noise? No worries — the AI filters and focuses on dialogue.</li>
                     </ul>
                 </div>
                 <form action="#" class="flex items-center w-full sm:w-4/5 mx-auto">

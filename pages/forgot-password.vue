@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import type { UserCreate } from "~/types/users";
+import { useToast } from "vue-toastification";
 
+interface DataResponse {
+    message: string;
+};
+
+const toast = useToast();
 const isProcessingForm = ref(false);
-const form = reactive({
-    email: ''
-});
+const email = ref<string>("");
 
 const { validateEmail, validateForm } = useFormValidation();
 
@@ -12,7 +16,7 @@ const handleForgotPsw = async () => {
     const isValid = validateForm([
         { 
             name: 'email', 
-            value: form.email, 
+            value: email.value, 
             validator: (name: string, value: string) => validateEmail(name, value) 
         },
     ]);
@@ -21,25 +25,21 @@ const handleForgotPsw = async () => {
         isProcessingForm.value = true;
         try {
 
-            const { data, error } = await useFetch<UserCreate>('/api/auth/signup', {
-                method: 'POST',
-                body: form
-            })
-    
-            if (error.value) {
-                console.error(error.value)
-                alert('Login failed: ' + error.value.message)
-                return
-            }
+            const response = await $fetch('/api/auth/request-password', {
+                method: "POST",
+                body: {
+                    email: email.value
+                }
+            }) as DataResponse;
 
-            isProcessingForm.value = false;
-    
-            await navigateTo('/verify-email');
+            email.value = "";
+            toast.success(response.message || "Password Request Successful! Check Your Mail")
     
         } catch (err) {
+            console.error('Unexpected error:', err);
+            toast.error("Password Request Failed!");
+        } finally {
             isProcessingForm.value = false;
-            console.error('Unexpected error:', err)
-            alert('Something went wrong')
         }
     }
 };
@@ -60,10 +60,16 @@ const handleForgotPsw = async () => {
                             <label for="emailAddress">Email Address</label>
                             <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
                                 <Icon name="tabler:mail"/>
-                                <input type="email" name="email_address" id="emailAddress" class="form-input" v-model="form.email">
+                                <input type="email" name="email_address" id="emailAddress" class="form-input" v-model="email">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg justify-center">Send Password</button>
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary btn-lg justify-center"
+                            :disabled="isProcessingForm"
+                        >
+                            {{ isProcessingForm ? 'Sending Password...' : 'Send Password' }}
+                        </button>
                     </form>
                     <p class="text-center space-x-4">
                         <NuxtLink to="/signup" class="text-primary-500 underline">Create Account</NuxtLink>

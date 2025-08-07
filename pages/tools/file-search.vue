@@ -3,7 +3,7 @@ import { landingMovies } from '~/assets/mock-database/movies';
 const { top_rated_movies } = landingMovies;
 
 const handleUpload = () => {
-    console.log("File uploaded")
+    console.log("File uploaded");
 };
 </script>
 
@@ -12,7 +12,10 @@ const handleUpload = () => {
     <main>
         <section class="py-20 relative bg-background-500 text-white/85">
             <div class="container mx-auto px-4 flex flex-col gap-y-16">
-                <h1 class="text-center text-4xl">Visual Search Tool</h1>
+                <hgroup class="text-center flex flex-col gap-y-4 w-full xs:w-3/4 md:w-1/2 mx-auto">
+                    <h1 class="text-4xl">Quote it. Say it. Find it.</h1>
+                    <p>Use a memorable movie line — or even just say it out loud — and let our tool do the work. It combines script search + speech-to-text so you can type or talk your way to the scene.</p>
+                </hgroup>
                 <div class="text-center">
                     <h6>Search Tips</h6>
                     <ul class="list-disc list-inside text-sm mt-5">

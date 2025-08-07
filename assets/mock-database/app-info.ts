@@ -3,26 +3,26 @@ import type { AppFeature } from "~/types/app";
 export const appFeatures: AppFeature[] = [
     {
         id: 1,
-        title: "Video recognition",
+        title: "Image Recognition",
         iconUrl:"/media/images/icons/icon-park_upload-picture.png",
-        description: "Upload a screenshot or Record a short clip (5-10 seconds) from a movie— our AI scans millions of movie frames to instantly match your scene"
+        description: "Upload a scene from your gallery or snap a quick pic — our AI compares it to millions of movie frames to pinpoint the film."
     },
     {
         id: 2,
         title: " Audio Recognition",
         iconUrl:"/media/images/icons/fluent_mic-record-28-regular.png",
-        description: "record, or upload an audio clip (E.g., dialogue, soundtrack, background score)— our sound recognition detects songs, scores, and dialogue in seconds. "
+        description: "Upload or record any movie audio — quote, dialogue, background score. Our AI will find the film faster than you can say “I’ll be back” It’s like Shazam, but built for movie nerds."
     },
     {
         id: 3,
         title: "Line Search",
         iconUrl:"/media/images/icons/si_search-line.png",
-        description: "Type in a famous (or fuzzy) movie line or quote— Our Ai searches through thousands of scripts for matches. we’ll pinpoint the exact movie and scene."
+        description: "Even half-remembered quotes work. Just type what you recall, and we’ll scan thousands of scripts to track down the movie and the scene."
     },
     {
         id: 4,
         title: "Video Clip Search",
         iconUrl:"/media/images/icons/fluent_video-clip-multiple-20-regular.png",
-        description: "Upload a short clip—we’ll identify the film and even tell you the timestamp."
+        description: "Record or upload a quick video snippet, and we’ll instantly identify the movie — even give you the exact timestamp where the clip appears."
     },
 ];

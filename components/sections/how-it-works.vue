@@ -8,7 +8,7 @@ import { appFeatures } from "~/assets/mock-database/app-info";
             <header class="text-center w-full smd:w-4/5 md:w-1/2 mx-auto mb-14">
                 <hgroup>
                     <h2 class="uppercase text-xl xs:text-2xl lg:text-3xl font-semibold font-roboto">HOW SNIPSUGGEST WORKS</h2>
-                    <p class="lg:text-lg text-white/85">Enjoy our tools and get amazing results seamlessly in just few steps</p>
+                    <p class="lg:text-lg text-white/85">Use any of our tools to ID films from screenshots, audio, quotes, or clips in seconds.</p>
                 </hgroup>
             </header>
             <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">

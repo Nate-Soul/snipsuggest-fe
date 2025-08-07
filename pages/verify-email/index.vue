@@ -94,7 +94,7 @@ const handleTokenResend = async () => {
           </div>
         </div>
       </div>
-      <figure class="w-1/2w-0 sm:w-full self-stretch rounded-2xl overflow-hidden">
+      <figure class="w-0 sm:w-full self-stretch rounded-2xl overflow-hidden">
         <img
           src="/media/images/bg/snipsuggest-bg-collection.png"
           alt=""

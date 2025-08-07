@@ -9,8 +9,8 @@
                 <div class="container mx-auto px-4 min-h-[50vh] flex-center">
                     <div class="flex flex-col gap-y-14 w-full md:w-4/5 lg:w-3/5 items-center text-center">
                         <hgroup class="flex flex-col items-center gap-y-6">
-                            <h1 class="text-5xl md:text-6xl leading-tight font-roboto">Never Wonder <span class="text-[#ff9b9b]">What Movie Is This?</span> Again</h1>
-                            <p class="sm:text-lg">Tired of struggling to recall a movie from a scene, tune or quote? SnipSuggest is your instant movie identifier&dash;powered by AI that recognizes films from screenshots, sound clips, dialogue, and video clips.</p>
+                            <h1 class="text-5xl md:text-6xl leading-tight font-roboto">That Scene in Your Head? <span class="text-[#ff9b9b]">We Know the Movie</span></h1>
+                            <p class="sm:text-lg">You know the one—vague memory, epic quote, random clip playing in your brain at 2 AM? Suggest nails it. Drop a screenshot, soundbite, or even a line of dialogue, and we’ll tell you exactly what movie it’s from.</p>
                         </hgroup>
                         <div class="flex flex-col xs:flex-row items-center gap-y-5 xs:gap-y-0 xs:gap-x-5">
                             <NuxtLink to="/tools" class="btn btn-lg btn-primary-gradient">
