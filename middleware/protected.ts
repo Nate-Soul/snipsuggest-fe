@@ -3,9 +3,6 @@ import { navigateTo, useAuthStore } from '#imports';
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const authStore = useAuthStore();
 
-  // Initialize auth state (restore token and fetch user)
-//   await authStore.initializeAuth();
-
   // Define protected routes
   const protectedRoutes = ['/dashboard',];
 
