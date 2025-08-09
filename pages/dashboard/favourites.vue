@@ -59,7 +59,7 @@ const removeFavourite = async (id: number) => {
             <div class="animate-spin">
                 <Icon name="tabler:settings" />
             </div>
-            <p>We're loading your favourites from Mars</p>
+            <p>Summoning your favourites from the multiverse</p>
         </div>
         <img src="/media/images/icons/popcorn.png" alt="" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 -z-[1]">
         <img src="/media/images/bg/movie-reel-lg.png" alt="" class="absolute left-0 bottom-0 -z-[1]">

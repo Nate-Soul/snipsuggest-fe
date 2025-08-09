@@ -2,7 +2,9 @@
 import { useAuthStore } from '#imports';
 import { useToast } from 'vue-toastification';
 
-const toast = useToast();
+const toast     = useToast();
+const route     = useRoute();
+const router    = useRouter();
 const authStore = useAuthStore();
 
 const isProcessingForm = ref(false);
@@ -37,10 +39,11 @@ const handleLogin = async () => {
         isProcessingForm.value = true;
         try {
             await authStore.login(form);
-            navigateTo('/dashboard/favourites');
+            const redirect = route.query.redirect as string | undefined;
+            await router.push(redirect || '/dashboard');
         } catch (err: any) {
             console.log("An Error occured:", err.message);
-            alert("Login Failed");
+            toast.error("Login Failed!");
         } finally {
             isProcessingForm.value = false;
         }

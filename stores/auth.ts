@@ -20,6 +20,20 @@ export const useAuthStore = defineStore('auth', {
   },
 
   actions: {
+    // async initializeAuth(): Promise<void> {
+    //   if (!this.token) return
+    //   try {
+    //     const response = await useApiFetch<{ access_token: string }>('/auth/refresh', {
+    //       method: 'POST',
+    //       body: { token: this.token },
+    //     });
+    //     this.token = response.access_token;
+    //     await this.fetchUser();
+    //   } catch (error) {
+    //     this.token = null;
+    //   }
+    // },
+
     async signup(payload: SignupPayload): Promise<ApiResponse> {
       try {
         const response = await $fetch('/api/auth/signup', {
@@ -77,7 +91,7 @@ export const useAuthStore = defineStore('auth', {
       this.user = null;
       this.token = null;
       navigateTo("/login");
-    },
+    }
   },
   
   persist: true
