@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { useAuthStore } from '#imports';
+import { useClickOutside } from '~/composables/useClickOutside';
 
 const authStore = useAuthStore();
 const navLinks = [
@@ -22,10 +23,34 @@ const navLinks = [
 ];
 
 const openDropdown = ref (false);
+const profileDropdownMenu = ref<HTMLElement | null>(null);
+
 
 const toggleDropdown = () => {
     openDropdown.value = !openDropdown.value;
-}
+};
+
+const closeDropdown = () => {
+  if (openDropdown.value) {
+    openDropdown.value = false;
+  }
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    closeDropdown();
+  }
+};
+
+useClickOutside(profileDropdownMenu, closeDropdown);
+
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleKeydown);
+});
 </script>
 
 <template>
@@ -42,7 +67,7 @@ const toggleDropdown = () => {
                     <NuxtLink :to="navLink.url" class="text-white/80 hover:text-primary-500">{{ navLink.label }}</NuxtLink>
                 </li>
             </ul>
-            <ul class="items-center gap-x-4 xl:gap-x-6 flex">
+            <ul ref="profileDropdownMenu" class="items-center gap-x-4 xl:gap-x-6 flex">
                 <li>
                     <NuxtLink to="/search" class="btn-icon w-10 h-10 rounded-full btn-outline-white">
                          <Icon name="tabler:search"/>
