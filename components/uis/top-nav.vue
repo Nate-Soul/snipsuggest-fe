@@ -74,9 +74,9 @@ onUnmounted(() => {
                         <button @click="toggleDropdown" ref="profileDropdownToggler" class="w-10 h-10 btn-outline-white rounded-full btn-icon">
                             <Icon name="tabler:user" />
                         </button>
-                        <ul ref="profileDropdownMenu" v-if="openDropdown" :class="`text-center px-3 py-5 flex flex-col gap-y-2 absolute top-[120%] right-0 z-20 bg-background-300 text-white min-w-44 rounded-lg shadow shadow-white ease transform ease-in-out ${openDropdown ? 'translate-0 opacity-100' : 'opacity-100'} `">
+                        <ul ref="profileDropdownMenu" v-if="openDropdown" :class="`text-center px-3 py-5 flex flex-col gap-y-2 absolute top-[120%] right-0 z-20 bg-background-300 text-white min-w-44 rounded-lg shadow shadow-white ease transform ease-in-out ${openDropdown ? 'translate-0 opacity-100' : 'opacity-100'}`">
                             <li>
-                                <a href="#" class="btn btn-md p-1 w-full rounded hover:bg-white/30">My Profile</a>
+                                <NuxtLink to="/dashboard/settings" class="btn btn-md p-1 w-full rounded hover:bg-white/30">My Profile</NuxtLink>
                             </li>
                             <li>
                                 <button @click="authStore.logout" class="btn btn-md p-1 w-full rounded hover:bg-white/30">Logout</button>

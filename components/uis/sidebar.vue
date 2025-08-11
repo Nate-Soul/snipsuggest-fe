@@ -19,10 +19,16 @@ const authStore = useAuthStore();
             <ul class="flex flex-col gap-y-6 text-white/65">
                 <li>
                     <NuxtLink to="/dashboard" class="flex items-center gap-x-3">
+                        <Icon name="tabler:home-2"/>
+                        Home
+                    </NuxtLink>
+                </li>
+                <!-- <li>
+                    <NuxtLink to="/settings" class="flex items-center gap-x-3">
                         <Icon name="tabler:user"/>
                         My Profile
                     </NuxtLink>
-                </li>
+                </li> -->
                 <li>
                     <NuxtLink to="/dashboard/favourites" class="flex items-center gap-x-3">
                         <img src="/media/images/icons/mdi-light_heart.svg" height="20" width="20" alt=""/>
@@ -50,10 +56,10 @@ const authStore = useAuthStore();
             </ul>
             <ul class="flex flex-col gap-y-6 text-white/65">
                 <li>
-                    <a href="#" class="flex items-center gap-x-3">
-                        <img src="/media/images/icons/mdi-light_settings.svg" height="20" width="20" alt=""/>
+                    <NuxtLink to="/dashboard/settings" class="flex items-center gap-x-3">
+                        <Icon name="tabler:settings"/>
                         Settings
-                    </a>
+                    </NuxtLink>
                 </li>
                 <li>
                     <button @click="authStore.logout" class="flex items-center gap-x-3">
