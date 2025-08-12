@@ -86,45 +86,30 @@ const handleChangePassword = async () => {
                 </hgroup>
                 <div class="p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
                     <form @submit.prevent="handleChangePassword" action="#" method="POST" class="flex flex-col gap-y-6">
-                        <div class="form-input-wrapper">
-                            <label for="oldPassword">Old Password</label>
-                            <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                <div class="flex-none">
-                                    <Icon name="tabler:lock"/>
-                                </div>
-                                <input :type="`${passwordFieldVisible ? 'text' : 'password'}`" name="old_password" id="oldPassword" class="form-input" v-model="form.old_password" @blur="validatePsw('old_password', form.old_password)">
-                                <button @click.prevent="togglePasswordField" class="btn flex-none p-2">
-                                    <Icon :name="`${passwordFieldVisible ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
-                                </button>
-                            </div>
-                            <small v-if="formErrors.password" class="text-red-400">{{ formErrors.password }}</small>
-                        </div>
-                        <div class="form-input-wrapper">
-                            <label for="password">New Password</label>
-                            <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                <div class="flex-none">
-                                    <Icon name="tabler:lock"/>
-                                </div>
-                                <input :type="`${passwordFieldVisible ? 'text' : 'password'}`" name="new_password" id="newPassword" class="form-input" v-model="form.new_password" @blur="validatePsw('new_password', form.new_password)">
-                                <button @click.prevent="togglePasswordField" class="btn flex-none p-2">
-                                    <Icon :name="`${passwordFieldVisible ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
-                                </button>
-                            </div>
-                            <small v-if="formErrors.new_password" class="text-red-400">{{ formErrors.new_password }}</small>
-                        </div>
-                        <div class="form-input-wrapper">
-                            <label for="password">Confirm Password</label>
-                            <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                <div class="flex-none">
-                                    <Icon name="tabler:lock"/>
-                                </div>
-                                <input :type="`${passwordFieldVisible ? 'text' : 'password'}`" name="new_password2" id="newPassword2" class="form-input" v-model="form.new_password2" @blur="comparePswFields('new_password2', form.new_password, form.new_password2)">
-                                <button @click.prevent="togglePasswordField" class="btn flex-none p-2">
-                                    <Icon :name="`${passwordFieldVisible ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
-                                </button>
-                            </div>
-                            <small v-if="formErrors.new_password2" class="text-red-400">{{ formErrors.new_password2 }}</small>
-                        </div>
+                        <SubcomponentsPasswordField
+                            label="Old Password"
+                            name="old_password"
+                            id="oldPassword"
+                            v-model="form.old_password"
+                            :error="formErrors.old_password"
+                            @blur="validatePsw('old_password', form.old_password)"
+                        />
+                        <SubcomponentsPasswordField
+                            label="New Password"
+                            name="new_password"
+                            id="newPassword"
+                            v-model="form.new_password"
+                            :error="formErrors.new_password"
+                            @blur="validatePsw('new_password', form.new_password)"
+                        />
+                        <SubcomponentsPasswordField
+                            label="Confirm Password"
+                            name="new_password2"
+                            id="newPassword2"
+                            v-model="form.new_password2"
+                            :error="formErrors.new_password2"
+                            @blur="validatePsw('new_password2', form.new_password2)"
+                        />
                         <button 
                             type="submit" 
                             class="btn btn-primary btn-lg justify-center"

@@ -44,7 +44,7 @@ export const useAuthStore = defineStore('auth', {
         await this.fetchUser();
         return response;
       } catch (error: any) {
-        throw new Error(error.data?.detail || error.data?.message || 'Login failed');
+        throw new Error(error.data?.detail || error.data?.message || 'Incorrect login credentials');
       }
     },
 

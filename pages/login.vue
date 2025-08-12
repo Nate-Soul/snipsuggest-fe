@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { useAuthStore } from '#imports';
 import { useToast } from 'vue-toastification';
+import { usePasswordField } from '~/composables/usePasswordField';
 
 const toast     = useToast();
 const route     = useRoute();
 const router    = useRouter();
 const authStore = useAuthStore();
 
+
 const isProcessingForm = ref(false);
 
 const { validateForm, validatePsw, validateEmail } = useFormValidation();
+const { passwordFieldVisible, togglePasswordField } = usePasswordField();
 
 const form = reactive({
     email: "",
     password: ""
 });
-const passwordFieldVisible = ref(false);
 
-const togglePswField = () => {
-    passwordFieldVisible.value = !passwordFieldVisible.value;
-}
 
 const handleLogin = async () => {    
     const isValid = validateForm([
@@ -42,8 +41,8 @@ const handleLogin = async () => {
             const redirect = route.query.redirect as string | undefined;
             await router.push(redirect || '/dashboard');
         } catch (err: any) {
-            console.log("An Error occured:", err.message);
-            toast.error("Login Failed!");
+            // console.log("An Error occured:", err.message);
+            toast.error(err.message || err.detail || "Incorrect login credentials");
         } finally {
             isProcessingForm.value = false;
         }
@@ -76,7 +75,7 @@ const handleLogin = async () => {
                             <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
                                 <Icon name="tabler:lock"/>
                                 <input :type="`${passwordFieldVisible ? 'text' : 'password'}`" name="password" id="password" class="form-input" v-model="form.password">
-                                <button @click.prevent="togglePswField" class="btn flex-none p-2">
+                                <button @click.prevent="togglePasswordField" class="btn flex-none p-2">
                                     <Icon :name="`${passwordFieldVisible ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
                                 </button>
                             </div>

@@ -7,8 +7,6 @@ const authStore = useAuthStore();
 
 const currentTab = ref(1);
 const totalTabs = ref(2);
-const isVisiblePsw = ref(false);
-const isVisiblePsw2 = ref(false);
 const isProcessingForm = ref(false);
 
 const form = reactive({
@@ -91,14 +89,6 @@ const isCurrentStepValid = computed(() => {
   }
   return false
 });
-
-const togglePswField = (n: number) => {
-    if (n === 1) {
-        isVisiblePsw.value = !isVisiblePsw.value;
-    } else {
-        isVisiblePsw2.value = !isVisiblePsw2.value;
-    }
-};
 
 watch(() => form.password, () => {
   if (form.password2) {
@@ -186,7 +176,7 @@ const handleSignup = async () => {
             alert('Something went wrong');
         }
     }
-}
+};
 </script>
 
 <template>
@@ -240,33 +230,23 @@ const handleSignup = async () => {
                                     >
                                 </div>
                                  <small v-if="formErrors.email" class="text-red-400">{{ formErrors.email }}</small>
-                            </div>
-                            <div class="form-input-wrapper">
-                                <label for="password">Your Password</label>
-                                <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                    <div class="flex-none">
-                                        <Icon name="tabler:lock"/>
-                                    </div>
-                                    <input :type="`${isVisiblePsw ? 'text' : 'password'}`" name="password" id="password" class="form-input" v-model="form.password" @blur="validatePsw('password', form.password)">
-                                    <button @click.prevent="togglePswField(1)" class="btn flex-none p-2">
-                                        <Icon :name="`${isVisiblePsw ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
-                                    </button>
-                                </div>
-                                 <small v-if="formErrors.password" class="text-red-400">{{ formErrors.password }}</small>
-                            </div>
-                            <div class="form-input-wrapper">
-                                <label for="password">Confirm Password</label>
-                                <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
-                                    <div class="flex-none">
-                                        <Icon name="tabler:lock"/>
-                                    </div>
-                                    <input :type="`${isVisiblePsw2 ? 'text' : 'password'}`" name="confirm_password" id="confirmPassword" class="form-input" v-model="form.password2" @blur="comparePswFields('password2', form.password, form.password2)">
-                                    <button @click.prevent="togglePswField(2)" class="btn flex-none p-2">
-                                        <Icon :name="`${isVisiblePsw2 ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
-                                    </button>
-                                </div>
-                                 <small v-if="formErrors.password2" class="text-red-400">{{ formErrors.password2 }}</small>
-                            </div>
+                            </div>                            
+                            <SubcomponentsPasswordField
+                                label="Your Password"
+                                name="password"
+                                id="password"
+                                v-model="form.password"
+                                :error="formErrors.password"
+                                @blur="validatePsw('password', form.password)"
+                            />
+                            <SubcomponentsPasswordField
+                                label="Confirm Password"
+                                name="password2"
+                                id="confirmPassword"
+                                v-model="form.password2"
+                                :error="formErrors.password2"
+                                @blur="validatePsw('password2', form.password2)"
+                            />
                         </div>
                         <div class="form-tab flex flex-col gap-y-6" v-if="currentTab === 2">
                             <div class="form-input-wrapper">
