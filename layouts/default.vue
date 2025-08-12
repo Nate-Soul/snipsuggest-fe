@@ -7,5 +7,5 @@ if (auth.token && !auth.user) {
 </script>
 
 <template>
-    <slot/>
+  <slot />
 </template>

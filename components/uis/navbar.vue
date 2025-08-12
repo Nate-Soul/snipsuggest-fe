@@ -2,6 +2,10 @@
 import { useAuthStore } from '#imports';
 import { useClickOutside } from '~/composables/useClickOutside';
 
+defineProps<{
+    openMobileMenuFn: () => void
+}>()
+
 const authStore = useAuthStore();
 const navLinks = [
     {
@@ -24,7 +28,6 @@ const navLinks = [
 
 const openDropdown = ref (false);
 const profileDropdownMenu = ref<HTMLElement | null>(null);
-
 
 const toggleDropdown = () => {
     openDropdown.value = !openDropdown.value;
@@ -57,7 +60,7 @@ onUnmounted(() => {
     <nav class="py-4 bg-transparent">
         <div class="container mx-auto px-4 flex items-center justify-between gap-x-4">
             <div class="md:hidden">
-                <button class="btn-icon btn-outline-white rounded-full h-10 w-10 hidden">
+                <button @click="openMobileMenuFn" class="btn-icon btn-outline-white rounded-full h-10 w-10 hidden">
                     <Icon name="tabler:menu-3" />
                 </button>
             </div>

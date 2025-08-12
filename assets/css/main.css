@@ -51,6 +51,10 @@
     @apply w-0 h-0 hidden;
 }
 
+/* .router-link-exact-active {
+  @apply border border-primary-500/25 py-1.5 px-3 rounded-2xl;
+} */
+
 .btn {
     @apply inline-flex-center font-medium focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center transition-all duration-500 disabled:cursor-not-allowed disabled:opacity-50;
 }
