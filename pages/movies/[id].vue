@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { MovieDetailResponse } from "~/types/movies";
 import type { CommentResponse } from "~/types/comments";
+import type { IsFavourited } from "~/types/favourites";
+import type { RatingResponse } from "~/types/ratings";
 
 import { useToast } from "vue-toastification";
 
 import { addComment } from "~/services/comments";
 import { useAuthStore } from "~/stores/auth";
+import { useClickOutside } from "~/composables/useClickOutside";
+import { useFormValidation } from "~/composables/useFormValidation";
 import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE, DEFAULT_CAST_SIZE } from "~/assets/const";
 
 // State
@@ -24,6 +28,11 @@ const favouriteStatus = ref<"idle" | "sending" | "sent">("idle");
 const ratingStatus = ref<"idle" | "sending" | "sent">("idle");
 const commentSort = ref<"relevant" | "latest">("relevant");
 const commentCurrentPage = ref<number>(1);
+const isFavourited = ref<boolean>(false);
+const ratingsDropdown = ref<HTMLElement | null>(null);
+const ratingsDropdownToggler = ref<HTMLElement | null>(null);
+
+const { validateForm, validateText } = useFormValidation();
 
 // Fetch movie data
 const { 
@@ -50,7 +59,6 @@ const {
   pending: averageRatingPending,
   refresh: refreshAverageRating 
 } = await useFetch<number>(`/api/ratings/${movieId}/average`);
-
 
 // Redirect if movie fetch fails
 if (movieDataErr.value || !movieData.value) {
@@ -89,7 +97,13 @@ const toggleRatingsBox = () => {
   displayRatingBox.value = !displayRatingBox.value;
 };
 
-// Rating handlers
+const closeRatingsBox = () => {
+  if (displayRatingBox.value) {
+    displayRatingBox.value = false;
+  }
+};
+
+// Rate a movie
 const setRating = async (value: number) => {
   if (!authStore.isAuthenticated) {
     toast.error("Please log in to rate.");
@@ -98,14 +112,15 @@ const setRating = async (value: number) => {
   selectedRating.value = value;
   ratingStatus.value = "sending";
   try {
-    await useApiFetch(`/api/ratings/${movieId}`, {
+    const response = await useApiFetch(`/api/ratings/${movieId}`, {
       method: "POST",
       body: { value },
-    });
+    }) as RatingResponse;
     ratingStatus.value = "sent";
     toast.success("Your rating has been saved!");
-    setTimeout(() => (ratingStatus.value = "idle"), 2000);
     refreshAverageRating();
+    selectedRating.value = response.value;
+    setTimeout(() => (ratingStatus.value = "idle"), 2000);
   } catch (err: any) {
     toast.error(err.message || "Failed to rate movie.");
     ratingStatus.value = "idle";
@@ -116,6 +131,7 @@ const handleHover = (value: number) => {
   hoverRating.value = value;
 };
 
+// Reset selected rating on hover
 const resetHover = () => {
   hoverRating.value = 0;
 };
@@ -137,10 +153,15 @@ const shareMoviePage = async () => {
   }
 };
 
-// Favorite movie
+// Add movie to favourites
 const addToFavourites = async (id: number) => {
   if (!authStore.isAuthenticated) {
     toast.error("Please log in to save to favorites.");
+    return;
+  }
+
+  if (isFavourited.value) {
+    toast.error("Movie is already in your favourite list");
     return;
   }
 
@@ -152,6 +173,7 @@ const addToFavourites = async (id: number) => {
     });
     favouriteStatus.value = "sent";
     toast.success("Movie saved to favorites!");
+    isFavourited.value = await checkIsFavourited(id);
     setTimeout(() => (favouriteStatus.value = "idle"), 2000);
   } catch (err: any) {
     toast.error(err.message || "Failed to save movie.");
@@ -165,22 +187,35 @@ const addMovieComment = async (id: number, content: string, parent_id?: number) 
     return;
   }
 
-  commentStatus.value = "sending";
-  try {
-    await addComment(id, content, parent_id);
-    commentMsg.value = "";
-    commentStatus.value = "sent";
-    toast.success("Comment added successfully!");
-    refreshComments();
-  } catch (error) {
-    console.error("Failed to add comment:", error);
-    toast.error("Failed to add comment.");
-    return;
-  } finally {
-    setTimeout(() => {
-      commentStatus.value = "idle";
-    }, 2000);
+  const isValid = validateForm([
+    { 
+      name: 'comment_msg', 
+      value: commentMsg.value, 
+      validator: validateText 
+    }
+  ]);
+
+  if (isValid) {
+    commentStatus.value = "sending";
+    try {
+      await addComment(id, content, parent_id);
+      commentMsg.value = "";
+      commentStatus.value = "sent";
+      toast.success("Comment added successfully!");
+      refreshComments();
+    } catch (error) {
+      // console.error("Failed to add comment:", error);
+      toast.error("Failed to add comment.");
+      return;
+    } finally {
+      setTimeout(() => {
+        commentStatus.value = "idle";
+      }, 2000);
+    }
+  } else {
+    toast.error("Check your comment input, and try again.");
   }
+
 };
 
 const loadMoreComments = async () => {
@@ -196,6 +231,44 @@ const loadMoreComments = async () => {
 //     console.error('Error fetching movie:', movieDataErr.value);
 //   }
 // });
+
+const checkIsFavourited = async (id: number): Promise<boolean> => {
+  try {
+    const response = await useApiFetch(`/api/favourites/${id}/is-favourited`, {
+      method: "POST",
+    }) as IsFavourited;
+    return response.is_favourited;
+  } catch (error) {
+    console.error("Error checking favourite status:", error);
+    return false;
+  }
+};
+
+const getUserRating = async (id: number): Promise<number> => {
+  try {
+    const response = await useApiFetch(`/api/ratings/${id}/user`, {
+      method: "GET",
+    }) as RatingResponse;
+    return response.value;
+  } catch (error) {
+    console.error("Error checking user rating:", error);
+    return 0;
+  }
+};
+
+
+useClickOutside(ratingsDropdown, () => {
+  if (ratingsDropdownToggler.value && !ratingsDropdownToggler.value.contains(document.activeElement as HTMLElement)) {
+    closeRatingsBox();
+  }
+});
+
+onMounted(async () => {
+  if (typeof movieId === "string") {
+    isFavourited.value = await checkIsFavourited(parseInt(movieId));
+    selectedRating.value = await getUserRating(parseInt(movieId));
+  }
+});
 </script>
 
 <template>
@@ -209,7 +282,21 @@ const loadMoreComments = async () => {
       <div class="container h-full mx-auto px-4 flex items-center md:items-end">
         <div class="flex flex-wrap md:flex-nowrap justify-between gap-y-6 md:gap-y-0 gap-x-0 md:gap-x-6 lg:gap-x-8 w-full">
           <div class="flex-none flex flex-col justify-between gap-y-6 text-white w-full md:w-2/5">
-            <UisMeterCircle v-if="averageRating" :rating="averageRating" />
+            <div class="flex items-center gap-x-5">
+              <!-- Snipsuggest Rating (if applicable) -->
+              <UisMeterCircle
+                v-if="averageRating"
+                :rating="averageRating"
+                title="Snipsuggest Rating"
+              />
+              <!-- IMDB Rating -->
+              <UisMeterCircle
+                :rating="movie?.vote_average"
+                :max="10"
+                colour="text-accent-500"
+                title="IMDB Rating"
+              />
+            </div>
             <div class="flex flex-col gap-y-6">
               <h1 class="text-4xl smd:text-5xl">{{ movie.title }}</h1>
               <div class="flex items-stretch gap-x-4">
@@ -218,11 +305,11 @@ const loadMoreComments = async () => {
                   Download
                 </button>
                 <button
-                  :disabled="favouriteStatus === 'sending' || !authStore.isAuthenticated"
+                  :disabled="favouriteStatus === 'sending' || isFavourited"
                   @click="addToFavourites(movie.id)"
-                  class="btn btn-lg btn-outline-white text-primary-500 group"
+                  :class="`btn btn-lg ${isFavourited ? 'btn-outline-primary' : 'btn-outline-white'} group`"
                 >
-                  <Icon :name="favouriteStatus === 'sent' ? 'tabler:heart-filled' : 'tabler:heart'" />
+                  <Icon :name="isFavourited ? 'tabler:heart-filled' : 'tabler:heart'" />
                 </button>
               </div>
             </div>
@@ -309,6 +396,7 @@ const loadMoreComments = async () => {
           </button>
           <div class="relative">
             <button
+              ref="ratingsDropdownToggler"
               @click="toggleRatingsBox"
               class="btn btn-md hover:bg-white/5 gap-x-1"
               :disabled="!authStore.isAuthenticated"
@@ -317,6 +405,7 @@ const loadMoreComments = async () => {
               <span class="hidden xxs:inline">Rate</span>
             </button>
             <div
+              ref="ratingsDropdown"
               :class="`absolute left-1/2 -translate-x-1/2 w-max shadow shadow-white flex items-center gap-x-2 py-2 px-6 rounded-2xl text-primary-500 transition-all ease-linear duration-300 ${displayRatingBox ? '-top-[150%] opacity-100' : '-top-full opacity-0'}`"
               @mouseleave="resetHover"
             >
@@ -355,9 +444,16 @@ const loadMoreComments = async () => {
             <div class="flex flex-col gap-y-2 w-full">
               <textarea
                 v-model="commentMsg"
+                name="comment_msg"
                 placeholder="Add comment"
                 class="p-2 rounded-lg w-full"
                 :readonly="!authStore.isAuthenticated || commentStatus === 'sending'"
+                @blur="() => {
+                    validateText('comment_msg', commentMsg);
+                }"
+                @input="() => {
+                    validateText('comment_msg', commentMsg);
+                }"
               ></textarea>
               <div class="flex items-center gap-x-2 justify-between">
                 <div class="flex items-center gap-x-1">

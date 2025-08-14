@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useToast } from "vue-toastification";
 import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE } from "~/assets/const";
 import type { LandingMovie } from "~/types/movies";
+
+const toast = useToast();
 
 const { 
     data: landingMovies, 
@@ -10,7 +13,8 @@ const {
 
 
 if (!landingMovies.value) {
-    navigateTo("/movies");
+    navigateTo("/");
+    toast.error("Failed to load landing movies.");
 }
 
 if (error.value) {
@@ -114,6 +118,12 @@ onUnmounted(() => {
 <template>
     <SectionsMainHeader classes="bg-background-600 text-white"/>
         <main class="bg-background-500 text-white">
+            <div v-if="pending" class="min-h-screen flex-center">
+                <div class="flex flex-col items-center gap-y-2">
+                    <div class="animate-spin"><Icon name="tabler:settings"/></div>
+                    <p>Warping in movies from hyperspace.., watch out for em' extraterrestrials!</p>
+                </div>
+            </div>
             <section v-for="(movie, movieIndex) in featured_movies" :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-auto sm:h-[648px] lg:h-[720px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out bg-no-repeat bg-center bg-cover`" :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'});`">
                 <div class="container mx-auto px-4 h-full flex items-center sm:items-end">
                     <div class="flex items-center justify-between">

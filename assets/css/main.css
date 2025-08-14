@@ -8,6 +8,7 @@
     --color-primary-500: #e00b0b;
     --color-primary-600: #a70d0d;
     --color-primary-700: #8a1212;
+    --color-accent-500: #FF9F10;
     --font-inter: Inter, sans-serif;
     --font-roboto: Roboto, sans-serif;
     --breakpoint-lgx: 900px;
@@ -93,4 +94,8 @@
 
 .btn-outline-white {
     @apply border border-white bg-transparent text-white hover:border-transparent hover:text-background-500 hover:bg-white;
+}
+
+.btn-outline-primary {
+    @apply border border-primary-500 bg-transparent text-primary-500 hover:border-transparent hover:text-background-500 hover:bg-primary-500;
 }

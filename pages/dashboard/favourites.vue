@@ -40,9 +40,9 @@ const removeFavourite = async (id: number) => {
         await useApiFetch(`/api/favourites/${id}`, {
             method: "DELETE",
         });
+        refreshFavourites();
         toast.success("Favourite removed successfully!");
         deleteFavouriteStatus.value = "deleted";
-        refreshFavourites();
     } catch (error) {
         toast.error("Failed to remove favourite. Please try again.");
         console.error("Failed to remove favourite:", error);
