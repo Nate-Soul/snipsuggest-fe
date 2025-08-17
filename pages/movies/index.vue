@@ -12,14 +12,14 @@ const {
 } = await useFetch<LandingMovie | null>("/api/movies/landing");
 
 
-if (!landingMovies.value) {
+if (!landingMovies.value && error.value) {
     navigateTo("/");
     toast.error("Failed to load landing movies.");
 }
 
-if (error.value) {
-    console.log("Error:", error.value);
-}
+// if (error.value) {
+//     console.log("Error:", error.value);
+// }
 
 const popular_movies    = computed(() => landingMovies.value?.popular_movies);
 const top_rated_movies  = computed(() => landingMovies.value?.top_rated_movies);
@@ -124,7 +124,10 @@ onUnmounted(() => {
                     <p>Warping in movies from hyperspace.., watch out for em' extraterrestrials!</p>
                 </div>
             </div>
-            <section v-for="(movie, movieIndex) in featured_movies" :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-auto sm:h-[648px] lg:h-[720px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out bg-no-repeat bg-center bg-cover`" :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'});`">
+            <section 
+                v-for="(movie, movieIndex) in featured_movies" 
+                :class="`${carouselCurrentIndex === movieIndex ? 'opacity-100 block' : 'opacity-0 hidden'} py-20 relative z-0 h-auto sm:h-[648px] lg:h-[720px] overflow-hidden transition-opacity delay-300 duration-700 ease-in-out bg-no-repeat bg-center bg-cover`" :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.png'});`"
+            >
                 <div class="container mx-auto px-4 h-full flex items-center sm:items-end">
                     <div class="flex items-center justify-between">
                         <div class="flex flex-col gap-y-8 text-white w-full sm:w-4/5 lg:w-1/2">

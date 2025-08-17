@@ -33,7 +33,6 @@ const {
   }
 );
 
-
 const removeFavourite = async (id: number) => {
     deleteFavouriteStatus.value = "deleting";
     try {
@@ -76,7 +75,7 @@ const removeFavourite = async (id: number) => {
                     Movies
                 </NuxtLink>
             </div>
-            <h1 class="text-2xl font-semibold font-roboto">My Favourites Movies</h1>
+            <h1 class="text-2xl font-semibold font-roboto">My Favourites</h1>
             <!-- filters -->
             <ul class="flex items-center flex-wrap gap-3 text-sm font-medium text-center">
                 <li>

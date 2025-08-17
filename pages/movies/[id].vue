@@ -256,7 +256,6 @@ const getUserRating = async (id: number): Promise<number> => {
   }
 };
 
-
 useClickOutside(ratingsDropdown, () => {
   if (ratingsDropdownToggler.value && !ratingsDropdownToggler.value.contains(document.activeElement as HTMLElement)) {
     closeRatingsBox();
@@ -276,7 +275,7 @@ onMounted(async () => {
   <main class="bg-background-500 text-white">
     <section
       v-if="movie"
-      :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.jpg'})`"
+      :style="`background-image: url(${movie.backdrop_path ? `${IMAGE_BASE_URL}${DEFAULT_BACKDROP_SIZE}${movie.backdrop_path}` : '/media/images/backdrops/default.png'})`"
       class="relative z-0 rounded-lg h-[720px] py-20 bg-no-repeat bg-center bg-cover"
     >
       <div class="container h-full mx-auto px-4 flex items-center md:items-end">
@@ -368,17 +367,22 @@ onMounted(async () => {
           id="movieCastOverflowCarousel"
           class="flex items-stretch gap-x-2 flex-nowrap overflow-x-auto hide-scrollbar scroll-smooth"
         >
-          <figure v-for="actor in cast" :key="actor.id" class="w-1/3 xxs:w-1/4 xs:w-1/5 sm:w-[15%] lg:w-[10%] flex-none">
+          <NuxtLink 
+            v-for="actor in cast"
+            :key="actor.id"
+            :to="`/person/${actor.id}`"
+            class="w-1/3 xxs:w-1/4 xs:w-1/5 sm:w-[15%] lg:w-[10%] flex-none"
+          >
             <img
               :src="actor.profile_path ? `${IMAGE_BASE_URL}${DEFAULT_CAST_SIZE}${actor.profile_path}` : '/media/images/cast/default.png'"
               :alt="actor.name"
               class="w-full h-[155px] object-contain"
             />
-            <figcaption class="text-center text-white">
+            <div class="text-center text-white">
               <h6 class="font-medium text-sm">{{ actor.name }}</h6>
               <p class="text-xs font-light">as {{ actor.character }}</p>
-            </figcaption>
-          </figure>
+            </div>
+          </NuxtLink>
         </div>
       </div>
       <div class="absolute -z-[1] bg-primary-500 w-[200px] h-[200px] rounded-full blur-[150px] -bottom-6 -left-[5%]"></div>
