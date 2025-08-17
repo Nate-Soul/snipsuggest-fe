@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useAuthStore } from '#imports';
-import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from '~/assets/const';
+import { landingMovies } from '~/assets/mock-database/movies';
 
 definePageMeta({
     layout: 'dashboard'
@@ -12,15 +12,87 @@ const authStore = useAuthStore();
 
 
 <template>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden p-4">
-        <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
-            <h1 class="text-2xl xs:text-3xl md:text-4xl">My Profile</h1>
-            <p>Start adding movies to your list to help us curate suggestions just for you.</p>
-            <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
-                Explore Movies
-            </NuxtLink>
+    <section class="relative z-0 overflow-hidden pt-10 px-6 pb-5">
+        <h1 class="text-2xl font-bold mb-10">Welcome Back, User</h1>
+        <div class="stats-container grid grid-cols-4 gap-x-4">
+            <div class="bg-background-300 p-5 rounded-lg">
+                <h6>Favourites</h6>
+                <div class="flex items-center justify-between">
+                    <p class="text-6xl text-primary-500 font-medium">24</p>
+                    <div class="flex flex-col gap-y-4">
+                        <div class="text-2xl">
+                            <Icon name="tabler:heart" />
+                        </div>
+                        <NuxtLink to="/dashboard/favourites" class="text-sm inline-flex items-center gap-x-1">
+                            See All
+                            <Icon name="tabler:chevron-right" />
+                        </NuxtLink>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-background-300 p-5 rounded-lg">
+                <h6>Comments</h6>
+                <div class="flex items-center justify-between">
+                    <p class="text-6xl text-primary-500 font-medium">69</p>
+                    <div class="flex flex-col gap-y-4">
+                        <div class="text-2xl">
+                            <Icon name="tabler:heart" />
+                        </div>
+                        <NuxtLink to="/dashboard/activities" class="text-sm inline-flex items-center gap-x-1">
+                            See All
+                            <Icon name="tabler:chevron-right" />
+                        </NuxtLink>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-background-300 p-5 rounded-lg">
+                <h6>Recently Viewed</h6>
+                <div class="flex items-center justify-between">
+                    <p class="text-6xl text-primary-500 font-medium">6</p>
+                    <div class="flex flex-col gap-y-4">
+                        <div class="text-2xl">
+                            <Icon name="tabler:eye" />
+                        </div>
+                        <NuxtLink to="/dashboard/activities" class="text-sm inline-flex items-center gap-x-1">
+                            See All
+                            <Icon name="tabler:chevron-right" />
+                        </NuxtLink>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-background-300 p-5 rounded-lg">
+                <h6>My Watchlist</h6>
+                <div class="flex items-center justify-between">
+                    <p class="text-6xl text-primary-500 font-medium">56</p>
+                    <div class="flex flex-col gap-y-4">
+                        <div class="text-2xl">
+                            <Icon name="tabler:list" />
+                        </div>
+                        <NuxtLink to="/dashboard/activities" class="text-sm inline-flex items-center gap-x-1">
+                            See All
+                            <Icon name="tabler:chevron-right" />
+                        </NuxtLink>
+                    </div>
+                </div>
+            </div>
         </div>
-        <img src="/media/images/icons/popcorn.png" alt="" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 -z-[1]">
-        <img src="/media/images/bg/movie-reel-lg.png" alt="" class="absolute left-0 bottom-0 -z-[1]">
-    </div>
+    </section>
+    <!-- <section class="relative z-0 overflow-hidden py-10 px-6">
+        <hgroup class="flex flex-col gap-y-2 mb-8">
+            <h2 class="text-xl font-semibold">Recommended Movies</h2>
+            <p class="text-white/70">Based on your favorite here is what we think you’ll love.</p>
+        </hgroup>
+    </section> -->
+    <SectionsMovieSlide 
+        v-if="landingMovies.upcoming_movies"
+        sectionId="recommendedMovies"
+        sectionTitle="Recommended Movies"
+    >
+        <SubcomponentsMovieCard
+            v-for="movie in landingMovies.upcoming_movies"
+            :key="movie.id"
+            :movie="movie"
+            containerClasses="w-4/5 xxs:w-3/5 xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 flex-none"
+        />
+    </SectionsMovieSlide>
 </template>
