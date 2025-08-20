@@ -3,8 +3,6 @@ import { useAuthStore } from '#imports';
 import { useToast } from "vue-toastification";
 import { usePasswordField } from "~/composables/usePasswordField";
 
-import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from '~/assets/const';
-
 definePageMeta({
     layout: 'dashboard'
 });
@@ -24,8 +22,6 @@ const form = reactive({
     new_password: "",
     new_password2: ""
 });
-
-const token = route.query.token as string | undefined;
 
 const { validateForm, validatePsw, comparePswFields, formErrors } = useFormValidation();
 const { passwordFieldVisible, togglePasswordField } = usePasswordField();
@@ -77,48 +73,95 @@ const handleChangePassword = async () => {
 </script>
 
 <template>
-    <section class="bg-background-500 text-white relative z-0 overflow-hidden py-4">
-        <div class="px-4 min-h-screen flex-center gap-x-0 sm:gap-x-5 md:gap-x-8">
-            <div class="flex flex-col gap-y-10 basis-full xs:basis-4/5 sm:basis-3/5 md:basis-1/2 lgx:basis-2/5 flex-none p-0 sm:p-5 md:p-8 lg:p-10">
-                <hgroup class="flex flex-col gap-y-3">
-                    <h1 class="text-semibold text-2xl font-roboto">Change Your Password</h1>
+    <section class="relative z-0 overflow-hidden px-6 py-10">
+        <div class="grid grid-cols-10 gap-6 ">
+            <div class="col-span-full p-5 lg:p-8 rounded-2xl border border-white/10 grid grid-cols-2 gap-4">
+                <hgroup class="flex flex-col gap-y-2 mb-8">
+                    <h2 class="text-semibold text-xl font-roboto">Change Your Password</h2>
                     <p>Enter your new password below.</p>
                 </hgroup>
-                <div class="p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
-                    <form @submit.prevent="handleChangePassword" action="#" method="POST" class="flex flex-col gap-y-6">
-                        <SubcomponentsPasswordField
-                            label="Old Password"
-                            name="old_password"
-                            id="oldPassword"
-                            v-model="form.old_password"
-                            :error="formErrors.old_password"
-                            @blur="validatePsw('old_password', form.old_password)"
-                        />
-                        <SubcomponentsPasswordField
-                            label="New Password"
-                            name="new_password"
-                            id="newPassword"
-                            v-model="form.new_password"
-                            :error="formErrors.new_password"
-                            @blur="validatePsw('new_password', form.new_password)"
-                        />
-                        <SubcomponentsPasswordField
-                            label="Confirm Password"
-                            name="new_password2"
-                            id="newPassword2"
-                            v-model="form.new_password2"
-                            :error="formErrors.new_password2"
-                            @blur="validatePsw('new_password2', form.new_password2)"
-                        />
-                        <button 
-                            type="submit" 
-                            class="btn btn-primary btn-lg justify-center"
-                            :disabled="isProcessingForm"
-                        >
-                            {{ isProcessingForm ? 'Changing Password...' : 'Change Password' }}
-                        </button>
-                    </form>
+                <form @submit.prevent="handleChangePassword" action="#" method="POST" class="flex flex-col gap-y-6">
+                    <SubcomponentsPasswordField
+                        label="Old Password"
+                        name="old_password"
+                        id="oldPassword"
+                        v-model="form.old_password"
+                        :error="formErrors.old_password"
+                        @blur="validatePsw('old_password', form.old_password)"
+                    />
+                    <SubcomponentsPasswordField
+                        label="New Password"
+                        name="new_password"
+                        id="newPassword"
+                        v-model="form.new_password"
+                        :error="formErrors.new_password"
+                        @blur="validatePsw('new_password', form.new_password)"
+                    />
+                    <SubcomponentsPasswordField
+                        label="Confirm Password"
+                        name="new_password2"
+                        id="newPassword2"
+                        v-model="form.new_password2"
+                        :error="formErrors.new_password2"
+                        @blur="validatePsw('new_password2', form.new_password2)"
+                    />
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary btn-lg justify-center"
+                        :disabled="isProcessingForm"
+                    >
+                        {{ isProcessingForm ? 'Changing Password...' : 'Change Password' }}
+                    </button>
+                </form>
+            </div>
+            <div class="col-span-6 p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
+                <hgroup class="flex flex-col gap-y-2 mb-8">
+                    <h2 class="text-semibold text-xl font-roboto">Change Your Password</h2>
+                    <p>Enter your new password below.</p>
+                </hgroup>
+                <form @submit.prevent="handleChangePassword" action="#" method="POST" class="flex flex-col gap-y-6">
+                    <SubcomponentsPasswordField
+                        label="Old Password"
+                        name="old_password"
+                        id="oldPassword"
+                        v-model="form.old_password"
+                        :error="formErrors.old_password"
+                        @blur="validatePsw('old_password', form.old_password)"
+                    />
+                    <SubcomponentsPasswordField
+                        label="New Password"
+                        name="new_password"
+                        id="newPassword"
+                        v-model="form.new_password"
+                        :error="formErrors.new_password"
+                        @blur="validatePsw('new_password', form.new_password)"
+                    />
+                    <SubcomponentsPasswordField
+                        label="Confirm Password"
+                        name="new_password2"
+                        id="newPassword2"
+                        v-model="form.new_password2"
+                        :error="formErrors.new_password2"
+                        @blur="validatePsw('new_password2', form.new_password2)"
+                    />
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary btn-lg justify-center"
+                        :disabled="isProcessingForm"
+                    >
+                        {{ isProcessingForm ? 'Changing Password...' : 'Change Password' }}
+                    </button>
+                </form>
+            </div>
+            <div class="col-span-4 p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
+                <hgroup class="flex flex-col gap-y-2 mb-8">
+                    <h2 class="text-semibold text-xl font-roboto">Delete Account</h2>
+                    <p>Once you take this action, you can't recover from the regret that comes after</p>
+                </hgroup>
+                <div class="text-[200px]">
+                    <Icon name="tabler:waterpolo" />
                 </div>
+                <button class="btn btn-md btn-primary-gradient">Delete Account</button>
             </div>
         </div>
         <div class="absolute -top-10 -right-10 -z-[1] w-[175px] h-[175px] rounded-full bg-primary-500 blur-[100px]"></div>

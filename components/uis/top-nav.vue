@@ -43,7 +43,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <header class="py-4 bg-background-500 text-white sticky z-50 top-0 border-b border-gray-500">
+    <header class="py-4 bg-background-500 text-white sticky z-40 top-0 border-b border-gray-500">
         <nav class="px-6">
             <div class="flex items-center gap-x-4 justify-between">
                 <div class="inline-flex md:hidden">

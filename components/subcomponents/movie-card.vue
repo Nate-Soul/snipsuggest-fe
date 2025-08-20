@@ -32,7 +32,7 @@ defineProps({
             <div class="flex items-center justify-between gap-x-2 text-xs">
                 <span>{{ movie.release_date.slice(0,4) }}</span>
                 <span>Genre</span>
-                <div class="flex items-center gap-x-0.5 text-primary-500">
+                <div class="flex items-center gap-x-0.5 text-accent-500">
                         <Icon name="tabler:star" />
                     {{ parseFloat(movie.vote_average).toFixed(1) }}
                 </div>
