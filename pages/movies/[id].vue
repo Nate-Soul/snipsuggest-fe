@@ -6,13 +6,14 @@ import type { RatingResponse } from "~/types/ratings";
 
 import { useToast } from "vue-toastification";
 
-import { addComment } from "~/services/comments";
 import { useAuthStore } from "~/stores/auth";
 import { useClickOutside } from "~/composables/useClickOutside";
 import { useFormValidation } from "~/composables/useFormValidation";
+import { useComments } from "~/composables/useComments";
 import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE, DEFAULT_CAST_SIZE } from "~/assets/const";
 
 // State
+const { addComment } = useComments();
 const authStore = useAuthStore();
 const toast = useToast();
 const route = useRoute();
@@ -216,13 +217,6 @@ const addMovieComment = async (id: number, content: string, parent_id?: number) 
     toast.error("Check your comment input, and try again.");
   }
 
-};
-
-const loadMoreComments = async () => {
-  // if (pagination.value.page < pagination.value.total_pages) {
-    commentCurrentPage.value++;
-    await refreshComments();
-  // }
 };
 
 // Log errors
@@ -509,7 +503,7 @@ onMounted(async () => {
             <p>No comments yet. Be the first to comment!</p>
           </div>
           <div class="flex items-center justify-center">
-            <button @click.prevent="loadMoreComments" class="btn btn-sm text-primary-500 gap-x-1">
+            <button class="btn btn-sm text-primary-500 gap-x-1">
               Show More
               <Icon name="tabler:chevron-down" />
             </button>

@@ -1,7 +1,5 @@
 export default defineEventHandler(async (event) => {
 
-  const { id } = event.context.params as { id: string };
-
   const config = useRuntimeConfig();
   const apiBaseUrl = config.apiBaseUrl;
 

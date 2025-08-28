@@ -10,8 +10,8 @@ export interface CommentResponse {
   replies: CommentResponse[];
 }
 
-// export interface CommentResponse {
-//   data: Comment[];
-//   pagination: Pagination;
-//   message: string;
-// }
+export interface PaginatedCommentResponse {
+  data: CommentResponse[];
+  pagination: Pagination;
+  message: string;
+}

@@ -1,41 +1,32 @@
-<script lang="ts" setup>
-import type { CommentResponse } from '~/types/comments';
+<script setup lang="ts">
+import { useComments } from "~/composables/useComments";
+import type { CommentResponse } from "~/types/comments";
 
 definePageMeta({
     layout: 'dashboard'
 });
 
-const authStore = useAuthStore();
-
-const {
-    data: commentsData, 
-    pending: commentsPending, 
-    error: commentsErr,
-    refresh: refreshComments
-} = useFetch<CommentResponse[]>(
-  "/api/comments/user",
-  {
-    headers: { 
-        Authorization: `Bearer ${authStore.token}` 
-    }
-  }
-);
+const { 
+    comments, 
+    commentsPending, 
+    commentsErr, 
+    refreshComments 
+} = useComments();
 </script>
 
 
 <template>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden p-4" v-if="commentsData && commentsData.length === 0">
+    <div v-if="commentsPending" class="h-screen w-full flex-center relative z-0 overflow-hidden p-4">
         <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
             <img src="/media/images/bg/activity-hub.png" alt="" width="200">
-            <h1 class="text-2xl xs:text-3xl md:text-4xl">No activities on your feed</h1>
-            <p class="text-sm smd:text-base">Explore movies and engage with community to see your activities here</p>
-            <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
-                Explore Movies
-            </NuxtLink>
+            <p class="text-sm smd:text-base">Assembling your activities from the studio archives</p>
+            <div class="animate-spin">
+                <Icon name="tabler:settings" />
+            </div>
         </div>
         <img src="/media/images/icons/popcorn.png" alt="" class="absolute left-0 bottom-0 -z-[1]" width="200">
     </div>
-    <div v-else-if="commentsErr" class="h-screen w-full flex-center relative z-0 overflow-hidden p-4" v-if="commentsData && commentsData.length === 0">
+    <div v-if="commentsErr" class="h-screen w-full flex-center relative z-0 overflow-hidden p-4">
         <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
             <img src="/media/images/bg/activity-hub.png" alt="" width="200">
             <h1 class="text-2xl xs:text-3xl md:text-4xl">Error Loading Activities</h1>
@@ -47,17 +38,7 @@ const {
         </div>
         <img src="/media/images/icons/popcorn.png" alt="" class="absolute left-0 bottom-0 -z-[1]" width="200">
     </div>
-    <div v-else-if="commentsPending" class="h-screen w-full flex-center relative z-0 overflow-hidden p-4" v-if="commentsData && commentsData.length === 0">
-        <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
-            <img src="/media/images/bg/activity-hub.png" alt="" width="200">
-            <p class="text-sm smd:text-base">Assembling your activities from the studio archives</p>
-            <div class="animate-spin">
-                <Icon name="tabler:settings" />
-            </div>
-        </div>
-        <img src="/media/images/icons/popcorn.png" alt="" class="absolute left-0 bottom-0 -z-[1]" width="200">
-    </div>
-    <section v-else="comments.length > 0" class="bg-background-500 text-white px-6 py-10">
+    <section v-if="!commentsPending && comments && comments.length > 0" class="bg-background-500 text-white px-6 py-10">
         <div class="flex flex-col gap-y-8">
             <h1 class="text-2xl font-semibold font-roboto">Recent Activities</h1>
             <div class="flex items-center justify-between">
@@ -65,11 +46,22 @@ const {
             </div>
             <div class="flex flex-col gap-y-6">
                 <SubcomponentsActivityCard
-                    v-for="comment in commentsData"
+                    v-for="comment in comments"
                     :key="comment.id"
                     :comment="comment" 
                 />
             </div>
         </div>
     </section>
+    <div v-else="!commentsPending && comments && comments.length === 0" class="h-screen w-full flex-center relative z-0 overflow-hidden p-4">
+        <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
+            <img src="/media/images/bg/activity-hub.png" alt="" width="200">
+            <h1 class="text-2xl xs:text-3xl md:text-4xl">No activities on your feed</h1>
+            <p class="text-sm smd:text-base">Explore movies and engage with community to see your activities here</p>
+            <NuxtLink to="/movies" class="btn btn-lg btn-primary w-max">
+                Explore Movies
+            </NuxtLink>
+        </div>
+        <img src="/media/images/icons/popcorn.png" alt="" class="absolute left-0 bottom-0 -z-[1]" width="200">
+    </div>
 </template>

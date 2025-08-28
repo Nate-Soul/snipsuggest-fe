@@ -8,23 +8,29 @@ const route     = useRoute();
 const router    = useRouter();
 const authStore = useAuthStore();
 
-
 const isProcessingForm = ref(false);
 
-const { validateForm, validatePsw, validateEmail } = useFormValidation();
-const { passwordFieldVisible, togglePasswordField } = usePasswordField();
+const { 
+    validateForm, 
+    validatePsw, 
+    validateEmail, 
+    formErrors 
+} = useFormValidation();
+const { 
+    passwordFieldVisible, 
+    togglePasswordField 
+} = usePasswordField();
 
 const form = reactive({
     email: "",
     password: ""
 });
 
-
 const handleLogin = async () => {    
     const isValid = validateForm([
         { 
-            name: 'email', 
-            value: form.email, 
+            name: 'email_address',
+            value: form.email,
             validator: (name: string, value: string) => validateEmail(name, value) 
         },
         { 
@@ -40,6 +46,7 @@ const handleLogin = async () => {
             await authStore.login(form);
             const redirect = route.query.redirect as string | undefined;
             await router.push(redirect || '/dashboard');
+            toast.success("You're logged in");
         } catch (err: any) {
             // console.log("An Error occured:", err.message);
             toast.error(err.message || err.detail || "Incorrect login credentials");
@@ -67,18 +74,36 @@ const handleLogin = async () => {
                             <label for="emailAddress">Email Address</label>
                             <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
                                 <Icon name="tabler:user"/>
-                                <input type="email" name="email_address" id="emailAddress" class="form-input" v-model="form.email">
+                                <input 
+                                    type="email" 
+                                    name="email_address" 
+                                    id="emailAddress" 
+                                    class="form-input" 
+                                    v-model="form.email"
+                                    @blur="() => validateEmail('email_address', form.email)"
+                                    @input="() => validateEmail('email_address', form.email)"
+                                >
                             </div>
+                            <small v-if="formErrors.email_address" class="text-red-400">{{ formErrors.email_address }}</small>
                         </div>
                         <div class="form-input-wrapper">
                             <label for="password">Your Password</label>
                             <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
                                 <Icon name="tabler:lock"/>
-                                <input :type="`${passwordFieldVisible ? 'text' : 'password'}`" name="password" id="password" class="form-input" v-model="form.password">
+                                <input 
+                                    :type="`${passwordFieldVisible ? 'text' : 'password'}`" 
+                                    name="password" 
+                                    id="password" 
+                                    class="form-input" 
+                                    v-model="form.password"
+                                    @blur="() => validatePsw('password', form.password)"
+                                    @input="() => validatePsw('password', form.password)"
+                                >
                                 <button @click.prevent="togglePasswordField" class="btn flex-none p-2">
                                     <Icon :name="`${passwordFieldVisible ? 'tabler:eye-closed' : 'tabler:eye'}`"/>
                                 </button>
                             </div>
+                            <small v-if="formErrors.password" class="text-red-400">{{ formErrors.password }}</small>
                             <NuxtLink to="/forgot-password" class="text-end text-primary-500">Forgot password?</NuxtLink>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg justify-center" href="/ranked-movies.html">Login</button>

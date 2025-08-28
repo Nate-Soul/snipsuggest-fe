@@ -1,69 +1,76 @@
 <script lang="ts" setup>
-import type { StoredMovie } from "~/types/movies";
 import { useToast } from "vue-toastification";
-import { useAuthStore } from "#imports";
 
 import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from "~/assets/const";
+import { useFavourites } from "~/composables/useFavourites";
 
 definePageMeta({
-    layout: 'dashboard'
+    layout: 'dashboard',
+    middleware: ['protected'],
 });
 
-interface FavouriteResponse {
-    data: StoredMovie[];
-    message?: string;
-}
+const toast = useToast();
+const route = useRoute();
 
-const authStore = useAuthStore();
-const toast     = useToast();
+// Initialize page from URL query
+const initialPage = computed(() => {
+  const page = parseInt(route.query.page as string);
+  return isNaN(page) ? 1 : Math.max(1, page);
+});
 
 const deleteFavouriteStatus = ref<"idle" | "deleting" | "deleted">("idle");
+const { 
+    removeFavourite, 
+    favourites, 
+    favouritesPending, 
+    favouritesErr,
+    totalPages,
+    perPage,
+    setPage,
+    favouriteCount,
+} = useFavourites();
 
-const {
-    data: favourites, 
-    pending: favouritesPending, 
-    error: favouritesErr,
-    refresh: refreshFavourites 
-} = useFetch<FavouriteResponse>(
-  "/api/favourites",
-  {
-    headers: { 
-        Authorization: `Bearer ${authStore.token}` 
+// Handle page input
+// const handlePageInput = () => {
+//   const newPage = Math.max(1, Math.min(inputPage.value, totalPages.value));
+//   if (newPage !== page.value) {
+//     setPage(newPage);
+//   }
+// };
+
+watchEffect(() => {
+    if (favouritesErr.value) {
+        toast.error("May Day! May Day! May Day! Favourites crashed into enemy base");
+        console.log(favouritesErr.value);
     }
-  }
-);
+})
 
-const removeFavourite = async (id: number) => {
+const handleRemoveFavourite = async (id: number) => {
     deleteFavouriteStatus.value = "deleting";
     try {
-        await useApiFetch(`/api/favourites/${id}`, {
-            method: "DELETE",
-        });
-        refreshFavourites();
+        await removeFavourite(id);
         toast.success("Favourite removed successfully!");
         deleteFavouriteStatus.value = "deleted";
     } catch (error) {
         toast.error("Failed to remove favourite. Please try again.");
-        console.error("Failed to remove favourite:", error);
     } finally {
         deleteFavouriteStatus.value = "idle";
     }
-}
+};
 </script>
 
-
 <template>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-if="favouritesPending">
+    <div v-if="favouritesPending" class="h-screen w-full flex-center relative z-0 overflow-hidden">
         <div class="flex flex-col w-1/2 items-center text-center gap-y-5">
             <div class="animate-spin">
                 <Icon name="tabler:settings" />
             </div>
-            <p>Summoning your favourites from the multiverse</p>
+            <p>Summoning your favourite movies from the multiverse</p>
         </div>
         <img src="/media/images/icons/popcorn.png" alt="" class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 -z-[1]">
         <img src="/media/images/bg/movie-reel-lg.png" alt="" class="absolute left-0 bottom-0 -z-[1]">
     </div>
-    <section v-if="favourites && favourites.data.length > 0" class="bg-background-500 text-white px-6 pb-10">
+    <section v-if="favourites && favourites.length > 0" class="bg-background-500 text-white px-6 pb-10">
         <div class="flex flex-col gap-y-5">
             <div class="py-4 flex items-center justify-between gap-x-3">
                 <button @click="$router.back()" class="btn gap-x-1">
@@ -97,7 +104,7 @@ const removeFavourite = async (id: number) => {
             <!-- favourite cards -->
             <div class="flex flex-col xs:flex-row xs:items-stretch gap-y-8 gap-x-0 xs:gap-6 flex-nowrap xs:flex-wrap">
                 <div
-                    v-for="(fav, favIndex) in favourites.data"
+                    v-for="(fav, favIndex) in favourites"
                     :id="`favouriteCard${fav.id}`"
                     :key="favIndex"
                     class="favourite-card flex flex-col xs:flex-row xs:items-center gap-y-4 xs:gap-y-0 gap-x-0 xs:gap-x-4"
@@ -118,22 +125,18 @@ const removeFavourite = async (id: number) => {
                         </NuxtLink>
                         <dl class="flex items-center gap-x-2 flex-wrap">
                             <dt>IMDB Rating:</dt>
-                            <dd class="text-primary-500"><Icon name="tabler:star-filled"/>{{ fav.imdb_rating }}</dd>
+                            <dd class="text-accent-500"><Icon name="tabler:star-filled"/> {{ fav.imdb_rating }}</dd>
                         </dl>
                         <dl class="flex items-center gap-x-2 flex-wrap">
                             <dt>MPAA Rating:</dt>
                             <dd>{{ fav.mpaa_rating }}</dd>
                         </dl>
-                        <dl class="flex items-center gap-x-2 flex-wrap">
-                            <dt>Duration:</dt>
-                            <dd>{{ fav.release_date }}</dd>
-                        </dl>
-                        <!-- <dl class="flex items-center gap-x-2">
-                            <dt>Added:</dt>
-                            <dd></dd>
-                        </dl> -->
+                        <div class="flex items-center gap-x-2 flex-wrap">
+                            <div>Release Date:</div>
+                            <time :datetime="fav.release_date">{{ fav.release_date }}</time>
+                        </div>
                         <button 
-                            @click="removeFavourite(fav.id)" 
+                            @click="handleRemoveFavourite(fav.id)" 
                             class="btn btn-sm btn-primary w-max gap-x-1"
                             :disabled="deleteFavouriteStatus === 'deleting'"
                         >
@@ -147,10 +150,10 @@ const removeFavourite = async (id: number) => {
             <div class="mt-10 flex flex-wrap gap-4 items-center justify-between">
                 <!-- Help text -->
                 <span class="text-sm text-gray-700 dark:text-gray-400">
-                    Showing <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">9</span> of <span class="font-semibold text-gray-900 dark:text-white">100</span> Entries
+                    Showing 
+                    <span class="font-semibold text-gray-900 dark:text-white">1</span> to <span class="font-semibold text-gray-900 dark:text-white">{{ favourites.length }}</span> of <span class="font-semibold text-gray-900 dark:text-white">{{ favouriteCount }}</span> Entries
                 </span>
                 <div class="inline-flex items-center gap-x-4">
-                <!-- Buttons -->
                     <button class="inline-flex items-center justify-center w-10 h-10 rounded-full text-sm font-medium text-white bg-transparent border hover:border-transparent hover:bg-primary-500" title="Previous">
                         <svg class="w-3.5 h-3.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4"/>
@@ -166,12 +169,12 @@ const removeFavourite = async (id: number) => {
                 </div>
                 <div class="flex items-center gap-x-2">
                     <span>Go to page</span>
-                    <input type="number" class="border border-gray-500 w-16 h-8 rounded-lg px-1.5" min="1" max="11">
+                    <input type="number" class="border border-gray-500 w-16 h-8 rounded-lg px-1.5" min="1" :max="totalPages">
                 </div>
             </div>
         </div>
     </section>
-    <div class="h-screen w-full flex-center relative z-0 overflow-hidden" v-else="favourites && favourites.data.length === 0">
+    <div v-else="!favouritesPending && favourites && favourites.data.length === 0" class="h-screen w-full flex-center relative z-0 overflow-hidden">
         <div class="flex flex-col w-full xs:w-4/5 sm:w-1/2 items-center text-center gap-y-5">
             <h1 class="text-2xl xs:text-3xl md:text-4xl">No Favorites Yet!</h1>
             <p>Start adding movies to you list to help us curate suggestions just for you.</p>

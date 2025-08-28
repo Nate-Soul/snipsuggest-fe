@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
-import { addComment } from "~/services/comments";
 import { useToast } from "vue-toastification";
+import { useComments } from "~/composables/useComments";
 
 const props = defineProps<{
   comment: {
@@ -16,6 +16,7 @@ const props = defineProps<{
   containerClasses?: string;
 }>();
 
+const { addComment } = useComments();
 const toast = useToast();
 const commentStatus = ref<"idle" | "sending" | "sent">("idle");
 const commentMsg = ref<string>("");
@@ -37,12 +38,12 @@ const addMovieComment = async (movieId: number, content: string, parentId?: numb
 </script>
 
 <template>
-    <div :class="`comment-parent flex items-start gap-x-4` + (containerClasses ? ` ${containerClasses}` : '')">
+    <div :class="`comment-parent flex items-start gap-x-4` + (containerClasses ? `${containerClasses}` : '')">
         <div class="w-8 h-8 rounded-full overflow-hidden flex-none">
             <img
-            src="/media/images/users/default.png"
-            :alt="comment.user.username"
-            class="w-full h-full object-cover"
+                src="/media/images/users/default.png"
+                :alt="comment.user.username"
+                class="w-full h-full object-cover"
             />
         </div>
         <div class="flex flex-col gap-y-2 w-full">

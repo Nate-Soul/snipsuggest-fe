@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import type { CommentResponse } from '~/types/comments';
+import { useTimeFormatter } from "~/composables/useTimeFormatter";
 
-defineProps<{
+const props = defineProps<{
     comment: CommentResponse
 }>();
-</script>
 
+const commentTimestamp = ref<string>(props.comment.timestamp);
+
+const timeFormatterResult = useTimeFormatter(commentTimestamp.value);
+const formattedTime = 'formattedTime' in timeFormatterResult ? timeFormatterResult.formattedTime : timeFormatterResult;
+</script>
 
 <template>
     <div class="activity-card flex flex-col sm:flex-row gap-y-4 sm:gap-y-0 sm:items-center justify-between gap-x-4 p-4 rounded-lg bg-background-400 text-sm">
@@ -19,17 +24,16 @@ defineProps<{
             </div>
             <div class="flex flex-col gap-y-1">
                 <p>You replied to on {{ comment.user.username }}'s comment</p>
-                <NuxtLink 
-                    to="/movies#engagementPanel"
+                <!-- <NuxtLink
                     class="text-primary-500"
                 >
                     See comment
-                </NuxtLink>
+                </NuxtLink> -->
             </div>
         </div>
         <div class="flex flex-col gap-y-2">
             <p>{{ comment.content }}</p>
-            <p class="text-end">{{ comment.timestamp }}</p>
+            <p class="text-end">{{ formattedTime }}</p>
         </div>
     </div>
 </template>

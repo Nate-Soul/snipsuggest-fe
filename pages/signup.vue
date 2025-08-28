@@ -250,7 +250,7 @@ const handleSignup = async () => {
                         </div>
                         <div class="form-tab flex flex-col gap-y-6" v-if="currentTab === 2">
                             <div class="form-input-wrapper">
-                                <p for="username">Select Your Favorite Movie Genres?</p>
+                                <p for="username">Select Your Favorite Movie Genres</p>
                                 <div class="flex items-center flex-wrap gap-4">
                                     <div 
                                         v-for="genre in genreOptions"
@@ -271,7 +271,7 @@ const handleSignup = async () => {
                                         </label>
                                     </div>
                                 </div>
-                                 <small v-if="formErrors.favourite_genre_ids" class="text-red-400">{{ formErrors.favourite_genre_ids }}</small>
+                                <small v-if="formErrors.favourite_genre_ids" class="text-red-400">{{ formErrors.favourite_genre_ids }}</small>
                             </div>
                             <div class="form-input-wrapper">
                                 <p for="username">How Do You Discover Movies?</p>

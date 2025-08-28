@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
   const apiBaseUrl = config.apiBaseUrl;
 
   try {
-    return await $fetch(`${apiBaseUrl}/comments/${id}`, {
+    return await $fetch(`${apiBaseUrl}/comments/movies/${id}`, {
       method: 'GET',
       query,
     });

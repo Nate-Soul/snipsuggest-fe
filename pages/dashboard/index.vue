@@ -1,14 +1,21 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useAuthStore } from '#imports';
 import { landingMovies } from '~/assets/mock-database/movies';
 import { useCarouselScroll } from '~/composables/useCarouselScroll';
+import { useFavourites } from "~/composables/useFavourites";
+import { useComments } from "~/composables/useComments";
 
 definePageMeta({
     layout: 'dashboard'
 });
 
 const authStore = useAuthStore();
-const { canScrollRight, canScrollLeft } = useCarouselScroll("recommendedMoviesOverflowCarousel");
+const { favouriteCount }    = useFavourites();
+const { commentCount }      = useComments();
+const { 
+    canScrollRight, 
+    canScrollLeft 
+} = useCarouselScroll("recommendedMoviesOverflowCarousel");
 </script>
 
 
@@ -16,10 +23,10 @@ const { canScrollRight, canScrollLeft } = useCarouselScroll("recommendedMoviesOv
     <section class="relative z-0 overflow-hidden pt-10 px-6 pb-5">
         <h1 class="text-2xl font-bold mb-10">Welcome Back, User</h1>
         <div class="stats-container grid grid-cols-1 xs:grid-cols-2 lgx:grid-cols-3 xl:grid-cols-4 gap-4">
-            <div class="bg-background-300 p-5 rounded-lg">
+            <div class="stat-card bg-background-300 p-5 rounded-lg">
                 <h6 class="text-lg font-semibold mb-3">Favourites</h6>
                 <div class="flex items-center justify-between">
-                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">24</p>
+                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">{{ favouriteCount || 0 }}</p>
                     <div class="flex flex-col gap-y-4">
                         <div class="text-2xl">
                             <Icon name="tabler:heart" />
@@ -31,10 +38,10 @@ const { canScrollRight, canScrollLeft } = useCarouselScroll("recommendedMoviesOv
                     </div>
                 </div>
             </div>
-            <div class="bg-background-300 p-5 rounded-lg">
+            <div class="stat-card bg-background-300 p-5 rounded-lg">
                 <h6 class="text-lg font-semibold mb-3">Comments</h6>
                 <div class="flex items-center justify-between">
-                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">69</p>
+                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">{{ commentCount || 0 }}</p>
                     <div class="flex flex-col gap-y-4">
                         <div class="text-2xl">
                             <Icon name="tabler:message-dots" />
@@ -46,10 +53,10 @@ const { canScrollRight, canScrollLeft } = useCarouselScroll("recommendedMoviesOv
                     </div>
                 </div>
             </div>
-            <div class="bg-background-300 p-5 rounded-lg">
+            <div class="stat-card bg-background-300 p-5 rounded-lg">
                 <h6 class="text-lg font-semibold mb-3">Recently Viewed</h6>
                 <div class="flex items-center justify-between">
-                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">6</p>
+                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">0</p>
                     <div class="flex flex-col gap-y-4">
                         <div class="text-2xl">
                             <Icon name="tabler:eye" />
@@ -61,10 +68,10 @@ const { canScrollRight, canScrollLeft } = useCarouselScroll("recommendedMoviesOv
                     </div>
                 </div>
             </div>
-            <div class="bg-background-300 p-5 rounded-lg">
+            <div class="stat-card bg-background-300 p-5 rounded-lg">
                 <h6 class="text-lg font-semibold mb-3">My Watchlist</h6>
                 <div class="flex items-center justify-between">
-                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">56</p>
+                    <p class="text-5xl xl:text-6xl text-primary-500 font-medium">0</p>
                     <div class="flex flex-col gap-y-4">
                         <div class="text-2xl">
                             <Icon name="tabler:list" />
@@ -79,8 +86,8 @@ const { canScrollRight, canScrollLeft } = useCarouselScroll("recommendedMoviesOv
         </div>
     </section>
     <section
-        v-if="landingMovies.upcoming_movies" 
-        id="recommendedMovies" 
+        v-if="landingMovies.upcoming_movies"
+        id="recommendedMovies"
         class="py-10 px-6 relative z-0 overflow-hidden"
     >
         <header class="flex items-center gap-y-3 smd:gap-y-0 gap-x-3 justify-between flex-wrap smd:flex-nowrap mb-8">

@@ -17,32 +17,16 @@ if (!landingMovies.value && error.value) {
     toast.error("Failed to load landing movies.");
 }
 
-// if (error.value) {
-//     console.log("Error:", error.value);
-// }
+// watchEffect(() => {
+//     if (error.value) {
+//         console.log("Error:", error.value);
+//     }
+// });
 
 const popular_movies    = computed(() => landingMovies.value?.popular_movies);
 const top_rated_movies  = computed(() => landingMovies.value?.top_rated_movies);
 const featured_movies   = computed(() => landingMovies.value?.featured_movies);
 const upcoming_movies   = computed(() => landingMovies.value?.upcoming_movies);
-
-const sections = [
-    {
-        sectionId: "topRatedMovies",
-        sectionTitle: "Top Rated Movies",
-        movieArray: top_rated_movies
-    },
-    {
-        sectionId: "popularMovies",
-        sectionTitle: "Popular Movies",
-        movieArray: popular_movies
-    },
-    {
-        sectionId: "upcomingMovies",
-        sectionTitle: "Suggested For You",
-        movieArray: upcoming_movies
-    },
-];
 
 const props = defineProps({
     interval: {
@@ -162,11 +146,19 @@ onUnmounted(() => {
                 </div>
             </section>
             <SectionsMovieSlide
-                v-if="sections.length > 0"
-                v-for="(sec, secIndex) in sections"
-                :key="secIndex"
-                :sectionId="sec.sectionId"
-                :sectionTitle="sec.sectionTitle"
+                sectionId="popularMovies"
+                sectionTitle="Popular Movies"
+            >
+                <SubcomponentsMovieCard
+                    v-for="(movie, movieIndex) in popular_movies"
+                    :key="movieIndex"
+                    :movie="movie"
+                    containerClasses="w-4/5 xxs:w-3/5 xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 flex-none"
+                />
+            </SectionsMovieSlide>
+            <SectionsMovieSlide
+                sectionId="topRated"
+                sectionTitle="Top Rated Movies"
             >
                 <SubcomponentsMovieCard
                     v-for="(movie, movieIndex) in top_rated_movies"
@@ -175,30 +167,17 @@ onUnmounted(() => {
                     containerClasses="w-4/5 xxs:w-3/5 xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 flex-none"
                 />
             </SectionsMovieSlide>
-            <!-- <SectionsMovieSlide
-                sectionId="popularMovies"
-                sectionTitle="Popular Movies"
-                :movies="popular_movies"
-            >
-                <SubcomponentsMovieCard
-                    v-for="(movie, movieIndex) in popular_movies"
-                    :key="movieIndex"
-                    :movie="movie"
-                    containerClasses="w-1/6"
-                />
-            </SectionsMovieSlide>
             <SectionsMovieSlide
                 sectionId="upcomingMovies"
-                sectionTitle="Suggested For You"
-                :movies="upcoming_movies"
+                sectionTitle="Upcoming Movies"
             >
                 <SubcomponentsMovieCard
                     v-for="(movie, movieIndex) in upcoming_movies"
                     :key="movieIndex"
                     :movie="movie"
-                    containerClasses="w-1/6"
+                    containerClasses="w-4/5 xxs:w-3/5 xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 flex-none"
                 />
-            </SectionsMovieSlide> -->
+            </SectionsMovieSlide>
         </main>
     <SectionsMainFooter/>
 </template>
