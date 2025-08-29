@@ -34,10 +34,10 @@ export function useComments(options: UseCommentsOptions = { immediate: true }) {
   });
 
   // Computed properties
-  const comments = computed(() => data.value?.data ?? []);
-  const commentCount = computed(() => data.value?.pagination.total ?? 0);
-  const totalPages = computed(() => data.value?.pagination.total_pages ?? 1);
-
+  const comments        = computed(() => data.value?.data ?? []);
+  const commentCount    = computed(() => data.value?.pagination.total ?? 0);
+  const totalPages      = computed(() => data.value?.pagination.total_pages ?? 1);
+  const isAuthenticated = computed(() => authStore.isAuthenticated);
   // Methods
   const setPage = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages.value) {
@@ -47,6 +47,10 @@ export function useComments(options: UseCommentsOptions = { immediate: true }) {
   };
 
   const addComment = async (id: number, commentMsg: string, parent_id?: number) => {
+    if (!isAuthenticated.value) {
+      throw new Error('User must be authenticated to add a comment.');
+    }
+
     try {
       await useApiFetch(`/api/comments/${id}`, {
         method: 'POST',
@@ -60,6 +64,21 @@ export function useComments(options: UseCommentsOptions = { immediate: true }) {
       throw new Error(err.message || "Failed to add comment.");
     }
   };
+  
+  const removeComment = async (commentId: number) => {
+    if (!isAuthenticated.value) {
+      throw new Error('User must be authenticated to remove a comment.');
+    }
+
+    try {
+      await useApiFetch(`/api/comments/${commentId}/delete`, {
+        method: 'DELETE'
+      });
+    } catch (error: any) {
+      console.log("Error removing comment:", error);
+      throw new Error(error.message || "Failed to remove comment.");
+    }
+  };
 
   return {
     comments, // List of comments movies
@@ -70,5 +89,6 @@ export function useComments(options: UseCommentsOptions = { immediate: true }) {
     refreshComments, // Refresh function
     setPage, // Change page for pagination
     addComment, // Add a movie to comments
+    removeComment // Remove a movie from comments
   };
 }

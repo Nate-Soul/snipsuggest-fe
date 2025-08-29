@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useComments } from "~/composables/useComments";
-import type { CommentResponse } from "~/types/comments";
 
 definePageMeta({
     layout: 'dashboard'

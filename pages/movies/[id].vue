@@ -10,6 +10,7 @@ import { useAuthStore } from "~/stores/auth";
 import { useClickOutside } from "~/composables/useClickOutside";
 import { useFormValidation } from "~/composables/useFormValidation";
 import { useComments } from "~/composables/useComments";
+import { useFavourites } from "~/composables/useFavourites";
 import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE, DEFAULT_CAST_SIZE } from "~/assets/const";
 
 // State
@@ -34,12 +35,13 @@ const ratingsDropdown = ref<HTMLElement | null>(null);
 const ratingsDropdownToggler = ref<HTMLElement | null>(null);
 
 const { validateForm, validateText } = useFormValidation();
+const { addFavourite, removeFavourite } = useFavourites();
 
 // Fetch movie data
 const { 
-  data: movieData, 
-  error: movieDataErr, 
-  pending: movieDataPending 
+  data: movieData,
+  error: movieDataErr,
+  pending: movieDataPending
 } = await useFetch<MovieDetailResponse>(`/api/movies/${movieId}`);
 
 // Fetch comments with pagination
@@ -48,10 +50,7 @@ const {
   error: commentsErr, 
   pending: commentsPending, 
   refresh: refreshComments 
-} = await useFetch<CommentResponse[]>(
-  `/api/comments/${movieId}?page=${commentCurrentPage.value}&sort=${commentSort.value}`,
-  { query: { page: commentCurrentPage.value, sort: commentSort.value } }
-);
+} = await useFetch<CommentResponse[]>(`/api/comments/${movieId}`);
 
 // Fetch comments with pagination
 const { 
@@ -154,6 +153,27 @@ const shareMoviePage = async () => {
   }
 };
 
+const handleRemoveFavourite = async (id: number) => {
+  if (!authStore.isAuthenticated) {
+    toast.error("Please log in to remove from favorites.");
+    return;
+  }
+
+  favouriteStatus.value = "sending";
+
+  try {
+    await removeFavourite(id);
+    favouriteStatus.value = "sent";
+    toast.success("Movie removed from favorites!");
+    isFavourited.value = false;
+    setTimeout(() => (favouriteStatus.value = "idle"), 2000);
+  } catch (err: any) {
+    toast.error(err.message || "Failed to remove movie.");
+  } finally {
+    favouriteStatus.value = "idle";
+  }
+};
+
 // Add movie to favourites
 const addToFavourites = async (id: number) => {
   if (!authStore.isAuthenticated) {
@@ -162,22 +182,20 @@ const addToFavourites = async (id: number) => {
   }
 
   if (isFavourited.value) {
-    toast.error("Movie is already in your favourite list");
-    return;
+    removeFavourite(id);
   }
 
   favouriteStatus.value = "sending";
 
   try {
-    await useApiFetch(`/api/favourites/${id}`, {
-      method: "POST",
-    });
+    await addFavourite(id);
     favouriteStatus.value = "sent";
     toast.success("Movie saved to favorites!");
     isFavourited.value = await checkIsFavourited(id);
     setTimeout(() => (favouriteStatus.value = "idle"), 2000);
   } catch (err: any) {
     toast.error(err.message || "Failed to save movie.");
+  } finally {
     favouriteStatus.value = "idle";
   }
 };
@@ -198,6 +216,7 @@ const addMovieComment = async (id: number, content: string, parent_id?: number) 
 
   if (isValid) {
     commentStatus.value = "sending";
+
     try {
       await addComment(id, content, parent_id);
       commentMsg.value = "";
@@ -298,8 +317,8 @@ onMounted(async () => {
                   Download
                 </button>
                 <button
-                  :disabled="favouriteStatus === 'sending' || isFavourited"
-                  @click="addToFavourites(movie.id)"
+                  :disabled="favouriteStatus === 'sending'"
+                  @click="isFavourited ? handleRemoveFavourite(movie.id) : addToFavourites(movie.id)"
                   :class="`btn btn-lg ${isFavourited ? 'btn-outline-primary' : 'btn-outline-white'} group`"
                 >
                   <Icon :name="isFavourited ? 'tabler:heart-filled' : 'tabler:heart'" />
@@ -491,10 +510,19 @@ onMounted(async () => {
           </div>
           <div v-if="commentsData && commentsData.length > 0" class="flex flex-col gap-y-4">
             <div v-for="comment in commentsData" :key="comment.id" class="flex flex-col gap-y-5">
-              <SubcomponentsCommentCard :comment="comment" :movie_id="movie.id" />
+              <SubcomponentsCommentCard 
+                :comment="comment" 
+                :movie_id="movie.id" 
+                :refreshFn="refreshComments"
+              />
               <div v-if="comment.replies && comment.replies.length > 0" class="pl-4 border-l border-white/10">
                 <div v-for="reply in comment.replies" :key="reply.id" class="mb-4">
-                  <SubcomponentsCommentCard :comment="reply" :movie_id="movie.id" containerClasses="ml-[5%]" />
+                  <SubcomponentsCommentCard 
+                    :comment="reply" 
+                    :movie_id="movie.id" 
+                    containerClasses="ml-[5%]" 
+                    :refreshFn="refreshComments"
+                  />
                 </div>
               </div>
             </div>

@@ -2,6 +2,7 @@
 import { defineProps } from "vue";
 import { useToast } from "vue-toastification";
 import { useComments } from "~/composables/useComments";
+import { useTimeFormatter } from "~/composables/useTimeFormatter";
 
 const props = defineProps<{
   comment: {
@@ -14,23 +15,46 @@ const props = defineProps<{
   };
   movie_id: number;
   containerClasses?: string;
+  refreshFn: () => Promise<void>;
 }>();
 
-const { addComment } = useComments();
+const { addComment, removeComment } = useComments();
 const toast = useToast();
 const commentStatus = ref<"idle" | "sending" | "sent">("idle");
 const commentMsg = ref<string>("");
+
+
+const commentTimestamp = ref<string>(props.comment.timestamp);
+
+const timeFormatterResult = useTimeFormatter(commentTimestamp.value);
+const formattedTime = 'formattedTime' in timeFormatterResult ? timeFormatterResult.formattedTime : timeFormatterResult;
 
 const addMovieComment = async (movieId: number, content: string, parentId?: number) => {
     commentStatus.value = "sending";
     try {
         await addComment(movieId, content, parentId);
         commentMsg.value = "";
-        toast.success("Comment added successfully!");
         commentStatus.value = "sent";
+        await props.refreshFn();
+        toast.success("Comment added successfully!");
     } catch (error) {
         toast.error("Failed to add comment. Please try again.");
         console.error("Failed to add comment:", error);
+    } finally {
+        commentStatus.value = "idle";
+    }
+};
+
+const handleRemoveComment = async (commentId: number) => {
+    commentStatus.value = "sending";
+    try {
+        await removeComment(commentId);
+        commentStatus.value = "sent";
+        await props.refreshFn();
+        toast.success("Comment removed successfully!");
+    } catch (error) {
+        toast.error("Failed to remove comment. Please try again.");
+        console.error("Failed to remove comment:", error);
     } finally {
         commentStatus.value = "idle";
     }
@@ -49,7 +73,7 @@ const addMovieComment = async (movieId: number, content: string, parentId?: numb
         <div class="flex flex-col gap-y-2 w-full">
             <div class="flex items-center gap-x-2 text-sm">
             <h6>{{ comment.user.username }}</h6>
-            <span class="text-xs">{{ new Date(comment.timestamp).toLocaleString() }}</span>
+            <date :datetime="comment.timestamp" class="text-xs">{{ formattedTime }}</date>
             </div>
             <!-- <div v-if="comment.rating" class="flex items-center gap-x-1 text-primary-500">
             <Icon v-for="star in 5" :key="star" :name="star <= comment.rating ? "tabler:star-filled" : "tabler:star"" />
@@ -60,6 +84,7 @@ const addMovieComment = async (movieId: number, content: string, parentId?: numb
                 <button><Icon name="tabler:thumb-up" /></button>
                 <button><Icon name="tabler:thumb-down" /></button>
                 <button><Icon name="tabler:message-reply" /></button>
+                <button @click="handleRemoveComment(comment.id)" :disabled="commentStatus === 'sending'"><Icon name="tabler:trash" /></button>
             </div>
             <button><Icon name="tabler:flag-2" /></button>
             </div>

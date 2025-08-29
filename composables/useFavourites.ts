@@ -53,7 +53,7 @@ export function useFavourites(options: UseFavouritesOptions = { immediate: true 
       throw new Error('User must be authenticated to add a favourite.');
     }
     try {
-      await useApiFetch(`/movies/${movieId}/save`, {
+      await useApiFetch(`/api/favourites/${movieId}`, {
         method: 'POST',
       });
       await refreshFavourites(); // Refresh favorites after adding
@@ -67,9 +67,9 @@ export function useFavourites(options: UseFavouritesOptions = { immediate: true 
       throw new Error('User must be authenticated to remove a favourite.');
     }
     try {
-        await useApiFetch(`/api/favourites/${movieId}`, {
-          method: "DELETE",
-        });
+      await useApiFetch(`/api/favourites/${movieId}`, {
+        method: "DELETE",
+      });
       await refreshFavourites(); // Refresh favorites after removing
     } catch (err: any) {
       throw new Error(err.data?.detail || 'Failed to remove favourite.');

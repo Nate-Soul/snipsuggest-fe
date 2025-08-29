@@ -1,21 +1,3 @@
-interface CommentResponse {
-  data: Array<{
-    id: number;
-    user: { username: string; avatar_url: string | null };
-    content: string;
-    rating: number | null;
-    created_at: string;
-    parent_id: number | null;
-  }>;
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    total_pages: number;
-  };
-  message: string;
-};
-
 export default defineEventHandler(async (event) => {
   const { id } = event.context.params!
   const query = getQuery(event);
@@ -24,7 +6,7 @@ export default defineEventHandler(async (event) => {
   const apiBaseUrl = config.apiBaseUrl;
 
   try {
-    return await $fetch(`${apiBaseUrl}/comments/movies/${id}`, {
+    return await $fetch(`${apiBaseUrl}/comments/movie/${id}`, {
       method: 'GET',
       query,
     });
