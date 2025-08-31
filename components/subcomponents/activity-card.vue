@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import type { CommentResponse } from '~/types/comments';
-import { useTimeFormatter } from "~/composables/useTimeFormatter";
+import { formatTime } from '~/utils/helpers';
 
 const props = defineProps<{
     comment: CommentResponse
 }>();
-
-const commentTimestamp = ref<string>(props.comment.timestamp);
-
-const timeFormatterResult = useTimeFormatter(commentTimestamp.value);
-const formattedTime = 'formattedTime' in timeFormatterResult ? timeFormatterResult.formattedTime : timeFormatterResult;
 </script>
 
 <template>
@@ -33,7 +28,7 @@ const formattedTime = 'formattedTime' in timeFormatterResult ? timeFormatterResu
         </div>
         <div class="flex flex-col gap-y-2">
             <p>{{ comment.content }}</p>
-            <p class="text-end">{{ formattedTime }}</p>
+            <time :datetime="comment.timestamp" class="text-end">{{ formatTime(comment.timestamp) }}</time>
         </div>
     </div>
 </template>

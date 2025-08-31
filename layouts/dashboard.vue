@@ -1,9 +1,4 @@
 <script setup lang="ts">
-
-definePageMeta({
-  middleware: ['protected']
-});
-
 const sidebarStatus   = ref(false);
 
 const openSidebar = () => {

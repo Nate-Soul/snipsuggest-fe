@@ -6,7 +6,8 @@ import { useFavourites } from "~/composables/useFavourites";
 import { useComments } from "~/composables/useComments";
 
 definePageMeta({
-    layout: 'dashboard'
+    layout: 'dashboard',
+    middleware: ['protected']
 });
 
 const authStore = useAuthStore();

@@ -4,6 +4,7 @@ import type { CommentResponse } from "~/types/comments";
 import type { IsFavourited } from "~/types/favourites";
 import type { RatingResponse } from "~/types/ratings";
 
+import { debounce } from "lodash-es";
 import { useToast } from "vue-toastification";
 
 import { useAuthStore } from "~/stores/auth";
@@ -11,7 +12,9 @@ import { useClickOutside } from "~/composables/useClickOutside";
 import { useFormValidation } from "~/composables/useFormValidation";
 import { useComments } from "~/composables/useComments";
 import { useFavourites } from "~/composables/useFavourites";
+
 import { IMAGE_BASE_URL, DEFAULT_BACKDROP_SIZE, DEFAULT_CAST_SIZE } from "~/assets/const";
+import { convertMinutesToDuration, formatDateToHumanReadable } from "~/utils/helpers";
 
 // State
 const { addComment } = useComments();
@@ -72,6 +75,8 @@ if (movieDataErr.value || !movieData.value) {
 useHead({
   title: movieData.value?.movie.title ?? "Movie Details"
 });
+
+const commentTextarea = ref<HTMLTextAreaElement | null>(null);
 
 // Computed properties
 const movie = computed(() => movieData.value?.movie);
@@ -200,7 +205,7 @@ const addToFavourites = async (id: number) => {
   }
 };
 
-const addMovieComment = async (id: number, content: string, parent_id?: number) => {
+const addMovieComment = debounce(async (id: number, content: string, parent_id?: number) => {
   if (!authStore.isAuthenticated) {
     toast.error("Please log in to add a comment.");
     return;
@@ -236,7 +241,7 @@ const addMovieComment = async (id: number, content: string, parent_id?: number) 
     toast.error("Check your comment input, and try again.");
   }
 
-};
+}, 300);
 
 // Log errors
 // watchEffect(() => {
@@ -275,11 +280,34 @@ useClickOutside(ratingsDropdown, () => {
   }
 });
 
+const handleEnterKey = async (event: KeyboardEvent) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        if (commentStatus.value === "idle" && commentMsg.value.trim()) {
+          
+        if (typeof movieId === "string") {
+          await addMovieComment(parseInt(movieId), commentMsg.value);
+        }
+      }
+    }
+};
+
 onMounted(async () => {
   if (typeof movieId === "string") {
     isFavourited.value = await checkIsFavourited(parseInt(movieId));
     selectedRating.value = await getUserRating(parseInt(movieId));
   }
+
+  
+  if (commentTextarea.value) {
+      commentTextarea.value.addEventListener("keydown", handleEnterKey);
+  }
+});
+
+onUnmounted(() => {
+    if (commentTextarea.value) {
+        commentTextarea.value.removeEventListener("keydown", handleEnterKey);
+    }
 });
 </script>
 
@@ -331,12 +359,12 @@ onMounted(async () => {
             <div class="flex items-center flex-wrap gap-4">
               <dl class="flex items-center gap-x-2">
                 <dt class="font-medium">Runtime:</dt>
-                <dd class="text-sm">{{ movie.runtime }}m</dd>
+                <dd class="text-sm">{{ convertMinutesToDuration(movie.runtime!) }}</dd>
               </dl>
-              <dl class="flex items-center gap-x-2">
-                <dt class="font-medium">Release Date:</dt>
-                <dd class="text-sm">{{ movie.release_date }}</dd>
-              </dl>
+              <div class="flex items-center gap-x-2">
+                <span class="font-medium">Release Date:</span>
+                <time :datetime="movie.release_date" class="text-sm">{{ formatDateToHumanReadable(movie.release_date) }}</time>
+              </div>
             </div>
             <div v-if="movie.genres.length > 0" class="flex items-start gap-x-3">
               <h6 class="font-medium flex-none">Genres</h6>
@@ -460,6 +488,7 @@ onMounted(async () => {
             </div>
             <div class="flex flex-col gap-y-2 w-full">
               <textarea
+                ref="commentTextarea"
                 v-model="commentMsg"
                 name="comment_msg"
                 placeholder="Add comment"
@@ -482,6 +511,7 @@ onMounted(async () => {
                   </button>
                 </div>
                 <button
+
                   @click="addMovieComment(movie.id, commentMsg)"
                   :disabled="!authStore.isAuthenticated || commentStatus === 'sending'"
                   class="btn-icon w-6 h-6 btn-primary-gradient rounded-lg"
@@ -511,8 +541,8 @@ onMounted(async () => {
           <div v-if="commentsData && commentsData.length > 0" class="flex flex-col gap-y-4">
             <div v-for="comment in commentsData" :key="comment.id" class="flex flex-col gap-y-5">
               <SubcomponentsCommentCard 
-                :comment="comment" 
-                :movie_id="movie.id" 
+                :comment="comment"
+                :movie_id="movie.id"
                 :refreshFn="refreshComments"
               />
               <div v-if="comment.replies && comment.replies.length > 0" class="pl-4 border-l border-white/10">

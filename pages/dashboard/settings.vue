@@ -4,7 +4,8 @@ import { useToast } from "vue-toastification";
 import { usePasswordField } from "~/composables/usePasswordField";
 
 definePageMeta({
-    layout: 'dashboard'
+    layout: 'dashboard',
+    middleware: ['protected']
 });
 
 const authStore = useAuthStore();
