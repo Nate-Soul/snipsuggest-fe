@@ -32,7 +32,7 @@ const commentStatus = ref<"idle" | "sending" | "sent">("idle");
 const favouriteStatus = ref<"idle" | "sending" | "sent">("idle");
 const ratingStatus = ref<"idle" | "sending" | "sent">("idle");
 const commentSort = ref<"relevant" | "latest">("relevant");
-const commentCurrentPage = ref<number>(1);
+// const commentCurrentPage = ref<number>(1);
 const isFavourited = ref<boolean>(false);
 const ratingsDropdown = ref<HTMLElement | null>(null);
 const ratingsDropdownToggler = ref<HTMLElement | null>(null);
@@ -243,12 +243,13 @@ const addMovieComment = debounce(async (id: number, content: string, parent_id?:
 
 }, 300);
 
-// Log errors
-// watchEffect(() => {
-//   if (movieDataErr.value) {
-//     console.error('Error fetching movie:', movieDataErr.value);
+// Pagination handler
+// const loadMoreComments = async () => {
+//   if (pagination.value.page < pagination.value.total_pages) {
+//     currentPage.value += 1;
+//     await refreshComments();
 //   }
-// });
+// };
 
 const checkIsFavourited = async (id: number): Promise<boolean> => {
   try {
@@ -284,10 +285,9 @@ const handleEnterKey = async (event: KeyboardEvent) => {
     if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         if (commentStatus.value === "idle" && commentMsg.value.trim()) {
-          
-        if (typeof movieId === "string") {
-          await addMovieComment(parseInt(movieId), commentMsg.value);
-        }
+          if (typeof movieId === "string") {
+            await addMovieComment(parseInt(movieId), commentMsg.value);
+          }
       }
     }
 };
@@ -297,17 +297,29 @@ onMounted(async () => {
     isFavourited.value = await checkIsFavourited(parseInt(movieId));
     selectedRating.value = await getUserRating(parseInt(movieId));
   }
-
   
   if (commentTextarea.value) {
-      commentTextarea.value.addEventListener("keydown", handleEnterKey);
+    commentTextarea.value.addEventListener("keydown", handleEnterKey);
   }
 });
 
 onUnmounted(() => {
-    if (commentTextarea.value) {
-        commentTextarea.value.removeEventListener("keydown", handleEnterKey);
-    }
+  if (commentTextarea.value) {
+    commentTextarea.value.removeEventListener("keydown", handleEnterKey);
+  }
+});
+
+// Log errors
+watchEffect(() => {
+  if (movieDataErr.value) {
+    console.error("Error fetching movie:", movieDataErr.value);
+    toast.error("Failed to load movie details.");
+  }
+  
+  if (commentsErr.value) {
+    console.error("Error fetching comments:", commentsErr.value);
+    toast.error("Failed to load comments.");
+  }
 });
 </script>
 
@@ -511,7 +523,6 @@ onUnmounted(() => {
                   </button>
                 </div>
                 <button
-
                   @click="addMovieComment(movie.id, commentMsg)"
                   :disabled="!authStore.isAuthenticated || commentStatus === 'sending'"
                   class="btn-icon w-6 h-6 btn-primary-gradient rounded-lg"

@@ -34,10 +34,11 @@ export function useFavourites(options: UseFavouritesOptions = { immediate: true 
   });
 
   // Computed properties
-  const favourites = computed(() => data.value?.data ?? []);
-  const favouriteCount = computed(() => data.value?.pagination.total ?? 0);
-  const totalPages = computed(() => data.value?.pagination.total_pages ?? 1);
-  const perPage = computed(() => data.value?.pagination.limit ?? limit);
+  const favourites      = computed(() => data.value?.data ?? []);
+  const favouriteCount  = computed(() => data.value?.pagination.total ?? 0);
+  const totalPages      = computed(() => data.value?.pagination.total_pages ?? 1);
+  const perPage         = computed(() => data.value?.pagination.limit ?? limit.value);
+  const currentPage     = computed(() => data.value?.pagination.page ?? 1);
   const isAuthenticated = computed(() => authStore.isAuthenticated);
 
   // Methods
@@ -77,14 +78,15 @@ export function useFavourites(options: UseFavouritesOptions = { immediate: true 
   };
 
   return {
-    favourites, // List of favorite movies
-    favouriteCount, // Total number of favorites
     totalPages, // Total pages for pagination
     perPage, // Items per page
+    currentPage,
+    favouriteCount, // Total number of favorites
+    setPage, // Change page for pagination
+    favourites, // List of favorite movies
     favouritesPending, // Loading state
     favouritesErr, // Error state
     refreshFavourites, // Refresh function
-    setPage, // Change page for pagination
     addFavourite, // Add a movie to favorites
     removeFavourite, // Remove a movie from favorites
   };

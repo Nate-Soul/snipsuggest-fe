@@ -37,7 +37,10 @@ export function useComments(options: UseCommentsOptions = { immediate: true }) {
   const comments        = computed(() => data.value?.data ?? []);
   const commentCount    = computed(() => data.value?.pagination.total ?? 0);
   const totalPages      = computed(() => data.value?.pagination.total_pages ?? 1);
+  const perPage         = computed(() => data.value?.pagination.limit ?? limit.value);
+  const currentPage     = computed(() => data.value?.pagination.page ?? 1);
   const isAuthenticated = computed(() => authStore.isAuthenticated);
+  
   // Methods
   const setPage = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages.value) {
@@ -81,9 +84,11 @@ export function useComments(options: UseCommentsOptions = { immediate: true }) {
   };
 
   return {
-    comments, // List of comments movies
     commentCount, // Total number of comments
     totalPages, // Total pages for pagination
+    perPage, // Total pages for pagination
+    currentPage, // Total pages for pagination
+    comments, // List of comments movies
     commentsPending, // Loading state
     commentsErr, // Error state
     refreshComments, // Refresh function
