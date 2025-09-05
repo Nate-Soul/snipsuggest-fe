@@ -107,17 +107,38 @@ const handleChangePassword = async () => {
         }
     }
 };
+
+const tabs = ref<"Account" | "Password" | "Preferences">("Account");
+
+const handleTabChange = (tab: "Account" | "Password" | "Preferences") => {
+    tabs.value = tab;
+};
 </script>
 
 <template>
     <section class="relative z-0 overflow-hidden px-6 py-10">
-        <div class="grid grid-cols-10 gap-6 ">
+        <!-- Profile tabs -->
+        <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700 mb-12">
+            <ul class="flex flex-wrap -mb-px">
+                <li class="me-2">
+                    <button @click="handleTabChange('Account')" :class="`inline-block p-4 ${tabs === 'Account' ? 'text-primary-500 border-primary-500 border-b-2' : 'border-b-transparent'} rounded-t-lg  hover:text-gray-300 hover:border-accent-500`">Your Account</button>
+                </li>
+                <li class="me-2">
+                    <button @click="handleTabChange('Password')" :class="`inline-block p-4 ${tabs === 'Password' ? 'text-primary-500 border-primary-500 border-b-2' : 'border-b-transparent'} rounded-t-lg  hover:text-gray-300 hover:border-accent-500`" aria-current="page">Password Info</button>
+                </li>
+                <li class="me-2">
+                    <button @click="handleTabChange('Preferences')" :class="`inline-block p-4 ${tabs === 'Preferences' ? 'text-primary-500 border-primary-500 border-b-2' : 'border-b-transparent'} rounded-t-lg  hover:text-gray-300 hover:border-accent-500`">Movie Preferences</button>
+                </li>
+            </ul>
+        </div>
+        <!-- Profile pane -->
+        <div v-if="tabs === 'Account'" class="flex flex-col gap-y-8">
             <div class="col-span-full p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
                 <hgroup class="flex flex-col gap-y-2 mb-8">
                     <h2 class="text-semibold text-xl font-roboto">Your Information</h2>
-                    <p>Update your information and preferences below so we can serve you better</p>
+                    <p>Update your information here</p>
                 </hgroup>
-                <form @submit.prevent="handleInfoUpdate" action="#" method="POST" class="grid sm:grid-cols-2 gap-4">
+                <form @submit.prevent="handleInfoUpdate" action="#" method="POST" class="flex flex-col gap-y-6">
                     <div class="form-input-wrapper">
                         <label for="username">Your Username</label>
                         <div class="bg-white/10 flex items-center gap-x-2 h-12 ps-2.5 rounded-lg">
@@ -157,6 +178,76 @@ const handleChangePassword = async () => {
                         </div>
                             <small v-if="formErrors.email" class="text-red-400">{{ formErrors.email }}</small>
                     </div>
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary btn-lg justify-center"
+                        :disabled="isProcessingPrefForm"
+                    >
+                        {{ isProcessingPrefForm ? 'Updating Info' : 'Save Changes' }}
+                    </button>
+                </form>
+            </div>
+            <div class="col-span-full lg:col-span-4 p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-5">
+                <hgroup class="flex flex-col gap-y-2 mb-8">
+                    <h2 class="text-semibold text-xl text-primary-500 font-bold">Danger Zone</h2>
+                    <p>Careful! This action leads to a black hole. Once your account disappears into the abyss, there’s no way back. Double-check you’re ready before hitting delete.</p>
+                </hgroup>
+                <div class="text-[100px] mx-auto">
+                    <Icon name="tabler:alert-triangle" class="text-red-600" style="width: 100px; height: 100px;"/>
+                </div>
+                <button class="btn btn-md btn-primary-gradient">Delete Account</button>
+            </div>
+        </div>
+        <!-- Password pane -->
+        <div v-if="tabs === 'Password'">
+            <div class="col-span-full lg:col-span-6 p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
+                <hgroup class="flex flex-col gap-y-2 mb-8">
+                    <h2 class="text-semibold text-xl font-roboto">Change Your Password</h2>
+                    <p>Enter your new password below.</p>
+                </hgroup>
+                <form @submit.prevent="handleChangePassword" action="#" method="POST" class="flex flex-col gap-y-6">
+                    <SubcomponentsPasswordField
+                        label="Old Password"
+                        name="old_password"
+                        id="oldPassword"
+                        v-model="passwordForm.old_password"
+                        :error="formErrors.old_password"
+                        @blur="validatePsw('old_password', passwordForm.old_password)"
+                    />
+                    <SubcomponentsPasswordField
+                        label="New Password"
+                        name="new_password"
+                        id="newPassword"
+                        v-model="passwordForm.new_password"
+                        :error="formErrors.new_password"
+                        @blur="validatePsw('new_password', passwordForm.new_password)"
+                    />
+                    <SubcomponentsPasswordField
+                        label="Confirm Password"
+                        name="new_password2"
+                        id="newPassword2"
+                        v-model="passwordForm.new_password2"
+                        :error="formErrors.new_password2"
+                        @blur="validatePsw('new_password2', passwordForm.new_password2)"
+                    />
+                    <button 
+                        type="submit" 
+                        class="btn btn-primary btn-lg justify-center"
+                        :disabled="isProcessingPswForm"
+                    >
+                        {{ isProcessingPswForm ? 'Changing Password...' : 'Change Password' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+        <!-- Preferences pane -->
+        <div v-if="tabs === 'Preferences'" class="grid grid-cols-10 gap-6 ">
+            <div class="col-span-full p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
+                <hgroup class="flex flex-col gap-y-2 mb-8">
+                    <h2 class="text-semibold text-xl font-roboto">Your Movie Preferences</h2>
+                    <p>Update your movie preferences below so we can serve you better recommendations</p>
+                </hgroup>
+                <form @submit.prevent="handleInfoUpdate" action="#" method="POST" class="flex flex-col gap-y-6">
                     <div class="form-input-wrapper">
                         <p for="username">Select Your Favorite Movie Genres?</p>
                         <div class="flex items-center flex-wrap gap-4">
@@ -204,58 +295,9 @@ const handleChangePassword = async () => {
                         class="btn btn-primary btn-lg justify-center"
                         :disabled="isProcessingPrefForm"
                     >
-                        {{ isProcessingPrefForm ? 'Updating Info' : 'Update Info' }}
+                        {{ isProcessingPrefForm ? 'Updating Info' : 'Save Changes' }}
                     </button>
                 </form>
-            </div>
-            <div class="col-span-full lg:col-span-6 p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
-                <hgroup class="flex flex-col gap-y-2 mb-8">
-                    <h2 class="text-semibold text-xl font-roboto">Change Your Password</h2>
-                    <p>Enter your new password below.</p>
-                </hgroup>
-                <form @submit.prevent="handleChangePassword" action="#" method="POST" class="flex flex-col gap-y-6">
-                    <SubcomponentsPasswordField
-                        label="Old Password"
-                        name="old_password"
-                        id="oldPassword"
-                        v-model="passwordForm.old_password"
-                        :error="formErrors.old_password"
-                        @blur="validatePsw('old_password', passwordForm.old_password)"
-                    />
-                    <SubcomponentsPasswordField
-                        label="New Password"
-                        name="new_password"
-                        id="newPassword"
-                        v-model="passwordForm.new_password"
-                        :error="formErrors.new_password"
-                        @blur="validatePsw('new_password', passwordForm.new_password)"
-                    />
-                    <SubcomponentsPasswordField
-                        label="Confirm Password"
-                        name="new_password2"
-                        id="newPassword2"
-                        v-model="passwordForm.new_password2"
-                        :error="formErrors.new_password2"
-                        @blur="validatePsw('new_password2', passwordForm.new_password2)"
-                    />
-                    <button 
-                        type="submit" 
-                        class="btn btn-primary btn-lg justify-center"
-                        :disabled="isProcessingPswForm"
-                    >
-                        {{ isProcessingPswForm ? 'Changing Password...' : 'Change Password' }}
-                    </button>
-                </form>
-            </div>
-            <div class="col-span-full lg:col-span-4 p-5 lg:p-8 rounded-2xl border border-white/10 flex flex-col gap-y-6">
-                <hgroup class="flex flex-col gap-y-2 mb-8">
-                    <h2 class="text-semibold text-xl font-roboto">Delete Account</h2>
-                    <p>Once you take this action, you can't recover from the regret that comes after</p>
-                </hgroup>
-                <div class="text-[200px]">
-                    <Icon name="tabler:waterpolo" />
-                </div>
-                <button class="btn btn-md btn-primary-gradient">Delete Account</button>
             </div>
         </div>
         <div class="absolute -top-10 -right-10 -z-[1] w-[175px] h-[175px] rounded-full bg-primary-500 blur-[100px]"></div>

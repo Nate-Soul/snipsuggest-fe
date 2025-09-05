@@ -26,7 +26,7 @@ export function useFavourites(options: UseFavouritesOptions = { immediate: true 
       Authorization: `Bearer ${authStore.token}`
     },
     query: computed(() => ({
-      page: page.value,
+      skip: (page.value - 1) * limit.value,
       limit: limit.value,
     })),
     server: true, // Ensure SSR fetching

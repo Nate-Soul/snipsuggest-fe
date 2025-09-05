@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useToast } from "vue-toastification";
-
 import { IMAGE_BASE_URL, DEFAULT_POSTER_SIZE } from "~/assets/const";
+
 import { useFavourites } from "~/composables/useFavourites";
 
 definePageMeta({
@@ -18,7 +18,6 @@ const initialPage = computed(() => {
   return isNaN(page) ? 1 : Math.max(1, page);
 });
 
-const deleteFavouriteStatus = ref<"idle" | "deleting" | "deleted">("idle");
 const { 
     perPage,
     currentPage,
@@ -29,22 +28,28 @@ const {
     favouritesErr,
     setPage,
     removeFavourite, 
-} = useFavourites();
+} = useFavourites({
+    page: initialPage.value,
+});
 
-// Handle page input
-// const handlePageInput = () => {
-//   const newPage = Math.max(1, Math.min(inputPage.value, totalPages.value));
-//   if (newPage !== page.value) {
-//     setPage(newPage);
-//   }
-// };
-
-watchEffect(() => {
-    if (favouritesErr.value) {
-        toast.error("May Day! May Day! May Day! Favourites crashed into enemy base");
-        console.log(favouritesErr.value);
+// Watch for changes in the route's query parameter
+watch(() => route.query.page, (newPage) => {
+    const pageNumber = parseInt(newPage as string);
+    // Only update if it's a valid number and it's different from the current page
+    if (!isNaN(pageNumber) && pageNumber !== currentPage.value) {
+      setPage(pageNumber);
     }
-})
+});
+
+// Watch for errors from the composable
+watch(favouritesErr, (newErr) => {
+    if (newErr) {
+        toast.error("May Day! May Day! Favourites crashed into enemy base");
+        console.error(newErr);
+    }
+});
+
+const deleteFavouriteStatus = ref<"idle" | "deleting" | "deleted">("idle");
 
 const handleRemoveFavourite = async (id: number) => {
     deleteFavouriteStatus.value = "deleting";

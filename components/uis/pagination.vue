@@ -27,7 +27,7 @@ const handlePageInput = (event: Event) => {
             Showing 
             <span class="font-semibold text-gray-900 dark:text-white">{{ startEntry }}</span> 
             to <span class="font-semibold text-gray-900 dark:text-white">{{ endEntry }}</span> 
-            of <span class="font-semibold text-gray-900 dark:text-white">{{ totalPages }}</span> Entries
+            of <span class="font-semibold text-gray-900 dark:text-white">{{ totalItems }}</span> Entries
         </span>
         <div class="inline-flex items-center gap-x-4">
             <button 

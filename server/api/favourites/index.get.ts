@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-
+  const query = getQuery(event);
   const config = useRuntimeConfig();
   const apiBaseUrl = config.apiBaseUrl;
 
@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
       headers: {
         Authorization: authorization,
       },
+      query,
     });
 
     return response;
